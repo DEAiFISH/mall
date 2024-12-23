@@ -45,14 +45,14 @@ public interface UserService {
      * 注册用户
      * @param userDTO
      */
-    void signUp(UserDTO userDTO);
+    UserDetailedVO signUp(UserDTO userDTO);
 
     /**
      * 判断用户是否存在
-     * @param id
+     * @param wxId
      * @return
      */
-    Boolean existsById(Long id);
+    Boolean existsById(String wxId);
 
     /**
      * 更新用户信息

@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * @description TODO
+ * @description 用户详细信息视图对象
  *
  * @author DEAiFISH
  * @date 2024/12/14 15:15

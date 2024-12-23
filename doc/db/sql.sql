@@ -67,7 +67,7 @@ CREATE TABLE user_browse_history (
 
 CREATE TABLE label (
                        label_id INT AUTO_INCREMENT PRIMARY KEY COMMENT '标签ID',
-                       name VARCHAR(32) NOT NULL COMMENT '名称',
+                       name VARCHAR(32) NOT NULL UNIQUE COMMENT '名称',
                        weights BIGINT NOT NULL COMMENT '权重',
                        description VARCHAR(512) COMMENT '描述',
                        create_time DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',

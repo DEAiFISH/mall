@@ -27,7 +27,7 @@ public class LabelPO {
     /**
      * 名称
      */
-    @Column(name = "name", nullable = false, length = 32, columnDefinition = "VARCHAR(32) COMMENT '名称'")
+    @Column(name = "name", nullable = false, length = 32, unique = true , columnDefinition = "VARCHAR(32) COMMENT '名称'")
     private String name;
 
     /**

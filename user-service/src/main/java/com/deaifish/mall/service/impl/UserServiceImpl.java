@@ -33,10 +33,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Resource
     private JPAQueryFactory jpaQueryFactory;
+    @Resource
+    private UserRepository userRepository;
 
     private final static QUserPO USER_PO = QUserPO.userPO;
-    @Autowired
-    private UserRepository userRepository;
+
 
 
     @Override
@@ -93,13 +94,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void signUp(UserDTO userDTO) {
+    public UserDetailedVO signUp(UserDTO userDTO) {
         jpaQueryFactory.insert(USER_PO).execute();
+        UserPO user = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.wxId.eq(userDTO.getWxId())).fetchOne();
+        if(user == null){
+            throw new MallException("用户注册失败，请稍后再试");
+        }
+        return BeanUtil.toBean(user, UserDetailedVO.class);
     }
 
     @Override
-    public Boolean existsById(Long id) {
-        return userRepository.existsById(id);
+    public Boolean existsById(String wxId) {
+        return userRepository.existsByWxId(wxId);
     }
 
     @Override

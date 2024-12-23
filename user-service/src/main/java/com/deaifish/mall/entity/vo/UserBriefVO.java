@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * @description TODO
+ * @description 用户基本信息VO
  *
  * @author DEAiFISH
  * @date 2024/12/14 15:15

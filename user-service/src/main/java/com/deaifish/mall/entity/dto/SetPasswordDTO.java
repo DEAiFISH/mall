@@ -1,6 +1,7 @@
 package com.deaifish.mall.entity.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -17,6 +18,6 @@ public class SetPasswordDTO {
     private Long userId;
 
     @Schema(description = "登录密码")
-    @NotNull(message = "登录密码不能为空")
+    @NotBlank(message = "登录密码不能为空")
     private String password;
 }

@@ -75,19 +75,18 @@ public class UserController {
      * @return
      */
     @PutMapping("/sign-up")
-    public R<Boolean> signUp(@RequestBody UserDTO userDTO) {
-        userService.signUp(userDTO);
-        return R.success(true);
+    public R<UserDetailedVO> signUp(@RequestBody UserDTO userDTO){
+        return R.success( userService.signUp(userDTO));
     }
 
     /**
      * 判断用户是否存在
-     * @param id
+     * @param wxId
      * @return
      */
     @GetMapping("/get/exists/{id}")
-    public R<Boolean> exists(@PathVariable @Parameter(description = "用户id") Long id) {
-        return R.success(userService.existsById(id));
+    public R<Boolean> exists(@PathVariable @Parameter(description = "微信id") String wxId) {
+        return R.success(userService.existsById(wxId));
     }
 
     /**

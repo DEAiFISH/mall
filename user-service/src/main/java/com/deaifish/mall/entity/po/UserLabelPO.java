@@ -1,6 +1,7 @@
 package com.deaifish.mall.entity.po;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(schema = "mall_db", name = "user_label")
 @Comment("用户标签表")
+@Data
 public class UserLabelPO {
 
     /**
@@ -53,53 +55,4 @@ public class UserLabelPO {
      */
     @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'")
     private LocalDateTime updateTime;
-
-    // Getters and Setters
-    public Long getUserLabelId() {
-        return userLabelId;
-    }
-
-    public void setUserLabelId(Long userLabelId) {
-        this.userLabelId = userLabelId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Integer getLabelId() {
-        return labelId;
-    }
-
-    public void setLabelId(Integer labelId) {
-        this.labelId = labelId;
-    }
-
-    public Integer getInterest() {
-        return interest;
-    }
-
-    public void setInterest(Integer interest) {
-        this.interest = interest;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }
