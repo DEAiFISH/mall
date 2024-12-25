@@ -7,10 +7,13 @@ import com.deaifish.mall.entity.vo.UserBriefVO;
 import com.deaifish.mall.entity.vo.UserDetailedVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.UserService;
+import com.deaifish.mall.validation.group.ADDGroup;
+import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.List;
 @RestController()
 @RequestMapping("/user/v1")
 @Tag(name = "用户信息接口")
+@Validated
 public class UserController {
     @Resource
     private UserService userService;
@@ -43,7 +47,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/get/{id}")
-    public R<UserDetailedVO> get(@PathVariable @Parameter(description = "用户ID") Long id) {
+    public R<UserDetailedVO> get(@PathVariable(name = "id") @Parameter(description = "用户ID") Long id) {
         return R.success(userService.getById(id));
     }
 
@@ -75,7 +79,7 @@ public class UserController {
      * @return
      */
     @PutMapping("/sign-up")
-    public R<UserDetailedVO> signUp(@RequestBody UserDTO userDTO){
+    public R<UserDetailedVO> signUp(@RequestBody @Validated(ADDGroup.class) UserDTO userDTO){
         return R.success( userService.signUp(userDTO));
     }
 
@@ -84,8 +88,8 @@ public class UserController {
      * @param wxId
      * @return
      */
-    @GetMapping("/get/exists/{id}")
-    public R<Boolean> exists(@PathVariable @Parameter(description = "微信id") String wxId) {
+    @GetMapping("/get/exists/{wxId}")
+    public R<Boolean> exists(@PathVariable(name = "wxId") @Parameter(description = "微信id") String wxId) {
         return R.success(userService.existsById(wxId));
     }
 
@@ -95,8 +99,19 @@ public class UserController {
      * @return
      */
     @PostMapping("/update")
-    public R<Boolean> update(@RequestBody UserDTO userDTO) {
+    public R<Boolean> update(@RequestBody @Validated(UpdateGroup.class) UserDTO userDTO) {
         userService.update(userDTO);
+        return R.success(true);
+    }
+
+    /**
+     * 删除用户信息
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/delete/{id}")
+    public R<Boolean> delete(@PathVariable(name = "id") @Parameter(description = "用户id") Long id) {
+        userService.delete(id);
         return R.success(true);
     }
 

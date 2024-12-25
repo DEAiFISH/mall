@@ -78,11 +78,6 @@ public class UserDetailedVO implements Serializable {
     private LocalDateTime lastLogin;
 
     /**
-     * 最后登录IP
-     */
-    private String lastIp;
-
-    /**
      * 状态（启用：1；禁用：0）
      */
     private Byte status;

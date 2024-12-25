@@ -2,8 +2,11 @@ package com.deaifish.mall.controller;
 
 import com.deaifish.mall.entity.dto.LabelDTO;
 import com.deaifish.mall.entity.vo.LabelVO;
+import com.deaifish.mall.entity.vo.UserInterestVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.LabelService;
+import com.deaifish.mall.validation.group.ADDGroup;
+import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -38,7 +41,7 @@ public class LabelController {
      * @return
      */
     @PostMapping("/add")
-    public R<LabelVO> add(@RequestBody @Valid LabelDTO labelDTO) {
+    public R<LabelVO> add(@RequestBody @Validated(ADDGroup.class) LabelDTO labelDTO) {
         return R.success(labelService.add(labelDTO));
     }
 
@@ -48,7 +51,7 @@ public class LabelController {
      * @return
      */
     @PutMapping("/update")
-    public R<LabelVO> update(@RequestBody @Valid LabelDTO labelDTO) {
+    public R<LabelVO> update(@RequestBody @Validated(UpdateGroup.class) LabelDTO labelDTO) {
         return R.success(labelService.update(labelDTO));
     }
 
@@ -60,6 +63,39 @@ public class LabelController {
     @DeleteMapping("/delete/{id}")
     public R<Boolean> delete(@PathVariable("id") @Parameter(description = "标签id") Integer labelId) {
         labelService.delete(labelId);
+        return R.success(true);
+    }
+
+    /**
+     * 更新用户兴趣度
+     * @param ids
+     * @return
+     */
+    @PostMapping("/interest/update")
+    public R<Boolean> interestUpdate(@RequestBody @Valid List<Integer> ids, @RequestParam("uId") @Parameter(description = "用户id") Long userID) {
+        labelService.interestUpdate(ids, userID);
+        return R.success(true);
+    }
+
+
+    /**
+     * 用户兴趣度列表
+     * @param userID
+     * @return
+     */
+    @GetMapping("/interest/list/{uId}")
+    public R<List<UserInterestVO>> interestList(@PathVariable("uId") @Parameter(description = "用户id") Long userID) {
+        return R.success(labelService.interestList(userID));
+    }
+
+    /**
+     * 删除用户兴趣度
+     * @param userID
+     * @return
+     */
+    @DeleteMapping("/interest/delete")
+    public R<Boolean> interestDelete(@RequestParam("uId") @Parameter(description = "用户id") Long userID) {
+        labelService.interestDelete(userID);
         return R.success(true);
     }
 }

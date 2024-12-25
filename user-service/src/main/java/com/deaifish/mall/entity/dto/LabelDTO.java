@@ -1,9 +1,12 @@
 package com.deaifish.mall.entity.dto;
 
+import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 
 /**
@@ -18,6 +21,7 @@ public class LabelDTO {
      * 标签ID
      */
     @Schema(description = "标签ID")
+    @NotNull(message = "标签ID不能为空", groups = {UpdateGroup.class})
     private Integer labelId;
 
     /**
@@ -25,6 +29,7 @@ public class LabelDTO {
      */
     @Schema(description = "名称")
     @NotBlank(message = "名称不能为空")
+    @Length(max = 31, message = "标签名称长度不能超过{max}")
     private String name;
 
     /**
@@ -38,5 +43,6 @@ public class LabelDTO {
      * 描述
      */
     @Schema(description = "描述")
+    @Length(max = 511, message = "标签描述长度不能超过{max}")
     private String description;
 }

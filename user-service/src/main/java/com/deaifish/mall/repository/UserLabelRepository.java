@@ -1,6 +1,6 @@
 package com.deaifish.mall.repository;
 
-import com.deaifish.mall.entity.po.LabelPO;
+import com.deaifish.mall.entity.po.UserLabelPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +11,6 @@ import org.springframework.stereotype.Repository;
  * @date 2024/12/12 14:05
  */
 @Repository
-public interface LabelRepository extends JpaRepository<LabelPO, Integer> {
+public interface UserLabelRepository extends JpaRepository<UserLabelPO, Long> {
+
 }

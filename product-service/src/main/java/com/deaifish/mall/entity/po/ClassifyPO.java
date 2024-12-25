@@ -1,8 +1,14 @@
 package com.deaifish.mall.entity.po;
 
+import com.deaifish.mall.repository.po.BasePO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
  * @description TODO
@@ -12,7 +18,13 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "classify",schema = "mall_db")
-public class ClassifyPO {
+@Comment("商品分类表")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ClassifyPO extends BasePO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * 商品分类ID
@@ -51,81 +63,4 @@ public class ClassifyPO {
      */
     @Column(name = "icon", nullable = false, length = 256, columnDefinition = "VARCHAR(256) COMMENT '图标路径'")
     private String icon;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'")
-    private LocalDateTime updateTime;
-
-    // Getters and Setters
-    public Integer getClassifyId() {
-        return classifyId;
-    }
-
-    public void setClassifyId(Integer classifyId) {
-        this.classifyId = classifyId;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }

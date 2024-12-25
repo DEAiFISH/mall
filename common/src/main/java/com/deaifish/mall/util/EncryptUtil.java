@@ -35,6 +35,7 @@ public class EncryptUtil {
         if (StrUtil.isBlank(rawPassword)|| StrUtil.isBlank(encodedPassword)) {
             return false;
         }
+        encodedPassword = encodedPassword.substring(PREFIX_STR.length());
         return ENCODER.matches(rawPassword, encodedPassword);
     }
 

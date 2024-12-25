@@ -1,13 +1,17 @@
 package com.deaifish.mall.entity.po;
 
+import com.deaifish.mall.repository.po.BasePO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
- * @description TODO
+ * @description 用户标签表
  *
  * @author DEAiFISH
  * @date 2024/12/12 12:27
@@ -16,7 +20,12 @@ import java.time.LocalDateTime;
 @Table(schema = "mall_db", name = "user_label")
 @Comment("用户标签表")
 @Data
-public class UserLabelPO {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserLabelPO extends BasePO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 用户标签表ID
@@ -41,18 +50,10 @@ public class UserLabelPO {
     /**
      * 兴趣度
      */
-    @Column(name = "interest", nullable = false, columnDefinition = "INT COMMENT '兴趣度'")
-    private Integer interest;
+    @Column(name = "interest", nullable = false, columnDefinition = "BIGINT COMMENT '兴趣度'")
+    private Long interest;
 
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'")
-    private LocalDateTime updateTime;
+    public void addInterest(Long weight) {
+        this.interest += weight;
+    }
 }

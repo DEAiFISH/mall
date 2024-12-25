@@ -1,9 +1,14 @@
 package com.deaifish.mall.entity.po;
 
+import com.deaifish.mall.repository.po.BasePO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
  * @description TODO
@@ -14,7 +19,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "brand",schema = "mall_db")
 @Comment("商品品牌表")
-public class BrandPO {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class BrandPO extends BasePO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * 商品品牌ID
@@ -53,81 +63,4 @@ public class BrandPO {
      */
     @Column(name = "description", length = 512, columnDefinition = "VARCHAR(512) COMMENT '描述'")
     private String description;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'")
-    private LocalDateTime updateTime;
-
-    // Getters and Setters
-    public Integer getBrandId() {
-        return brandId;
-    }
-
-    public void setBrandId(Integer brandId) {
-        this.brandId = brandId;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }

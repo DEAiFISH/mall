@@ -60,4 +60,9 @@ public interface UserService {
      */
     void update(UserDTO userDTO);
 
+    /**
+     * 删除用户
+     * @param id
+     */
+    void delete(Long id);
 }

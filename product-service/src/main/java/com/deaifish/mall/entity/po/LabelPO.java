@@ -1,9 +1,14 @@
 package com.deaifish.mall.entity.po;
 
+import com.deaifish.mall.repository.po.BasePO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
  * @description TODO
@@ -14,7 +19,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(schema = "mall_db", name = "label")
 @Comment("标签")
-public class LabelPO {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class LabelPO extends BasePO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * 标签ID
@@ -41,65 +51,4 @@ public class LabelPO {
      */
     @Column(name = "description", length = 512, columnDefinition = "VARCHAR(512) COMMENT '描述'")
     private String description;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'")
-    private LocalDateTime updateTime;
-
-    // Getters and Setters
-    public Integer getLabelId() {
-        return labelId;
-    }
-
-    public void setLabelId(Integer labelId) {
-        this.labelId = labelId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getWeights() {
-        return weights;
-    }
-
-    public void setWeights(Long weights) {
-        this.weights = weights;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }

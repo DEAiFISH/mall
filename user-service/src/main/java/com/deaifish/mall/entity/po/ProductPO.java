@@ -3,10 +3,7 @@ package com.deaifish.mall.entity.po;
 import com.deaifish.mall.repository.converter.StringListConverter;
 import com.deaifish.mall.repository.po.BasePO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import java.io.Serializable;

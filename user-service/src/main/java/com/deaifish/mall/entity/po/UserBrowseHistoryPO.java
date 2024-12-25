@@ -1,12 +1,17 @@
 package com.deaifish.mall.entity.po;
 
+import com.deaifish.mall.repository.po.BasePO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
- * @description TODO
+ * @description 用户浏览历史
  *
  * @author DEAiFISH
  * @date 2024/12/12 12:21
@@ -14,7 +19,13 @@ import java.time.LocalDateTime;
 @Entity
 @Table(schema = "mall_db", name = "user_browse_history")
 @Comment("用户浏览历史")
-public class UserBrowseHistoryPO {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserBrowseHistoryPO extends BasePO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 用户浏览记录ID
@@ -37,55 +48,14 @@ public class UserBrowseHistoryPO {
     private Long productId;
 
     /**
-     * 创建时间
+     * 商品名称
      */
-    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'")
-    private LocalDateTime createTime;
+    @Column(name = "product_name", nullable = false, length = 32, columnDefinition = "VARCHAR(256) COMMENT '商品名称'")
+    private String productName;
 
     /**
-     * 修改时间
+     * 商品图片路径
      */
-    @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间'")
-    private LocalDateTime updateTime;
-
-    // Getters and Setters
-    public Long getHistoryId() {
-        return historyId;
-    }
-
-    public void setHistoryId(Long historyId) {
-        this.historyId = historyId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
+    @Column(name = "picture", nullable = false, length = 256, columnDefinition = "VARCHAR(256) COMMENT '商品图片路径'")
+    private String picture;
 }

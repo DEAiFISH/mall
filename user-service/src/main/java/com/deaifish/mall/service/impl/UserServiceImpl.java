@@ -15,11 +15,11 @@ import com.deaifish.mall.util.EncryptUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     private final static QUserPO USER_PO = QUserPO.userPO;
-
 
 
     @Override
@@ -67,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void setPassword(SetPasswordDTO passwordDTO) {
         String password = EncryptUtil.encode(passwordDTO.getPassword());
-        if(password == null){
+        if (password == null) {
             throw new MallException("密码格式有误，请重新输入");
         }
         jpaQueryFactory.update(USER_PO)
@@ -80,11 +79,11 @@ public class UserServiceImpl implements UserService {
     public void setPaymentPassword(SetPaymentDTO paymentDTO) {
         String dbPassword = jpaQueryFactory.select(USER_PO.password)
                 .from(USER_PO).where(USER_PO.userId.eq(paymentDTO.getUserId())).fetchOne();
-        if(!EncryptUtil.matches(paymentDTO.getPassword(), dbPassword)){
-            throw new MallException("原密码错误");
+        if (!EncryptUtil.matches(paymentDTO.getPassword(), dbPassword)) {
+            throw new MallException("登录密码错误");
         }
         String paymentPassword = EncryptUtil.encode(paymentDTO.getPaymentPassword());
-        if(paymentPassword == null){
+        if (paymentPassword == null) {
             throw new MallException("支付密码格式有误，请重新输入");
         }
         jpaQueryFactory.update(USER_PO)
@@ -95,9 +94,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDetailedVO signUp(UserDTO userDTO) {
-        jpaQueryFactory.insert(USER_PO).execute();
+        UserPO po = BeanUtil.toBean(userDTO, UserPO.class);
+        po.setLastLogin(new Date());
+        userRepository.save(po);
         UserPO user = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.wxId.eq(userDTO.getWxId())).fetchOne();
-        if(user == null){
+        if (user == null) {
             throw new MallException("用户注册失败，请稍后再试");
         }
         return BeanUtil.toBean(user, UserDetailedVO.class);
@@ -111,8 +112,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(UserDTO userDTO) {
-        jpaQueryFactory.update(USER_PO)
-                .where(USER_PO.userId.eq(userDTO.getUserId()))
-                .execute();
+        userRepository.save(BeanUtil.toBean(userDTO, UserPO.class));
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        jpaQueryFactory.delete(USER_PO).where(USER_PO.userId.eq(id)).execute();
     }
 }

@@ -1,9 +1,14 @@
 package com.deaifish.mall.entity.po;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @description TODO
@@ -15,6 +20,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(schema = "mall_db", name = "user")
 @Comment("用户表")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserPO {
 
     /**
@@ -53,7 +62,7 @@ public class UserPO {
      * 生日
      */
     @Column(name = "birthday", columnDefinition = "COMMENT '生日'")
-    private LocalDateTime birthday;
+    private Date birthday;
 
     /**
      * 头像
@@ -95,13 +104,7 @@ public class UserPO {
      * 最后一次登录时间
      */
     @Column(name = "last_login", nullable = false, columnDefinition = "COMMENT '最后一次登录时间")
-    private LocalDateTime lastLogin;
-
-    /**
-     * 最后登录IP
-     */
-    @Column(name = "last_ip", nullable = false, length = 64, columnDefinition = "COMMENT '最后登录IP'")
-    private String lastIp;
+    private Date lastLogin;
 
     /**
      * 状态（启用：1；禁用：0）
@@ -132,157 +135,4 @@ public class UserPO {
      */
     @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间")
     private LocalDateTime updateTime;
-
-    // Getters and Setters
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getWxId() {
-        return wxId;
-    }
-
-    public void setWxId(String wxId) {
-        this.wxId = wxId;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public Byte getGender() {
-        return gender;
-    }
-
-    public void setGender(Byte gender) {
-        this.gender = gender;
-    }
-
-    public LocalDateTime getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(LocalDateTime birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPaymentPassword() {
-        return paymentPassword;
-    }
-
-    public void setPaymentPassword(String paymentPassword) {
-        this.paymentPassword = paymentPassword;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDateTime getLastLogin() {
-        return lastLogin;
-    }
-
-    public void setLastLogin(LocalDateTime lastLogin) {
-        this.lastLogin = lastLogin;
-    }
-
-    public String getLastIp() {
-        return lastIp;
-    }
-
-    public void setLastIp(String lastIp) {
-        this.lastIp = lastIp;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
-    public Integer getIntegral() {
-        return integral;
-    }
-
-    public void setIntegral(Integer integral) {
-        this.integral = integral;
-    }
-
-    public Byte getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Byte roleId) {
-        this.roleId = roleId;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
 }

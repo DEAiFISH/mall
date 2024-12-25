@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * @description  登陆成功监听
  *
@@ -35,10 +37,8 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
         //登录成功认证
         Authentication authentication = authenticationSuccessEvent.getAuthentication();
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-        String username = userDetails.getUsername();
-        WebAuthenticationDetails details = (WebAuthenticationDetails)authentication.getDetails();
-        String lastIP = details.getRemoteAddress();
-        log.info("用户登录成功：{} sessionId:{}", details.getRemoteAddress(), details.getSessionId());
-        jpaFactory.update(USER_PO).set(USER_PO.lastIp, lastIP).where(USER_PO.wxId.eq(username)).execute();
+        String wxId = userDetails.getUsername();
+        // 更新最后登录时间
+        jpaFactory.update(USER_PO).set(USER_PO.lastLogin, new Date()).where(USER_PO.wxId.eq(wxId)).execute();
     }
 }
