@@ -1,13 +1,13 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.deaifish.mall.entity.dto.LabelDTO;
-import com.deaifish.mall.entity.po.LabelPO;
-import com.deaifish.mall.entity.po.QLabelPO;
-import com.deaifish.mall.entity.po.QUserLabelPO;
-import com.deaifish.mall.entity.po.UserLabelPO;
-import com.deaifish.mall.entity.vo.LabelVO;
-import com.deaifish.mall.entity.vo.UserInterestVO;
+import com.deaifish.mall.pojo.dto.LabelDTO;
+import com.deaifish.mall.pojo.po.LabelPO;
+import com.deaifish.mall.po.QLabelPO;
+import com.deaifish.mall.po.QUserLabelPO;
+import com.deaifish.mall.pojo.po.UserLabelPO;
+import com.deaifish.mall.pojo.vo.LabelVO;
+import com.deaifish.mall.pojo.vo.UserInterestVO;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.repository.LabelRepository;
 import com.deaifish.mall.repository.UserLabelRepository;

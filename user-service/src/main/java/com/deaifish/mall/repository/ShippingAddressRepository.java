@@ -1,6 +1,6 @@
 package com.deaifish.mall.repository;
 
-import com.deaifish.mall.entity.po.ShippingAddressPO;
+import com.deaifish.mall.pojo.po.ShippingAddressPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

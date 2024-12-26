@@ -1,13 +1,12 @@
 package com.deaifish.mall.controller;
 
-import com.deaifish.mall.entity.dto.ShippingAddressDTO;
-import com.deaifish.mall.entity.vo.ShippingAddressVO;
+import com.deaifish.mall.pojo.dto.ShippingAddressDTO;
+import com.deaifish.mall.pojo.vo.ShippingAddressVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ShippingAddressService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

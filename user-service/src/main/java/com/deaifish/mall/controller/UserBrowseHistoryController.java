@@ -1,7 +1,7 @@
 package com.deaifish.mall.controller;
 
-import com.deaifish.mall.entity.dto.UserBrowseHistoryDTO;
-import com.deaifish.mall.entity.vo.UserBrowseHistoryVO;
+import com.deaifish.mall.pojo.dto.UserBrowseHistoryDTO;
+import com.deaifish.mall.pojo.vo.UserBrowseHistoryVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.UserBrowseHistoryService;
 import com.deaifish.mall.validation.group.ADDGroup;

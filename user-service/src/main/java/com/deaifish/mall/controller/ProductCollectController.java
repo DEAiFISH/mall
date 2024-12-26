@@ -1,7 +1,6 @@
 package com.deaifish.mall.controller;
 
-import com.deaifish.mall.entity.po.ProductCollectPO;
-import com.deaifish.mall.entity.vo.ProductCollectVO;
+import com.deaifish.mall.pojo.vo.ProductCollectVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ProductCollectService;
 import io.swagger.v3.oas.annotations.Parameter;

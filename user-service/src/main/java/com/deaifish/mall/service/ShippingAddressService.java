@@ -1,7 +1,7 @@
 package com.deaifish.mall.service;
 
-import com.deaifish.mall.entity.dto.ShippingAddressDTO;
-import com.deaifish.mall.entity.vo.ShippingAddressVO;
+import com.deaifish.mall.pojo.dto.ShippingAddressDTO;
+import com.deaifish.mall.pojo.vo.ShippingAddressVO;
 
 import java.util.List;
 

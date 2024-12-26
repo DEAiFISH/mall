@@ -1,10 +1,9 @@
 package com.deaifish.mall.service;
 
-import com.deaifish.mall.entity.dto.LabelDTO;
-import com.deaifish.mall.entity.vo.LabelVO;
-import com.deaifish.mall.entity.vo.UserInterestVO;
+import com.deaifish.mall.pojo.dto.LabelDTO;
+import com.deaifish.mall.pojo.vo.LabelVO;
+import com.deaifish.mall.pojo.vo.UserInterestVO;
 
-import javax.validation.Valid;
 import java.util.List;
 
 public interface LabelService {

@@ -1,6 +1,6 @@
 package com.deaifish.mall.service;
 
-import com.deaifish.mall.entity.vo.ProductCollectVO;
+import com.deaifish.mall.pojo.vo.ProductCollectVO;
 
 import java.util.List;
 

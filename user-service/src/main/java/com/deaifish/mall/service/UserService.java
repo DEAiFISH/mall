@@ -1,11 +1,10 @@
 package com.deaifish.mall.service;
 
-import com.deaifish.mall.entity.dto.SetPasswordDTO;
-import com.deaifish.mall.entity.dto.SetPaymentDTO;
-import com.deaifish.mall.entity.dto.UserDTO;
-import com.deaifish.mall.entity.vo.UserBriefVO;
-import com.deaifish.mall.entity.vo.UserDetailedVO;
-import jakarta.validation.Valid;
+import com.deaifish.mall.pojo.dto.SetPasswordDTO;
+import com.deaifish.mall.pojo.dto.SetPaymentDTO;
+import com.deaifish.mall.pojo.dto.UserDTO;
+import com.deaifish.mall.pojo.vo.UserBriefVO;
+import com.deaifish.mall.pojo.vo.UserDetailedVO;
 
 import java.util.List;
 

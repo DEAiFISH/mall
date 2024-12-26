@@ -1,10 +1,10 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.deaifish.mall.entity.dto.ShippingAddressDTO;
-import com.deaifish.mall.entity.po.QShippingAddressPO;
-import com.deaifish.mall.entity.po.ShippingAddressPO;
-import com.deaifish.mall.entity.vo.ShippingAddressVO;
+import com.deaifish.mall.pojo.dto.ShippingAddressDTO;
+import com.deaifish.mall.po.QShippingAddressPO;
+import com.deaifish.mall.pojo.po.ShippingAddressPO;
+import com.deaifish.mall.pojo.vo.ShippingAddressVO;
 import com.deaifish.mall.repository.ShippingAddressRepository;
 import com.deaifish.mall.service.ShippingAddressService;
 import com.querydsl.jpa.impl.JPAQueryFactory;

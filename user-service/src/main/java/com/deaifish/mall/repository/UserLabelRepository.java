@@ -1,6 +1,6 @@
 package com.deaifish.mall.repository;
 
-import com.deaifish.mall.entity.po.UserLabelPO;
+import com.deaifish.mall.pojo.po.UserLabelPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

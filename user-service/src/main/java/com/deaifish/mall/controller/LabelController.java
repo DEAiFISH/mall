@@ -1,8 +1,8 @@
 package com.deaifish.mall.controller;
 
-import com.deaifish.mall.entity.dto.LabelDTO;
-import com.deaifish.mall.entity.vo.LabelVO;
-import com.deaifish.mall.entity.vo.UserInterestVO;
+import com.deaifish.mall.pojo.dto.LabelDTO;
+import com.deaifish.mall.pojo.vo.LabelVO;
+import com.deaifish.mall.pojo.vo.UserInterestVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.LabelService;
 import com.deaifish.mall.validation.group.ADDGroup;

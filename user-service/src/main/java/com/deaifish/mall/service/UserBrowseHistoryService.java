@@ -1,7 +1,7 @@
 package com.deaifish.mall.service;
 
-import com.deaifish.mall.entity.dto.UserBrowseHistoryDTO;
-import com.deaifish.mall.entity.vo.UserBrowseHistoryVO;
+import com.deaifish.mall.pojo.dto.UserBrowseHistoryDTO;
+import com.deaifish.mall.pojo.vo.UserBrowseHistoryVO;
 
 import java.util.List;
 
