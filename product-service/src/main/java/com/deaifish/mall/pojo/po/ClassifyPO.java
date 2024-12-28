@@ -1,6 +1,6 @@
-package com.deaifish.mall.po;
+package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.repository.pojo.po.BasePO;
+import com.deaifish.mall.jpa.pojo.po.BasePO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @date 2024/12/12 14:45
  */
 @Entity
-@Table(name = "classify",schema = "mall_db")
+@Table(name = "classify", schema = "mall_db")
 @Comment("商品分类表")
 @Data
 @Builder

@@ -112,7 +112,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void update(UserDTO userDTO) {
-        userRepository.save(BeanUtil.toBean(userDTO, UserPO.class));
+        jpaQueryFactory.update(USER_PO)
+                .set(USER_PO.nickName, userDTO.getNickName())
+                .set(USER_PO.realName, userDTO.getRealName())
+                .set(USER_PO.gender, userDTO.getGender())
+                .set(USER_PO.birthday, userDTO.getBirthday())
+                .set(USER_PO.avatar, userDTO.getAvatar())
+                .set(USER_PO.phone, userDTO.getPhone())
+                .set(USER_PO.message, userDTO.getMessage())
+                .set(USER_PO.email, userDTO.getEmail())
+                .set(USER_PO.status, userDTO.getStatus())
+                .set(USER_PO.integral, userDTO.getIntegral())
+                .set(USER_PO.roleId, userDTO.getRoleId())
+                .where(USER_PO.userId.eq(userDTO.getUserId())).execute();
     }
 
     @Override

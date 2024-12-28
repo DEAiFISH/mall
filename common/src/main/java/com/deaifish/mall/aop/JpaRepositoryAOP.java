@@ -1,6 +1,6 @@
 package com.deaifish.mall.aop;
 
-import cn.hutool.core.util.ReflectUtil;
+import com.deaifish.mall.jpa.pojo.po.BasePO;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,8 +23,8 @@ public class JpaRepositoryAOP {
     @Before("execution(* org.springframework.data.repository.CrudRepository.save(..))")
     public void beforeSave(JoinPoint joinPoint){
         log.info("========= before save");
-        Object args = joinPoint.getArgs()[0];
-        ReflectUtil.setFieldValue(args,"createTime",new Date());
-        ReflectUtil.setFieldValue(args,"updateTime",new Date());
+        BasePO arg = (BasePO)joinPoint.getArgs()[0];
+        arg.setCreateTime(new Date());
+        arg.setUpdateTime(new Date());
     }
 }

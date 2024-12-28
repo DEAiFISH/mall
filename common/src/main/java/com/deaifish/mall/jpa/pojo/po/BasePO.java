@@ -1,4 +1,4 @@
-package com.deaifish.mall.jpa.repository.pojo.po;
+package com.deaifish.mall.jpa.pojo.po;
 
 import jakarta.persistence.Column;
 

@@ -1,0 +1,67 @@
+package com.deaifish.mall.service.impl;
+
+import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.po.QClassifyPO;
+import com.deaifish.mall.pojo.dto.ClassifyDTO;
+import com.deaifish.mall.pojo.po.ClassifyPO;
+import com.deaifish.mall.pojo.vo.ClassifyVO;
+import com.deaifish.mall.repository.ClassifyRepository;
+import com.deaifish.mall.service.ClassifyService;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * @description TODO
+ *
+ * @author DEAiFISH
+ * @date 2024/12/28 17:17
+ */
+@Service
+public class ClassifyServiceImpl implements ClassifyService {
+    @Resource
+    private JPAQueryFactory jpaQueryFactory;
+    @Resource
+    private ClassifyRepository classifyRepository;
+
+    private static final QClassifyPO CLASSIFY_PO = QClassifyPO.classifyPO;
+
+    @Override
+    public List<ClassifyVO> list() {
+        List<ClassifyPO> poList = jpaQueryFactory.selectFrom(CLASSIFY_PO).fetch();
+        return poList.stream().map(po -> BeanUtil.toBean(po, ClassifyVO.class)).toList();
+    }
+
+    @Override
+    @Transactional
+    public ClassifyVO add(ClassifyDTO classifyDTO) {
+        ClassifyPO po = BeanUtil.toBean(classifyDTO, ClassifyPO.class);
+        return BeanUtil.toBean(classifyRepository.save(po), ClassifyVO.class);
+    }
+
+    @Override
+    @Transactional
+    public ClassifyVO update(ClassifyDTO classifyDTO) {
+        jpaQueryFactory.update(CLASSIFY_PO)
+                .set(CLASSIFY_PO.parentId, classifyDTO.getParentId())
+                .set(CLASSIFY_PO.name, classifyDTO.getName())
+                .set(CLASSIFY_PO.number, classifyDTO.getNumber())
+                .set(CLASSIFY_PO.description, classifyDTO.getDescription())
+                .set(CLASSIFY_PO.icon, classifyDTO.getIcon())
+                .where(CLASSIFY_PO.classifyId.eq(classifyDTO.getClassifyId()))
+                .execute();
+
+        ClassifyPO po = jpaQueryFactory.selectFrom(CLASSIFY_PO).where(CLASSIFY_PO.classifyId.eq(classifyDTO.getClassifyId())).fetchOne();
+
+        return BeanUtil.toBean(po, ClassifyVO.class);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Integer classifyId) {
+        jpaQueryFactory.delete(CLASSIFY_PO).where(CLASSIFY_PO.classifyId.eq(classifyId)).execute();
+    }
+}

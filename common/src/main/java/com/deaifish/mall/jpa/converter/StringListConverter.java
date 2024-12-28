@@ -1,4 +1,4 @@
-package com.deaifish.mall.jpa.repository.converter;
+package com.deaifish.mall.jpa.converter;
 
 import com.alibaba.fastjson.JSON;
 import jakarta.persistence.AttributeConverter;

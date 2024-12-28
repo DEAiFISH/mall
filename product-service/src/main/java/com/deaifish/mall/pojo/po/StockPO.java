@@ -1,6 +1,6 @@
-package com.deaifish.mall.po;
+package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.repository.pojo.po.BasePO;
+import com.deaifish.mall.jpa.pojo.po.BasePO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,7 +37,7 @@ public class StockPO extends BasePO implements Serializable {
     /**
      * 商品ID
      */
-    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT COMMENT '商品ID'")
+    @Column(name = "product_id", nullable = false, unique = true, columnDefinition = "BIGINT COMMENT '商品ID'")
     private Long productId;
 
     /**

@@ -1,0 +1,63 @@
+package com.deaifish.mall.service.impl;
+
+import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.po.QStockPO;
+import com.deaifish.mall.pojo.dto.StockDTO;
+import com.deaifish.mall.pojo.po.StockPO;
+import com.deaifish.mall.pojo.vo.StockVO;
+import com.deaifish.mall.repository.StockRepository;
+import com.deaifish.mall.service.StockService;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * @description TODO
+ *
+ * @author DEAiFISH
+ * @date 2024/12/28 21:22
+ */
+@Service
+public class StockServiceImpl implements StockService {
+
+    @Resource
+    private JPAQueryFactory jpaQueryFactory;
+    @Resource
+    private StockRepository stockRepository;
+
+    private static final QStockPO STOCK_PO = QStockPO.stockPO;
+
+
+    @Override
+    public StockVO getStockByProductId(Long pId) {
+        StockPO po = jpaQueryFactory.selectFrom(STOCK_PO).where(STOCK_PO.productId.eq(pId)).fetchOne();
+        return BeanUtil.toBean(po, StockVO.class);
+    }
+
+    @Override
+    @Transactional
+    public StockVO addStock(StockDTO stockDTO) {
+        StockPO po = stockRepository.save(BeanUtil.toBean(stockDTO, StockPO.class));
+        return BeanUtil.toBean(po, StockVO.class);
+    }
+
+    @Override
+    @Transactional
+    public StockVO updateStock(StockDTO stockDTO) {
+        jpaQueryFactory.update(STOCK_PO)
+                .set(STOCK_PO.productId, stockDTO.getProductId())
+                .set(STOCK_PO.amount, stockDTO.getAmount())
+                .set(STOCK_PO.warningAmount, stockDTO.getWarningAmount())
+                .where(STOCK_PO.stockId.eq(stockDTO.getStockId()))
+                .execute();
+        StockPO po = jpaQueryFactory.selectFrom(STOCK_PO).where(STOCK_PO.stockId.eq(stockDTO.getStockId())).fetchOne();
+        return BeanUtil.toBean(po, StockVO.class);
+    }
+
+    @Override
+    @Transactional
+    public void deleteStock(Long stockId) {
+        jpaQueryFactory.delete(STOCK_PO).where(STOCK_PO.stockId.eq(stockId)).execute();
+    }
+}

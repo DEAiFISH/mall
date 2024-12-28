@@ -1,7 +1,9 @@
-package com.deaifish.mall.po;
+package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.repository.converter.StringListConverter;
-import com.deaifish.mall.jpa.repository.pojo.po.BasePO;
+import com.alibaba.fastjson2.JSONObject;
+import com.deaifish.mall.jpa.converter.StringJSONObjectConverter;
+import com.deaifish.mall.jpa.converter.StringListConverter;
+import com.deaifish.mall.jpa.pojo.po.BasePO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +22,7 @@ import java.util.List;
  */
 
 @Entity
-@Table(name = "product",schema = "mall_db")
+@Table(name = "product", schema = "mall_db")
 @Comment("商品表")
 @Data
 @Builder
@@ -76,8 +78,9 @@ public class ProductPO extends BasePO implements Serializable {
     /**
      * 特有规格参数（JSON）
      */
-    @Column(name = "parameter", nullable = false, columnDefinition = "JSON COMMENT '特有规格参数（JSON格式：{属性：参数}）'")
-    private String parameter;
+    @Column(name = "parameter", nullable = false, length = 512, columnDefinition = "VARCHAR(512) COMMENT '特有规格参数（JSON格式：{属性：参数}）'")
+    @Convert(converter = StringJSONObjectConverter.class)
+    private JSONObject parameter;
 
     /**
      * 销量

@@ -1,6 +1,6 @@
 package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.repository.pojo.po.BasePO;
+import com.deaifish.mall.jpa.pojo.po.BasePO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;

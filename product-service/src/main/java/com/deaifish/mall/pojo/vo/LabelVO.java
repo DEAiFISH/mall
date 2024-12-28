@@ -25,12 +25,6 @@ public class LabelVO {
     private String name;
 
     /**
-     * 权重
-     */
-    @Schema(description = "权重")
-    private Long weights;
-
-    /**
      * 描述
      */
     @Schema(description = "描述")

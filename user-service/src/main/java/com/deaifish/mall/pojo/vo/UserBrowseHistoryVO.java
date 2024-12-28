@@ -25,21 +25,18 @@ public class UserBrowseHistoryVO {
     /**
      * 用户浏览记录ID
      */
-    @NotNull(message = "用户浏览记录ID不能为null" ,groups = UpdateGroup.class)
     @Schema(description = "用户浏览记录ID")
     private Long historyId;
 
     /**
      * 用户ID
      */
-    @NotNull(message = "用户ID不能为null")
     @Schema(description = "用户ID")
     private Long userId;
 
     /**
      * 商品ID
      */
-    @NotNull(message = "商品ID不能为null")
     @Schema(description = "商品ID")
     private Long productId;
 
@@ -47,14 +44,11 @@ public class UserBrowseHistoryVO {
      * 商品名称
      */
     @Schema(description = "商品名称")
-    @NotNull(message = "商品名称不能为空")
     private String productName;
 
     /**
      * 商品图片路径
      */
     @Schema(description = "商品图片路径")
-    @NotBlank(message = "商品图片路径不能为空")
-    @Length(max = 255, message = "商品图片路径长度不能超过{max}")
     private String picture;
 }

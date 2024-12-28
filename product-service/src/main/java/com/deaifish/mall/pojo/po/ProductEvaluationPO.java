@@ -1,6 +1,6 @@
-package com.deaifish.mall.po;
+package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.repository.pojo.po.BasePO;
+import com.deaifish.mall.jpa.pojo.po.BasePO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,16 +65,10 @@ public class ProductEvaluationPO extends BasePO implements Serializable {
     private Boolean isReply;
 
     /**
-     * IP地址
-     */
-    @Column(name = "ip", nullable = false, length = 64, columnDefinition = "VARCHAR(64) NOT NULL COMMENT 'IP'")
-    private String ip;
-
-    /**
      * 评分
      */
-    @Column(name = "start", nullable = false, columnDefinition = "TINYINT NOT NULL COMMENT '评分'")
-    private Byte start;
+    @Column(name = "star", nullable = false, columnDefinition = "TINYINT NOT NULL COMMENT '评分'")
+    private Byte star;
 
     /**
      * 图片路径

@@ -144,7 +144,7 @@ CREATE TABLE product (
                          brand_id INT NOT NULL COMMENT '商品品牌ID',
                          price DOUBLE NOT NULL COMMENT '价格',
                          preferential_price DOUBLE DEFAULT NULL COMMENT '优惠价格',
-                         parameter JSON NOT NULL COMMENT '特有规格参数（JSON格式：{属性：参数}）',
+                         parameter varchar(512) NOT NULL COMMENT '特有规格参数（JSON格式：{属性：参数}）',
                          sale INT NOT NULL DEFAULT 0 COMMENT '销量',
                          brief_description VARCHAR(64) NOT NULL COMMENT '简述',
                          description VARCHAR(512) DEFAULT NULL COMMENT '详细描述',
@@ -159,7 +159,7 @@ CREATE TABLE product (
 
 CREATE TABLE stock (
                        stock_id BIGINT AUTO_INCREMENT COMMENT '库存ID',
-                       product_id BIGINT NOT NULL COMMENT '商品ID',
+                       product_id BIGINT NOT NULL UNIQUE COMMENT '商品ID',
                        amount INT NOT NULL COMMENT '库存量',
                        warning_amount INT NOT NULL COMMENT '警报库存量',
                        create_time DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
@@ -186,8 +186,7 @@ CREATE TABLE `product_evaluation` (
                                       `content` VARCHAR(512) NOT NULL COMMENT '内容',
                                       `reply` VARCHAR(512) DEFAULT NULL COMMENT '商家回复',
                                       `is_reply` BOOLEAN NOT NULL COMMENT '是否回复',
-                                      `ip` VARCHAR(64) NOT NULL COMMENT 'IP',
-                                      `start` TINYINT NOT NULL COMMENT '评分',
+                                      `star` TINYINT NOT NULL COMMENT '评分',
                                       `picture` VARCHAR(256) DEFAULT NULL COMMENT '图片路径',
                                       `is_anonymous` BOOLEAN NOT NULL COMMENT '是否匿名',
                                       `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
