@@ -1,14 +1,14 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.LabelDTO;
 import com.deaifish.mall.pojo.po.LabelPO;
-import com.deaifish.mall.po.QLabelPO;
-import com.deaifish.mall.po.QUserLabelPO;
+import com.deaifish.mall.pojo.po.QLabelPO;
+import com.deaifish.mall.pojo.po.QUserLabelPO;
 import com.deaifish.mall.pojo.po.UserLabelPO;
 import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.UserInterestVO;
-import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.repository.LabelRepository;
 import com.deaifish.mall.repository.UserLabelRepository;
 import com.deaifish.mall.service.LabelService;
@@ -44,14 +44,14 @@ public class LabelServiceImpl implements LabelService {
     @Transactional
     public LabelVO add(LabelDTO labelDTO) {
         LabelPO po = jpaQueryFactory.select(LABEL_PO).from(LABEL_PO).where(LABEL_PO.name.eq(labelDTO.getName())).fetchOne();
-        if(po != null){
+        if (po != null) {
             throw new MallException("标签已存在");
         }
         po = BeanUtil.toBean(labelDTO, LabelPO.class);
         jpaQueryFactory.insert(LABEL_PO).columns(LABEL_PO.name, LABEL_PO.weights, LABEL_PO.description)
                 .values(po.getName(), po.getWeights(), po.getDescription()).execute();
         LabelPO label = jpaQueryFactory.select(LABEL_PO).from(LABEL_PO).where(LABEL_PO.name.eq(labelDTO.getName())).fetchOne();
-        if(label == null){
+        if (label == null) {
             throw new MallException("添加失败");
         }
         return BeanUtil.toBean(label, LabelVO.class);
@@ -67,7 +67,7 @@ public class LabelServiceImpl implements LabelService {
                 .where(LABEL_PO.labelId.eq(labelDTO.getLabelId()))
                 .execute();
         LabelPO label = jpaQueryFactory.selectFrom(LABEL_PO).where(LABEL_PO.labelId.eq(labelDTO.getLabelId())).fetchOne();
-        if(label == null){
+        if (label == null) {
             throw new MallException("更新失败");
         }
         return BeanUtil.toBean(label, LabelVO.class);
@@ -97,9 +97,10 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     public List<UserInterestVO> interestList(Long userID) {
-        return jpaQueryFactory.select(Projections.bean(UserInterestVO.class,LABEL_PO.name.as("label"), USER_LABEL_PO.interest.as("value")))
+        return jpaQueryFactory.select(Projections.bean(UserInterestVO.class, LABEL_PO.name.as("label"), USER_LABEL_PO.interest.as("value")))
                 .from(USER_LABEL_PO).leftJoin(LABEL_PO).on(USER_LABEL_PO.labelId.eq(LABEL_PO.labelId))
-                .where(USER_LABEL_PO.userId.eq(userID)).fetch();
+                .where(USER_LABEL_PO.userId.eq(userID))
+                .orderBy(USER_LABEL_PO.interest.desc()).fetch();
     }
 
     @Override

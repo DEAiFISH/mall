@@ -1,13 +1,13 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.group.UpdateGroup;
+import com.deaifish.mall.pojo.dto.BrandDTO;
 import com.deaifish.mall.pojo.vo.BrandVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.BrandService;
-import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,28 +32,28 @@ public class BrandController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<BrandVO>> list(){
+    public R<List<BrandVO>> list() {
         return R.success(brandService.list());
     }
 
     /**
      * 添加品牌
-     * @param brandVO
+     * @param brandDTO
      * @return
      */
     @PostMapping("/add")
-    public R<BrandVO> add(@RequestBody @Validated BrandVO brandVO){
-        return R.success(brandService.add(brandVO));
+    public R<BrandVO> add(@RequestBody @Validated BrandDTO brandDTO) {
+        return R.success(brandService.add(brandDTO));
     }
 
     /**
      * 更新品牌
-     * @param brandVO
+     * @param brandDTO
      * @return
      */
     @PutMapping("/update")
-    public R<BrandVO> update(@RequestBody @Validated(UpdateGroup.class) BrandVO brandVO){
-        return R.success(brandService.update(brandVO));
+    public R<BrandVO> update(@RequestBody @Validated(UpdateGroup.class) BrandDTO brandDTO) {
+        return R.success(brandService.update(brandDTO));
     }
 
     /**
@@ -62,7 +62,7 @@ public class BrandController {
      * @return
      */
     @DeleteMapping("/delete/{id}")
-    public R<Boolean> delete(@PathVariable("id") @Parameter(description = "品牌id") Integer id){
+    public R<Boolean> delete(@PathVariable("id") @Parameter(description = "品牌id") Integer id) {
         brandService.delete(id);
         return R.success(true);
     }

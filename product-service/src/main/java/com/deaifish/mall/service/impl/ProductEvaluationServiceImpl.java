@@ -1,9 +1,9 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.deaifish.mall.po.QProductEvaluationPO;
 import com.deaifish.mall.pojo.dto.ProductEvaluationDTO;
 import com.deaifish.mall.pojo.po.ProductEvaluationPO;
+import com.deaifish.mall.pojo.po.QProductEvaluationPO;
 import com.deaifish.mall.pojo.vo.ProductEvaluationVO;
 import com.deaifish.mall.repository.ProductEvaluationRepository;
 import com.deaifish.mall.service.ProductEvaluationService;
@@ -52,7 +52,7 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
                 .set(PRODUCT_EVALUATION_PO.content, productEvaluationDTO.getContent())
                 .set(PRODUCT_EVALUATION_PO.reply, productEvaluationDTO.getReply())
                 .set(PRODUCT_EVALUATION_PO.isReply, productEvaluationDTO.getIsReply())
-                .set(PRODUCT_EVALUATION_PO.start, productEvaluationDTO.getStar())
+                .set(PRODUCT_EVALUATION_PO.star, productEvaluationDTO.getStar())
                 .set(PRODUCT_EVALUATION_PO.picture, productEvaluationDTO.getPicture())
                 .set(PRODUCT_EVALUATION_PO.isAnonymous, productEvaluationDTO.getIsAnonymous())
                 .where(PRODUCT_EVALUATION_PO.evaluationId.eq(productEvaluationDTO.getEvaluationId())).execute();

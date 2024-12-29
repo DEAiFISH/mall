@@ -1,16 +1,13 @@
 package com.deaifish.mall.pojo.dto;
 
-import com.deaifish.mall.jpa.pojo.po.BasePO;
-import com.deaifish.mall.validation.group.UpdateGroup;
+import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
@@ -23,6 +20,8 @@ import java.io.Serializable;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BrandDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 

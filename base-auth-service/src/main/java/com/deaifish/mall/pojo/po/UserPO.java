@@ -37,7 +37,7 @@ public class UserPO {
     /**
      * 微信ID
      */
-    @Column(name = "wx_id", unique = true, length = 32 ,columnDefinition = "COMMENT '微信ID'")
+    @Column(name = "wx_id", unique = true, length = 32, columnDefinition = "COMMENT '微信ID'")
     private String wxId;
 
     /**

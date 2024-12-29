@@ -1,8 +1,9 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.deaifish.mall.po.QBrandPO;
+import com.deaifish.mall.pojo.dto.BrandDTO;
 import com.deaifish.mall.pojo.po.BrandPO;
+import com.deaifish.mall.pojo.po.QBrandPO;
 import com.deaifish.mall.pojo.vo.BrandVO;
 import com.deaifish.mall.repository.BrandRepository;
 import com.deaifish.mall.service.BrandService;
@@ -37,24 +38,24 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    public BrandVO add(BrandVO brandVO) {
-        BrandPO brandPO = BeanUtil.toBean(brandVO, BrandPO.class);
+    public BrandVO add(BrandDTO brandDTO) {
+        BrandPO brandPO = BeanUtil.toBean(brandDTO, BrandPO.class);
         brandPO = brandRepository.save(brandPO);
         return BeanUtil.toBean(brandPO, BrandVO.class);
     }
 
     @Override
     @Transactional
-    public BrandVO update(BrandVO brandVO) {
+    public BrandVO update(BrandDTO brandDTO) {
         jpaQueryFactory.update(BRAND_PO)
-                .set(BRAND_PO.number, brandVO.getNumber())
-                .set(BRAND_PO.name, brandVO.getName())
-                .set(BRAND_PO.icon, brandVO.getIcon())
-                .set(BRAND_PO.picture, brandVO.getPicture())
-                .set(BRAND_PO.description, brandVO.getDescription())
-                .where(BRAND_PO.brandId.eq(brandVO.getBrandId()))
+                .set(BRAND_PO.number, brandDTO.getNumber())
+                .set(BRAND_PO.name, brandDTO.getName())
+                .set(BRAND_PO.icon, brandDTO.getIcon())
+                .set(BRAND_PO.picture, brandDTO.getPicture())
+                .set(BRAND_PO.description, brandDTO.getDescription())
+                .where(BRAND_PO.brandId.eq(brandDTO.getBrandId()))
                 .execute();
-        BrandPO po = jpaQueryFactory.selectFrom(BRAND_PO).where(BRAND_PO.brandId.eq(brandVO.getBrandId())).fetchOne();
+        BrandPO po = jpaQueryFactory.selectFrom(BRAND_PO).where(BRAND_PO.brandId.eq(brandDTO.getBrandId())).fetchOne();
         return BeanUtil.toBean(po, BrandVO.class);
     }
 

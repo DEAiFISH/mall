@@ -1,10 +1,10 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.group.ADDGroup;
 import com.deaifish.mall.pojo.dto.UserBrowseHistoryDTO;
 import com.deaifish.mall.pojo.vo.UserBrowseHistoryVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.UserBrowseHistoryService;
-import com.deaifish.mall.validation.group.ADDGroup;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;

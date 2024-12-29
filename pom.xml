@@ -18,6 +18,7 @@
         <module>api</module>
         <module>product-service</module>
         <module>common</module>
+        <module>biz-service</module>
     </modules>
 
     <properties>
@@ -37,6 +38,12 @@
         <common-mall.version>0.0.1-SNAPSHOT</common-mall.version>
         <validation.version>2.0.1.Final</validation.version>
         <knife4j.version>3.0.3</knife4j.version>
+        <thumbnailator.version>0.4.20</thumbnailator.version>
+        <aliyun-sdk-oss.version>3.17.4</aliyun-sdk-oss.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
+        <activation.version>1.1.1</activation.version>
+        <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
+        <jasypt-spring-boot-starter.version>3.0.5</jasypt-spring-boot-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -181,9 +188,69 @@
                 <version>${knife4j.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
+            <!--图像压缩-->
+            <dependency>
+                <groupId>net.coobird</groupId>
+                <artifactId>thumbnailator</artifactId>
+                <version>${thumbnailator.version}</version>
+            </dependency>
+
+            <!-- oss 相关依赖-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-sdk-oss.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${jaxb-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${activation.version}</version>
+            </dependency>
+            <!-- no more than 2.3.3-->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${jaxb-runtime.version}</version>
+            </dependency>
+
+            <!--加密-->
+            <!-- https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter -->
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt-spring-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mindrot</groupId>
+                <artifactId>jbcrypt</artifactId>
+                <version>0.4</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.deaifish.mall</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>core-common</artifactId>
+                <version>${common-mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>jpa-common</artifactId>
+                <version>${common-mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>util-common</artifactId>
+                <version>${common-mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>biz-common</artifactId>
                 <version>${common-mall.version}</version>
             </dependency>
         </dependencies>

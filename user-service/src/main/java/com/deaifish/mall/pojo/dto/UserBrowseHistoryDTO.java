@@ -1,6 +1,6 @@
 package com.deaifish.mall.pojo.dto;
 
-import com.deaifish.mall.validation.group.UpdateGroup;
+import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,12 +20,12 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserBrowseHistoryDTO{
+public class UserBrowseHistoryDTO {
 
     /**
      * 用户浏览记录ID
      */
-    @NotNull(message = "用户浏览记录ID不能为null" ,groups = UpdateGroup.class)
+    @NotNull(message = "用户浏览记录ID不能为null", groups = UpdateGroup.class)
     @Schema(description = "用户浏览记录ID")
     private Long historyId;
 

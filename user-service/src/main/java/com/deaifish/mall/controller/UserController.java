@@ -1,5 +1,7 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.group.ADDGroup;
+import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.dto.SetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
@@ -7,8 +9,6 @@ import com.deaifish.mall.pojo.vo.UserBriefVO;
 import com.deaifish.mall.pojo.vo.UserDetailedVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.UserService;
-import com.deaifish.mall.validation.group.ADDGroup;
-import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -79,8 +79,8 @@ public class UserController {
      * @return
      */
     @PutMapping("/sign-up")
-    public R<UserDetailedVO> signUp(@RequestBody @Validated(ADDGroup.class) UserDTO userDTO){
-        return R.success( userService.signUp(userDTO));
+    public R<UserDetailedVO> signUp(@RequestBody @Validated(ADDGroup.class) UserDTO userDTO) {
+        return R.success(userService.signUp(userDTO));
     }
 
     /**

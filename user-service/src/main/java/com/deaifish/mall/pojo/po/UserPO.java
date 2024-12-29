@@ -1,9 +1,11 @@
 package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.pojo.po.BasePO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 

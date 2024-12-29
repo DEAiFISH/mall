@@ -1,9 +1,11 @@
 package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.converter.StringListConverter;
-import com.deaifish.mall.jpa.pojo.po.BasePO;
+import com.deaifish.mall.converter.StringListConverter;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import java.io.Serializable;
@@ -17,7 +19,7 @@ import java.util.List;
  */
 
 @Entity
-@Table(name = "product",schema = "mall_db")
+@Table(name = "product", schema = "mall_db")
 @Comment("商品表")
 @Data
 @Builder

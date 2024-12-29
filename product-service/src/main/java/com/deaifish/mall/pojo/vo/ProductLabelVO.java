@@ -1,8 +1,6 @@
 package com.deaifish.mall.pojo.vo;
 
-import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 

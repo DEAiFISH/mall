@@ -1,15 +1,15 @@
 package com.deaifish.mall.pojo.dto;
 
-import com.alibaba.fastjson.JSONObject;
-import com.deaifish.mall.jpa.converter.StringListConverter;
-import com.deaifish.mall.validation.group.UpdateGroup;
+import com.alibaba.fastjson2.JSONObject;
+import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
@@ -23,6 +23,8 @@ import java.util.List;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -46,7 +48,7 @@ public class ProductDTO implements Serializable {
      */
     @Schema(description = "商品名称")
     @NotBlank(message = "商品名称不能为空")
-    @Length(max = 32, message = "商品名称长度不能超过{max}个字符")
+    @Length(max = 128, message = "商品名称长度不能超过{max}个字符")
     private String name;
 
     /**
@@ -97,14 +99,14 @@ public class ProductDTO implements Serializable {
      */
     @Schema(description = "简述")
     @NotBlank(message = "简述不能为空")
-    @Length(max = 64, message = "简述长度不能超过{max}个字符")
+    @Length(max = 512, message = "简述长度不能超过{max}个字符")
     private String briefDescription;
 
     /**
      * 详细描述
      */
     @Schema(description = "详细描述")
-    @Length(max = 512, message = "详细描述长度不能超过{max}个字符")
+    @Length(max = 1024, message = "详细描述长度不能超过{max}个字符")
     private String description;
 
     /**
@@ -126,16 +128,6 @@ public class ProductDTO implements Serializable {
      * 详细图路径
      */
     @Schema(description = "详细图路径")
-    @NotBlank(message = "详细图路径不能为空")
-    @Convert(converter = StringListConverter.class)
+    @NotNull(message = "详细图路径不能为空")
     private List<String> detailsPicture;
-
-
-    public String getParameter() {
-        return parameter.toJSONString();
-    }
-
-    public void setParameter(String parameter) {
-        this.parameter = JSONObject.parseObject(parameter);
-    }
 }

@@ -1,15 +1,14 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ProductService;
-import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

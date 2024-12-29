@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
  * @date 2024/12/7 21:55
  */
 @Repository
-public interface PermissionRepository extends JpaRepository<PermissionPO,Long> {
+public interface PermissionRepository extends JpaRepository<PermissionPO, Long> {
 }

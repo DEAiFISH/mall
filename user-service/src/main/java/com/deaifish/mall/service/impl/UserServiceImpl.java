@@ -1,14 +1,14 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.SetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
-import com.deaifish.mall.po.QUserPO;
+import com.deaifish.mall.pojo.po.QUserPO;
 import com.deaifish.mall.pojo.po.UserPO;
 import com.deaifish.mall.pojo.vo.UserBriefVO;
 import com.deaifish.mall.pojo.vo.UserDetailedVO;
-import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.repository.UserRepository;
 import com.deaifish.mall.service.UserService;
 import com.deaifish.mall.util.EncryptUtil;

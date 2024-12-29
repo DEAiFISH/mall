@@ -1,13 +1,8 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.deaifish.mall.po.QLabelPO;
-import com.deaifish.mall.po.QProductLabelPO;
-import com.deaifish.mall.po.QProductPO;
 import com.deaifish.mall.pojo.dto.ProductLabelDTO;
-import com.deaifish.mall.pojo.po.LabelPO;
-import com.deaifish.mall.pojo.po.ProductLabelPO;
-import com.deaifish.mall.pojo.po.ProductPO;
+import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductLabelVO;
@@ -36,7 +31,6 @@ public class ProductLabelServiceImpl implements ProductLabelService {
     private static final QProductLabelPO PRODUCT_LABEL_PO = QProductLabelPO.productLabelPO;
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
     private static final QLabelPO LABEL_PO = QLabelPO.labelPO;
-
 
 
     @Override

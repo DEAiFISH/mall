@@ -1,10 +1,7 @@
 package com.deaifish.mall.config;
 
 import com.deaifish.mall.exception.MallException;
-import com.deaifish.mall.po.*;
-import com.deaifish.mall.pojo.po.PermissionPO;
-import com.deaifish.mall.pojo.po.RolePO;
-import com.deaifish.mall.pojo.po.UserPO;
+import com.deaifish.mall.pojo.po.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;

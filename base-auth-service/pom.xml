@@ -40,7 +40,11 @@
 
         <dependency>
             <groupId>com.deaifish.mall</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>jpa-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.deaifish.mall</groupId>
+            <artifactId>core-common</artifactId>
         </dependency>
 
         <!--JPA-->

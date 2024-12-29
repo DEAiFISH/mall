@@ -2,8 +2,8 @@ package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.deaifish.mall.pojo.po.ProductCollectPO;
-import com.deaifish.mall.po.QProductCollectPO;
-import com.deaifish.mall.po.QProductPO;
+import com.deaifish.mall.pojo.po.QProductCollectPO;
+import com.deaifish.mall.pojo.po.QProductPO;
 import com.deaifish.mall.pojo.vo.ProductCollectVO;
 import com.deaifish.mall.repository.ProductCollectRepository;
 import com.deaifish.mall.service.ProductCollectService;

@@ -1,9 +1,9 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.deaifish.mall.po.QProductPO;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.po.ProductPO;
+import com.deaifish.mall.pojo.po.QProductPO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductRepository;
@@ -41,21 +41,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductVO detail(Long productId) {
-        return BeanUtil.toBean(jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetch(),
-                ProductVO.class);
+        ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
+        return BeanUtil.toBean(po, ProductVO.class);
     }
 
     @Transactional
     @Override
     public ProductVO add(ProductDTO productdto) {
         ProductPO save = productRepository.save(BeanUtil.toBean(productdto, ProductPO.class));
-        return BeanUtil.toBean(save,ProductVO.class);
+        return BeanUtil.toBean(save, ProductVO.class);
     }
 
     @Override
     public List<ProductVO> addBatch(List<ProductDTO> list) {
         List<ProductPO> poList = productRepository.saveAll(list.stream().map(dto -> BeanUtil.toBean(dto, ProductPO.class)).toList());
-        return poList.stream().map(po -> BeanUtil.toBean(po,ProductVO.class)).collect(Collectors.toList());
+        return poList.stream().map(po -> BeanUtil.toBean(po, ProductVO.class)).collect(Collectors.toList());
     }
 
     @Transactional
@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
                 .where(PRODUCT_PO.productId.eq(productdto.getProductId()))
                 .execute();
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productdto.getProductId())).fetchOne();
-        return BeanUtil.toBean(po,ProductVO.class);
+        return BeanUtil.toBean(po, ProductVO.class);
     }
 
     @Override

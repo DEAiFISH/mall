@@ -1,6 +1,6 @@
 package com.deaifish.mall.pojo.dto;
 
-import com.deaifish.mall.validation.group.ADDGroup;
+import com.deaifish.mall.group.ADDGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

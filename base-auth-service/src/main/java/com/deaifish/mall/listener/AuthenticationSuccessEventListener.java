@@ -1,6 +1,6 @@
 package com.deaifish.mall.listener;
 
-import com.deaifish.mall.po.QUserPO;
+import com.deaifish.mall.pojo.po.QUserPO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 /**
- * @description  登陆成功监听
+ * @description 登陆成功监听
  *
  * @author DEAiFISH
  * @date 2024/12/14 19:23
@@ -32,7 +32,7 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
     public void onApplicationEvent(AuthenticationSuccessEvent authenticationSuccessEvent) {
         //登录成功认证
         Authentication authentication = authenticationSuccessEvent.getAuthentication();
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String wxId = userDetails.getUsername();
         // 更新最后登录时间
         jpaFactory.update(USER_PO).set(USER_PO.lastLogin, new Date()).where(USER_PO.wxId.eq(wxId)).execute();

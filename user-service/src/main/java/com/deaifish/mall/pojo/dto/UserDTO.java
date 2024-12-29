@@ -1,12 +1,10 @@
 package com.deaifish.mall.pojo.dto;
 
-import com.deaifish.mall.validation.group.ADDGroup;
-import com.deaifish.mall.validation.group.UpdateGroup;
+import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 

@@ -1,8 +1,8 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.deaifish.mall.po.QStockPO;
 import com.deaifish.mall.pojo.dto.StockDTO;
+import com.deaifish.mall.pojo.po.QStockPO;
 import com.deaifish.mall.pojo.po.StockPO;
 import com.deaifish.mall.pojo.vo.StockVO;
 import com.deaifish.mall.repository.StockRepository;

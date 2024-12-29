@@ -1,13 +1,10 @@
 package com.deaifish.mall.pojo.vo;
 
-import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -19,6 +16,7 @@ import java.io.Serializable;
 @Data
 @Builder
 public class BrandVO implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

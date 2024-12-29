@@ -2,7 +2,7 @@ package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.deaifish.mall.pojo.dto.UserBrowseHistoryDTO;
-import com.deaifish.mall.po.QUserBrowseHistoryPO;
+import com.deaifish.mall.pojo.po.QUserBrowseHistoryPO;
 import com.deaifish.mall.pojo.po.UserBrowseHistoryPO;
 import com.deaifish.mall.pojo.vo.UserBrowseHistoryVO;
 import com.deaifish.mall.repository.UserBrowseHistoryRepository;

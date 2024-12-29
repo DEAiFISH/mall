@@ -1,10 +1,10 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.dto.ClassifyDTO;
 import com.deaifish.mall.pojo.vo.ClassifyVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ClassifyService;
-import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;

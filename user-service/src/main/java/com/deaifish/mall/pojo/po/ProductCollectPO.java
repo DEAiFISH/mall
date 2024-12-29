@@ -1,7 +1,6 @@
 package com.deaifish.mall.pojo.po;
 
 
-import com.deaifish.mall.jpa.pojo.po.BasePO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

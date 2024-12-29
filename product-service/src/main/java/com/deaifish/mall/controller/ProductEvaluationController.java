@@ -1,10 +1,10 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.dto.ProductEvaluationDTO;
 import com.deaifish.mall.pojo.vo.ProductEvaluationVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ProductEvaluationService;
-import com.deaifish.mall.validation.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;

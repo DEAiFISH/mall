@@ -44,7 +44,7 @@ public class ProductCollectController {
      * @return Boolean
      */
     @GetMapping("/is-collect/{uId}/{pId}")
-    public R<Boolean> isCollect(@PathVariable("uId")  @Parameter(description = "用户id") Long uId,
+    public R<Boolean> isCollect(@PathVariable("uId") @Parameter(description = "用户id") Long uId,
                                 @Parameter(description = "商品id") @PathVariable("pId") Long pId) {
         return R.success(productCollectService.isCollect(uId, pId));
     }

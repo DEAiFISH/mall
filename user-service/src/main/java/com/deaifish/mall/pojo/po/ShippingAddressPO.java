@@ -1,6 +1,5 @@
 package com.deaifish.mall.pojo.po;
 
-import com.deaifish.mall.jpa.pojo.po.BasePO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +16,7 @@ import java.io.Serializable;
  * @date 2024/12/12 14:58
  */
 @Entity
-@Table(name = "shipping_address",schema = "mall_db")
+@Table(name = "shipping_address", schema = "mall_db")
 @Comment("收货地址表")
 @Data
 @Builder
