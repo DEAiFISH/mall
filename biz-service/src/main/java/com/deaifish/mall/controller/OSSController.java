@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @description 文件服务
@@ -33,7 +32,7 @@ public class OSSController {
      */
     @PostMapping("/oss/upload")
     public R<List<String>> upload(@RequestParam("dir") String dir,
-                                  @RequestParam("files") List<MultipartFile> files) throws ExecutionException, InterruptedException {
+                                  @RequestParam("files") List<MultipartFile> files) {
         return R.success(ossService.upload(dir, files));
     }
 

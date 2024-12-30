@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @description TODO
@@ -63,7 +64,7 @@ public class ProductEvaluationVO implements Serializable {
      * 图片路径
      */
     @Schema(description = "图片路径")
-    private String picture;
+    private List<String> picture;
 
     /**
      * 是否匿名

@@ -1,6 +1,9 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.api.BIZServiceApi;
+import com.deaifish.mall.config.oss.PathProperties;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ClassifyDTO;
 import com.deaifish.mall.pojo.po.ClassifyPO;
 import com.deaifish.mall.pojo.po.QClassifyPO;
@@ -26,6 +29,10 @@ public class ClassifyServiceImpl implements ClassifyService {
     private JPAQueryFactory jpaQueryFactory;
     @Resource
     private ClassifyRepository classifyRepository;
+    @Resource
+    private BIZServiceApi bizServiceApi;
+    @Resource
+    private PathProperties pathProperties;
 
     private static final QClassifyPO CLASSIFY_PO = QClassifyPO.classifyPO;
 
@@ -62,6 +69,11 @@ public class ClassifyServiceImpl implements ClassifyService {
     @Override
     @Transactional
     public void delete(Integer classifyId) {
+        ClassifyPO po = jpaQueryFactory.selectFrom(CLASSIFY_PO).where(CLASSIFY_PO.classifyId.eq(classifyId)).fetchOne();
+        if (po == null) {
+            throw new MallException("商品不存在");
+        }
+        bizServiceApi.delete(po.getIcon());
         jpaQueryFactory.delete(CLASSIFY_PO).where(CLASSIFY_PO.classifyId.eq(classifyId)).execute();
     }
 }

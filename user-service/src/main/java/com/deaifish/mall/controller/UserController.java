@@ -59,7 +59,7 @@ public class UserController {
     @PostMapping("/set/password")
     public R<Boolean> setPassword(@Valid @RequestBody SetPasswordDTO passwordDTO) {
         userService.setPassword(passwordDTO);
-        return R.success(true);
+        return R.success("修改密码成功", true);
     }
 
     /**
@@ -70,7 +70,7 @@ public class UserController {
     @PostMapping("/set/payment-password")
     public R<Boolean> setPaymentPassword(@Valid @RequestBody SetPaymentDTO paymentDTO) {
         userService.setPaymentPassword(paymentDTO);
-        return R.success(true);
+        return R.success("修改支付密码成功", true);
     }
 
     /**
@@ -80,7 +80,7 @@ public class UserController {
      */
     @PutMapping("/sign-up")
     public R<UserDetailedVO> signUp(@RequestBody @Validated(ADDGroup.class) UserDTO userDTO) {
-        return R.success(userService.signUp(userDTO));
+        return R.success("注册成功", userService.signUp(userDTO));
     }
 
     /**
@@ -90,7 +90,7 @@ public class UserController {
      */
     @GetMapping("/get/exists/{wxId}")
     public R<Boolean> exists(@PathVariable(name = "wxId") @Parameter(description = "微信id") String wxId) {
-        return R.success(userService.existsById(wxId));
+        return R.success("微信号已存在", userService.existsById(wxId));
     }
 
     /**
@@ -101,7 +101,7 @@ public class UserController {
     @PostMapping("/update")
     public R<Boolean> update(@RequestBody @Validated(UpdateGroup.class) UserDTO userDTO) {
         userService.update(userDTO);
-        return R.success(true);
+        return R.success("更新信息成功", true);
     }
 
     /**
@@ -112,7 +112,7 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public R<Boolean> delete(@PathVariable(name = "id") @Parameter(description = "用户id") Long id) {
         userService.delete(id);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 
 }

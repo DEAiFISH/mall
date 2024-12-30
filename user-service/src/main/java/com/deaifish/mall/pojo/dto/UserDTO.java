@@ -104,17 +104,25 @@ public class UserDTO {
      * 状态（启用：1；禁用：0）
      */
     @Schema(description = "状态（启用：1；禁用：0）")
-    private Byte status = 1;
+    private Byte status;
 
     /**
      * 用户积分
      */
     @Schema(description = "用户积分")
-    private Integer integral = 0;
+    private Integer integral;
 
     /**
      * 角色ID
      */
     @Schema(description = "角色ID")
     private Byte roleId;
+
+    public void setStatus(Byte status) {
+        this.status = status == null ? 1 : status;
+    }
+
+    public void setIntegral(Integer integral) {
+        this.integral = integral == null ? 0 : integral;
+    }
 }

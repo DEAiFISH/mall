@@ -94,6 +94,12 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
         </dependency>
 
+        <!--openfeign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.deaifish.mall</groupId>
             <artifactId>jpa-common</artifactId>
@@ -105,6 +111,11 @@
         <dependency>
             <groupId>com.deaifish.mall</groupId>
             <artifactId>util-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.deaifish.mall</groupId>
+            <artifactId>biz-service-api</artifactId>
         </dependency>
     </dependencies>
 

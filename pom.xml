@@ -36,6 +36,7 @@
         <fastjson2.version>2.0.51</fastjson2.version>
         <hutool.version>5.8.26</hutool.version>
         <common-mall.version>0.0.1-SNAPSHOT</common-mall.version>
+        <api-mall.version>0.0.1-SNAPSHOT</api-mall.version>
         <validation.version>2.0.1.Final</validation.version>
         <knife4j.version>3.0.3</knife4j.version>
         <thumbnailator.version>0.4.20</thumbnailator.version>
@@ -252,6 +253,12 @@
                 <groupId>com.deaifish.mall</groupId>
                 <artifactId>biz-common</artifactId>
                 <version>${common-mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>biz-service-api</artifactId>
+                <version>${api-mall.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

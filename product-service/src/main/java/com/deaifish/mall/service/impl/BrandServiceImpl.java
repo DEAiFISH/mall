@@ -1,6 +1,9 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.api.BIZServiceApi;
+import com.deaifish.mall.config.oss.PathProperties;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.BrandDTO;
 import com.deaifish.mall.pojo.po.BrandPO;
 import com.deaifish.mall.pojo.po.QBrandPO;
@@ -26,6 +29,10 @@ public class BrandServiceImpl implements BrandService {
     private JPAQueryFactory jpaQueryFactory;
     @Resource
     private BrandRepository brandRepository;
+    @Resource
+    private BIZServiceApi bizServiceApi;
+    @Resource
+    private PathProperties pathProperties;
 
     private static final QBrandPO BRAND_PO = QBrandPO.brandPO;
 
@@ -62,6 +69,12 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public void delete(Integer id) {
+        BrandPO po = jpaQueryFactory.selectFrom(BRAND_PO).where(BRAND_PO.brandId.eq(id)).fetchOne();
+        if (po == null) {
+            throw new MallException("商品不存在");
+        }
+        bizServiceApi.delete(po.getIcon());
+        bizServiceApi.delete(po.getPicture());
         jpaQueryFactory.delete(BRAND_PO).where(BRAND_PO.brandId.eq(id)).execute();
     }
 }

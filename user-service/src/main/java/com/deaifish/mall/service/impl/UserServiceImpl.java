@@ -1,6 +1,8 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.api.BIZServiceApi;
+import com.deaifish.mall.config.oss.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.SetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
@@ -35,6 +37,10 @@ public class UserServiceImpl implements UserService {
     private JPAQueryFactory jpaQueryFactory;
     @Resource
     private UserRepository userRepository;
+    @Resource
+    private BIZServiceApi bizServiceApi;
+    @Resource
+    private PathProperties pathProperties;
 
     private final static QUserPO USER_PO = QUserPO.userPO;
 
@@ -130,6 +136,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(Long id) {
+        UserPO po = jpaQueryFactory.selectFrom(USER_PO).where(USER_PO.userId.eq(id)).fetchOne();
+        if (po == null) {
+            throw new MallException("用户不存在");
+        }
+        String avatar = po.getAvatar();
+        bizServiceApi.delete(avatar);
         jpaQueryFactory.delete(USER_PO).where(USER_PO.userId.eq(id)).execute();
     }
 }

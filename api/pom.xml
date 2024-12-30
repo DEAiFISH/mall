@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>pay-service-api</module>
+        <module>biz-service-api</module>
     </modules>
 
 

@@ -1,6 +1,9 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.api.BIZServiceApi;
+import com.deaifish.mall.config.oss.PathProperties;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.po.ProductPO;
 import com.deaifish.mall.pojo.po.QProductPO;
@@ -14,7 +17,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +34,10 @@ public class ProductServiceImpl implements ProductService {
     private JPAQueryFactory jpaQueryFactory;
     @Resource
     private ProductRepository productRepository;
+    @Resource
+    private BIZServiceApi bizServiceApi;
+    @Resource
+    private PathProperties pathProperties;
 
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
 
@@ -84,6 +93,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void delete(Long productId) {
+        ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
+        if (po == null) {
+            throw new MallException("商品不存在");
+        }
+        ArrayList<String> pictures = new ArrayList<>();
+        pictures.add(po.getCoverPicture());
+        pictures.addAll(po.getDetailsPicture());
+
+        // 异步删除图片
+        List<CompletableFuture<Void>> futures = pictures.stream().map(pic ->
+                CompletableFuture.runAsync(() ->
+                        bizServiceApi.delete(pathProperties.getEvaluationDirPath() + pic))).toList();
+        // 等待所有图片删除完成后再执行下一步
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
         jpaQueryFactory.delete(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).execute();
     }
 }

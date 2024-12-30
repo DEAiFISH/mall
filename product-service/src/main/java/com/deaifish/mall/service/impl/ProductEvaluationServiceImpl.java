@@ -1,6 +1,9 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.api.BIZServiceApi;
+import com.deaifish.mall.config.oss.PathProperties;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductEvaluationDTO;
 import com.deaifish.mall.pojo.po.ProductEvaluationPO;
 import com.deaifish.mall.pojo.po.QProductEvaluationPO;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @description TODO
@@ -27,6 +31,10 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     private JPAQueryFactory jpaQueryFactory;
     @Resource
     private ProductEvaluationRepository productEvaluationRepository;
+    @Resource
+    private BIZServiceApi bizServiceApi;
+    @Resource
+    private PathProperties pathProperties;
 
     private static final QProductEvaluationPO PRODUCT_EVALUATION_PO = QProductEvaluationPO.productEvaluationPO;
 
@@ -64,6 +72,16 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     @Override
     @Transactional
     public void delete(Long evaluationId) {
+        ProductEvaluationPO po = jpaQueryFactory.selectFrom(PRODUCT_EVALUATION_PO).where(PRODUCT_EVALUATION_PO.evaluationId.eq(evaluationId)).fetchOne();
+        if (po == null) {
+            throw new MallException("商品不存在");
+        }
+        // 异步删除图片
+        List<CompletableFuture<Void>> futures = po.getPicture().stream().map(pic ->
+                CompletableFuture.runAsync(() ->
+                        bizServiceApi.delete(pathProperties.getEvaluationDirPath() + pic))).toList();
+        // 等待所有图片删除完成后再执行下一步
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         jpaQueryFactory.delete(PRODUCT_EVALUATION_PO).where(PRODUCT_EVALUATION_PO.evaluationId.eq(evaluationId)).execute();
     }
 }

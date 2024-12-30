@@ -69,6 +69,14 @@ public class R<T> implements Serializable {
         return res;
     }
 
+    public static <T> R<T> success(String msg, T data) {
+        R<T> res = new R<>();
+        res.setData(data);
+        res.setCode(ResponseEnum.OK.value());
+        res.setMsg(msg);
+        return res;
+    }
+
     public static <T> R<T> success() {
         R<T> res = new R<>();
         res.setCode(ResponseEnum.OK.value());

@@ -3,7 +3,6 @@ package com.deaifish.mall.service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @description OSS服务接口
@@ -18,7 +17,7 @@ public interface OSSService {
      * @param files 文件
      * @return List<String> 文件访问地址
      */
-    List<String> upload(String dir, List<MultipartFile> files) throws ExecutionException, InterruptedException;
+    List<String> upload(String dir, List<MultipartFile> files);
 
     /**
      * 删除文件

@@ -67,7 +67,7 @@ public class UserPO extends BasePO implements Serializable {
      * 生日
      */
     @Column(name = "birthday", columnDefinition = "COMMENT '生日'")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
 
     /**
@@ -110,7 +110,7 @@ public class UserPO extends BasePO implements Serializable {
      * 最后一次登录时间
      */
     @Column(name = "last_login", nullable = false, columnDefinition = "COMMENT '最后一次登录时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date lastLogin;
 
     /**

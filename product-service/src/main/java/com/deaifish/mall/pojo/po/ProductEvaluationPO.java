@@ -1,5 +1,6 @@
 package com.deaifish.mall.pojo.po;
 
+import com.deaifish.mall.converter.StringListConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @description TODO
@@ -73,7 +75,8 @@ public class ProductEvaluationPO extends BasePO implements Serializable {
      * 图片路径
      */
     @Column(name = "picture", length = 256, columnDefinition = "VARCHAR(256) DEFAULT NULL COMMENT '图片路径'")
-    private String picture;
+    @Convert(converter = StringListConverter.class)
+    private List<String> picture;
 
     /**
      * 是否匿名

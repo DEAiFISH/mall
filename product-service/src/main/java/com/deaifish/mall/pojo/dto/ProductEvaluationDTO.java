@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @description TODO
@@ -82,7 +83,7 @@ public class ProductEvaluationDTO implements Serializable {
     @Schema(description = "图片路径")
     @NotBlank(message = "图片路径不能为空")
     @Length(max = 256, message = "图片路径长度不能超过{max}")
-    private String picture;
+    private List<String> picture;
 
     /**
      * 是否匿名
