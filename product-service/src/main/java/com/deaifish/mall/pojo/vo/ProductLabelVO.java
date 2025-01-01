@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @description TODO
+ * @description 商品标签表VO
  *
  * @author DEAiFISH
  * @date 2024/12/12 14:52
@@ -30,8 +30,20 @@ public class ProductLabelVO implements Serializable {
     private Long productId;
 
     /**
+     * 商品名称
+     */
+    @Schema(description = "商品名称")
+    private String productName;
+
+    /**
      * 标签ID
      */
     @Schema(description = "标签ID")
     private Integer labelId;
+
+    /**
+     * 标签名称
+     */
+    @Schema(description = "标签名称")
+    private String labelName;
 }

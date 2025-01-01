@@ -1,12 +1,14 @@
-package com.deaifish.mall.po;
+package com.deaifish.mall.pojo.po;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
-
 /**
- * @description TODO
+ * @description 角色权限表
  *
  * @author DEAiFISH
  * @date 2024/12/10 10:31
@@ -14,7 +16,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(schema = "mall_db", name = "role_permission")
 @Comment("角色权限表")
-public class RolePermissionPO {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class RolePermissionPO extends BasePO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_permission_id", nullable = false, updatable = false, columnDefinition = "COMMENT '主键'")
@@ -37,16 +43,4 @@ public class RolePermissionPO {
      */
     @Column(name = "user_id", nullable = false, columnDefinition = "COMMENT '用户id")
     private Long userId;
-
-    /**
-     * 创建时间
-     */
-    @Column(name = "create_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间")
-    private LocalDateTime createTime;
-
-    /**
-     * 修改时间
-     */
-    @Column(name = "update_time", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间")
-    private LocalDateTime updateTime;
 }

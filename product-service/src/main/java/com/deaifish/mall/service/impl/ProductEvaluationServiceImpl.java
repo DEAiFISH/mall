@@ -5,8 +5,7 @@ import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductEvaluationDTO;
-import com.deaifish.mall.pojo.po.ProductEvaluationPO;
-import com.deaifish.mall.pojo.po.QProductEvaluationPO;
+import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.vo.ProductEvaluationVO;
 import com.deaifish.mall.repository.ProductEvaluationRepository;
 import com.deaifish.mall.service.ProductEvaluationService;
@@ -37,18 +36,22 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     private PathProperties pathProperties;
 
     private static final QProductEvaluationPO PRODUCT_EVALUATION_PO = QProductEvaluationPO.productEvaluationPO;
+    private static final QUserPO USER_PO = QUserPO.userPO;
+
 
     @Override
     public List<ProductEvaluationVO> listByProductId(Long pId) {
         List<ProductEvaluationPO> poList = jpaQueryFactory.selectFrom(PRODUCT_EVALUATION_PO).where(PRODUCT_EVALUATION_PO.productId.eq(pId)).fetch();
-        return poList.stream().map(productEvaluationPO -> BeanUtil.toBean(productEvaluationPO, ProductEvaluationVO.class)).toList();
+
+        return poList.stream().map(this::getProductEvaluationVO).toList();
     }
 
     @Override
     @Transactional
     public ProductEvaluationVO add(ProductEvaluationDTO productEvaluationDTO) {
         ProductEvaluationPO po = productEvaluationRepository.save(BeanUtil.toBean(productEvaluationDTO, ProductEvaluationPO.class));
-        return BeanUtil.toBean(po, ProductEvaluationVO.class);
+
+        return getProductEvaluationVO(po);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
                 .where(PRODUCT_EVALUATION_PO.evaluationId.eq(productEvaluationDTO.getEvaluationId())).execute();
 
         ProductEvaluationPO po = jpaQueryFactory.selectFrom(PRODUCT_EVALUATION_PO).where(PRODUCT_EVALUATION_PO.evaluationId.eq(productEvaluationDTO.getEvaluationId())).fetchOne();
-        return BeanUtil.toBean(po, ProductEvaluationVO.class);
+        return getProductEvaluationVO(po);
     }
 
     @Override
@@ -83,5 +86,18 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
         // 等待所有图片删除完成后再执行下一步
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         jpaQueryFactory.delete(PRODUCT_EVALUATION_PO).where(PRODUCT_EVALUATION_PO.evaluationId.eq(evaluationId)).execute();
+    }
+
+    private ProductEvaluationVO getProductEvaluationVO(ProductEvaluationPO po) {
+        Long userId = po.getUserId();
+        UserPO userPO = jpaQueryFactory.selectFrom(USER_PO).where(USER_PO.userId.eq(userId)).fetchOne();
+        ProductEvaluationVO vo = BeanUtil.toBean(po, ProductEvaluationVO.class);
+        if(userPO == null){
+            return vo;
+        }
+
+        vo.setUserName(userPO.getNickName());
+        vo.setAvatar(userPO.getAvatar());
+        return vo;
     }
 }

@@ -46,6 +46,7 @@
         <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
         <jasypt-spring-boot-starter.version>3.0.5</jasypt-spring-boot-starter.version>
         <java-jwt.version>4.4.0</java-jwt.version>
+        <netty.resolver-dns.version>4.1.116.Final</netty.resolver-dns.version>
     </properties>
 
     <dependencyManagement>
@@ -241,6 +242,14 @@
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
                 <version>${java-jwt.version}</version>
+            </dependency>
+
+            <!--解决 M1 芯片下奇奇怪怪的DNS报错-->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-resolver-dns-native-macos</artifactId>
+                <version>${netty.resolver-dns.version}</version>
+                <classifier>osx-aarch_64</classifier> <!-- 如果是 M1/M2 芯片 -->
             </dependency>
 
 

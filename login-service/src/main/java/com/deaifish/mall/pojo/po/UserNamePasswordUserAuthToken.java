@@ -1,4 +1,4 @@
-package com.deaifish.mall.po;
+package com.deaifish.mall.pojo.po;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 /**
- * @description TODO
+ * @description 自定义用户认证信息，用于存放token
  *
  * @author DEAiFISH
  * @date 2024/12/31 16:56

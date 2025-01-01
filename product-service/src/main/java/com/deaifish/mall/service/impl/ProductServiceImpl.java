@@ -1,26 +1,25 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ReflectUtil;
 import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductDTO;
-import com.deaifish.mall.pojo.po.ProductPO;
-import com.deaifish.mall.pojo.po.QProductPO;
+import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductRepository;
 import com.deaifish.mall.service.ProductService;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 /**
  * @description TODO
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
  * @author DEAiFISH
  * @date 2024/12/28 14:57
  */
+@Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
     @Resource
@@ -40,31 +40,36 @@ public class ProductServiceImpl implements ProductService {
     private PathProperties pathProperties;
 
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
+    private static final QBrandPO BRAND_PO = QBrandPO.brandPO;
+    private static final QClassifyPO CLASSIFY_PO = QClassifyPO.classifyPO;
+    private static final QStockPO STOCK_PO = QStockPO.stockPO;
 
     @Override
     public List<ProductBriefVO> list() {
-        return jpaQueryFactory.select(Projections.bean(ProductBriefVO.class, PRODUCT_PO.productId, PRODUCT_PO.name, PRODUCT_PO.classifyId,
-                PRODUCT_PO.brandId, PRODUCT_PO.price, PRODUCT_PO.preferentialPrice, PRODUCT_PO.sale, PRODUCT_PO.briefDescription,
-                PRODUCT_PO.status, PRODUCT_PO.coverPicture)).from(PRODUCT_PO).fetch();
+        List<ProductPO> pos = jpaQueryFactory.selectFrom(PRODUCT_PO).fetch();
+
+        return pos.stream().map(po -> productPo2Vo(po, ProductBriefVO.class)).toList();
     }
 
     @Override
     public ProductVO detail(Long productId) {
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
-        return BeanUtil.toBean(po, ProductVO.class);
+
+        return productPo2Vo(po, ProductVO.class);
     }
+
 
     @Transactional
     @Override
     public ProductVO add(ProductDTO productdto) {
-        ProductPO save = productRepository.save(BeanUtil.toBean(productdto, ProductPO.class));
-        return BeanUtil.toBean(save, ProductVO.class);
+        ProductPO po = productRepository.save(BeanUtil.toBean(productdto, ProductPO.class));
+        return productPo2Vo(po, ProductVO.class);
     }
 
     @Override
     public List<ProductVO> addBatch(List<ProductDTO> list) {
         List<ProductPO> poList = productRepository.saveAll(list.stream().map(dto -> BeanUtil.toBean(dto, ProductPO.class)).toList());
-        return poList.stream().map(po -> BeanUtil.toBean(po, ProductVO.class)).collect(Collectors.toList());
+        return poList.stream().map(po -> productPo2Vo(po, ProductVO.class)).toList();
     }
 
     @Transactional
@@ -87,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
                 .where(PRODUCT_PO.productId.eq(productdto.getProductId()))
                 .execute();
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productdto.getProductId())).fetchOne();
-        return BeanUtil.toBean(po, ProductVO.class);
+        return productPo2Vo(po, ProductVO.class);
     }
 
     @Override
@@ -109,5 +114,24 @@ public class ProductServiceImpl implements ProductService {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
         jpaQueryFactory.delete(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).execute();
+    }
+
+    private <T> T productPo2Vo(ProductPO source, Class<T> clazz) {
+        T vo = BeanUtil.toBean(source, clazz);
+
+        ClassifyPO classifyPo = jpaQueryFactory.selectFrom(CLASSIFY_PO).where(CLASSIFY_PO.classifyId.eq(source.getClassifyId())).fetchOne();
+        if (classifyPo != null) {
+            ReflectUtil.setFieldValue(vo, "classifyName", classifyPo.getName());
+        }
+        BrandPO brandPo = jpaQueryFactory.selectFrom(BRAND_PO).where(BRAND_PO.brandId.eq(source.getBrandId())).fetchOne();
+        if (brandPo != null) {
+            ReflectUtil.setFieldValue(vo, "brandName", brandPo.getName());
+        }
+        StockPO stockPo = jpaQueryFactory.selectFrom(STOCK_PO).where(STOCK_PO.productId.eq(source.getProductId())).fetchOne();
+        if (stockPo != null) {
+            ReflectUtil.setFieldValue(vo, "stock", stockPo.getAmount());
+        }
+
+        return vo;
     }
 }

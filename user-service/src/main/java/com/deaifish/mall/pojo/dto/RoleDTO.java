@@ -1,4 +1,4 @@
-package com.deaifish.mall.po;
+package com.deaifish.mall.pojo.dto;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Comment("角色")
 @Getter
 @Setter
-public class RolePO {
+public class RoleDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

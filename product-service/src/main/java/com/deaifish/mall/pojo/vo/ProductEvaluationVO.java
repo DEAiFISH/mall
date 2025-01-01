@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @description TODO
+ * @description 商品评价视图对象VO
  *
  * @author DEAiFISH
  * @date 2024/12/12 15:03
@@ -35,6 +35,18 @@ public class ProductEvaluationVO implements Serializable {
      */
     @Schema(description = "用户ID")
     private Long userId;
+
+    /**
+     * 用户名
+     */
+    @Schema(description = "用户名")
+    private String userName;
+
+    /**
+     * 用户头像
+     */
+    @Schema(description = "用户头像")
+    private String avatar;
 
     /**
      * 评价内容

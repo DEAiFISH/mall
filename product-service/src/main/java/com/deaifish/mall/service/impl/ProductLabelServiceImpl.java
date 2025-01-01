@@ -1,6 +1,7 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductLabelDTO;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.vo.LabelVO;
@@ -53,7 +54,8 @@ public class ProductLabelServiceImpl implements ProductLabelService {
     @Transactional
     public ProductLabelVO add(ProductLabelDTO productLabelDTO) {
         ProductLabelPO po = productLabelRepository.save(BeanUtil.toBean(productLabelDTO, ProductLabelPO.class));
-        return BeanUtil.toBean(po, ProductLabelVO.class);
+
+        return getProductLabelVO(po);
     }
 
     @Override
@@ -66,12 +68,25 @@ public class ProductLabelServiceImpl implements ProductLabelService {
                 .execute();
 
         ProductLabelPO po = jpaQueryFactory.selectFrom(PRODUCT_LABEL_PO).where(PRODUCT_LABEL_PO.productLabelId.eq(productLabelDTO.getProductLabelId())).fetchOne();
-        return BeanUtil.toBean(po, ProductLabelVO.class);
+        if(po == null) {
+            throw new MallException("更新失败，找不到对应的产品标签记录");
+        }
+
+        return getProductLabelVO(po);
     }
 
     @Override
     @Transactional
     public void delete(Long plId) {
         jpaQueryFactory.delete(PRODUCT_LABEL_PO).where(PRODUCT_LABEL_PO.productLabelId.eq(plId)).execute();
+    }
+
+    private ProductLabelVO getProductLabelVO(ProductLabelPO po) {
+        String productName = jpaQueryFactory.select(PRODUCT_PO.name).from(PRODUCT_PO).where(PRODUCT_PO.productId.eq(po.getProductId())).fetchOne();
+        String labelName = jpaQueryFactory.select(LABEL_PO.name).from(LABEL_PO).where(LABEL_PO.labelId.eq(po.getLabelId())).fetchOne();
+        ProductLabelVO vo = BeanUtil.toBean(po, ProductLabelVO.class);
+        vo.setProductName(productName);
+        vo.setLabelName(labelName);
+        return vo;
     }
 }

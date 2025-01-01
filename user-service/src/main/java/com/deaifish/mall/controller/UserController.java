@@ -99,9 +99,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/update")
-    public R<Boolean> update(@RequestBody @Validated(UpdateGroup.class) UserDTO userDTO) {
-        userService.update(userDTO);
-        return R.success("更新信息成功", true);
+    public R<UserDetailedVO> update(@RequestBody @Validated(UpdateGroup.class) UserDTO userDTO) {
+        return R.success(userService.update(userDTO));
     }
 
     /**

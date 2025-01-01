@@ -44,10 +44,22 @@ public class ProductVO implements Serializable {
     private Integer classifyId;
 
     /**
+     * 商品分类名称
+     */
+    @Schema(description = "商品分类名称")
+    private String classifyName;
+
+    /**
      * 商品品牌ID
      */
     @Schema(description = "商品品牌ID")
     private Integer brandId;
+
+    /**
+     * 商品品牌名称
+     */
+    @Schema(description = "商品品牌名称")
+    private String brandName;
 
     /**
      * 价格
@@ -72,6 +84,12 @@ public class ProductVO implements Serializable {
      */
     @Schema(description = "销量")
     private Integer sale;
+
+    /**
+     * 库存量
+     */
+    @Schema(description = "库存量")
+    private Integer stock;
 
     /**
      * 简述

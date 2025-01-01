@@ -1,8 +1,8 @@
 package com.deaifish.mall.config;
 
 import com.deaifish.mall.exception.MallException;
-import com.deaifish.mall.po.*;
 import com.deaifish.mall.pojo.JwtUser;
+import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.util.JWTUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;

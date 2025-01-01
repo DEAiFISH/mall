@@ -1,6 +1,6 @@
 package com.deaifish.mall.listener;
 
-import com.deaifish.mall.po.QUserPO;
+import com.deaifish.mall.pojo.po.QUserPO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;

@@ -57,7 +57,7 @@ public interface UserService {
      * 更新用户信息
      * @param userDTO
      */
-    void update(UserDTO userDTO);
+    UserDetailedVO update(UserDTO userDTO);
 
     /**
      * 删除用户

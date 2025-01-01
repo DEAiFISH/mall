@@ -7,6 +7,7 @@ import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.SetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
+import com.deaifish.mall.pojo.po.QRolePO;
 import com.deaifish.mall.pojo.po.QUserPO;
 import com.deaifish.mall.pojo.po.UserPO;
 import com.deaifish.mall.pojo.vo.UserBriefVO;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
     private PathProperties pathProperties;
 
     private final static QUserPO USER_PO = QUserPO.userPO;
+    private final static QRolePO ROLE_PO = QRolePO.rolePO;
 
 
     @Override
@@ -51,6 +53,9 @@ public class UserServiceImpl implements UserService {
         ArrayList<UserBriefVO> list = new ArrayList<>();
         userPOS.forEach(userPO -> {
             UserBriefVO bean = BeanUtil.toBean(userPO, UserBriefVO.class);
+            Byte roleId = userPO.getRoleId();
+            String roleName = jpaQueryFactory.select(ROLE_PO.name).from(ROLE_PO).where(ROLE_PO.roleId.eq(roleId)).fetchOne();
+            bean.setRoleName(roleName);
             list.add(bean);
         });
 
@@ -64,7 +69,7 @@ public class UserServiceImpl implements UserService {
             throw new MallException("用户不存在");
         }
 
-        return BeanUtil.toBean(userPO, UserDetailedVO.class);
+        return getUserDetailedVO(userPO);
     }
 
     @Override
@@ -108,7 +113,8 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new MallException("用户注册失败，请稍后再试");
         }
-        return BeanUtil.toBean(user, UserDetailedVO.class);
+
+        return getUserDetailedVO(po);
     }
 
     @Override
@@ -118,7 +124,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void update(UserDTO userDTO) {
+    public UserDetailedVO update(UserDTO userDTO) {
         jpaQueryFactory.update(USER_PO)
                 .set(USER_PO.nickName, userDTO.getNickName())
                 .set(USER_PO.realName, userDTO.getRealName())
@@ -132,6 +138,10 @@ public class UserServiceImpl implements UserService {
                 .set(USER_PO.integral, userDTO.getIntegral())
                 .set(USER_PO.roleId, userDTO.getRoleId())
                 .where(USER_PO.userId.eq(userDTO.getUserId())).execute();
+
+        UserPO po = jpaQueryFactory.selectFrom(USER_PO).where(USER_PO.userId.eq(userDTO.getUserId())).fetchOne();
+
+        return getUserDetailedVO(po);
     }
 
     @Override
@@ -149,5 +159,14 @@ public class UserServiceImpl implements UserService {
         }
 
         jpaQueryFactory.delete(USER_PO).where(USER_PO.userId.eq(id)).execute();
+    }
+
+    private UserDetailedVO getUserDetailedVO(UserPO po) {
+        UserDetailedVO vo = BeanUtil.toBean(po, UserDetailedVO.class);
+        Byte roleId = po.getRoleId();
+        String roleName = jpaQueryFactory.select(ROLE_PO.name).from(ROLE_PO).where(ROLE_PO.roleId.eq(roleId)).fetchOne();
+        vo.setRoleName(roleName);
+
+        return vo;
     }
 }

@@ -74,4 +74,10 @@ public class UserBriefVO implements Serializable {
      */
     @Schema(description = "角色ID")
     private Byte roleId;
+
+    /**
+     * 角色名称
+     */
+    @Schema(description = "角色名称")
+    private String roleName;
 }

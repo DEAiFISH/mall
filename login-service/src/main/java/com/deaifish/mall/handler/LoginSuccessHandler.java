@@ -1,6 +1,6 @@
 package com.deaifish.mall.handler;
 
-import com.deaifish.mall.po.UserNamePasswordUserAuthToken;
+import com.deaifish.mall.pojo.po.UserNamePasswordUserAuthToken;
 import com.deaifish.mall.util.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
