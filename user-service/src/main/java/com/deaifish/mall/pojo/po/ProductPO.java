@@ -1,5 +1,7 @@
 package com.deaifish.mall.pojo.po;
 
+import com.alibaba.fastjson2.JSONObject;
+import com.deaifish.mall.converter.StringJSONObjectConverter;
 import com.deaifish.mall.converter.StringListConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,7 +47,7 @@ public class ProductPO extends BasePO implements Serializable {
     /**
      * 商品名称
      */
-    @Column(name = "name", nullable = false, length = 32, columnDefinition = "VARCHAR(32) COMMENT '商品名称'")
+    @Column(name = "name", nullable = false, length = 128, columnDefinition = "VARCHAR(128) COMMENT '商品名称'")
     private String name;
 
     /**
@@ -75,8 +77,9 @@ public class ProductPO extends BasePO implements Serializable {
     /**
      * 特有规格参数（JSON）
      */
-    @Column(name = "parameter", nullable = false, columnDefinition = "JSON COMMENT '特有规格参数（JSON格式：{属性：参数}）'")
-    private String parameter;
+    @Column(name = "parameter", nullable = false, length = 512, columnDefinition = "VARCHAR(512) COMMENT '特有规格参数（JSON格式：{属性：参数}）'")
+    @Convert(converter = StringJSONObjectConverter.class)
+    private JSONObject parameter;
 
     /**
      * 销量
@@ -87,13 +90,13 @@ public class ProductPO extends BasePO implements Serializable {
     /**
      * 简述
      */
-    @Column(name = "brief_description", nullable = false, length = 64, columnDefinition = "VARCHAR(64) COMMENT '简述'")
+    @Column(name = "brief_description", nullable = false, length = 512, columnDefinition = "VARCHAR(512) COMMENT '简述'")
     private String briefDescription;
 
     /**
      * 详细描述
      */
-    @Column(name = "description", length = 512, columnDefinition = "VARCHAR(512) COMMENT '详细描述'")
+    @Column(name = "description", length = 1024, columnDefinition = "VARCHAR(1024) COMMENT '详细描述'")
     private String description;
 
     /**
@@ -111,7 +114,7 @@ public class ProductPO extends BasePO implements Serializable {
     /**
      * 详细图路径
      */
-    @Column(name = "details_picture", nullable = false, length = 1024, columnDefinition = "VARCHAR(256) COMMENT '详细图路径'")
+    @Column(name = "details_picture", nullable = false, length = 1024, columnDefinition = "VARCHAR(1024) COMMENT '详细图路径'")
     @Convert(converter = StringListConverter.class)
     private List<String> detailsPicture;
 }

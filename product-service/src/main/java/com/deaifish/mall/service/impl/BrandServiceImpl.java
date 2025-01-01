@@ -2,7 +2,7 @@ package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.deaifish.mall.api.BIZServiceApi;
-import com.deaifish.mall.config.oss.PathProperties;
+import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.BrandDTO;
 import com.deaifish.mall.pojo.po.BrandPO;

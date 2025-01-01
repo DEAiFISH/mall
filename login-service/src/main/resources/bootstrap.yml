@@ -1,0 +1,11 @@
+spring:
+    application:
+        name: login-service
+    cloud:
+        nacos:
+            server-addr: localhost:8848 # Nacos 作为服务注册地址
+            config:
+                file-extension: yaml
+                server-addr: localhost:8848 # 配置 Nacos 作为服务配置地址
+    profiles:
+        active: @profiles.active@

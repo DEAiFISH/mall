@@ -114,7 +114,7 @@ public class ProductPO extends BasePO implements Serializable {
     /**
      * 详细图路径
      */
-    @Column(name = "details_picture", nullable = false, length = 1024, columnDefinition = "VARCHAR(256) COMMENT '详细图路径'")
+    @Column(name = "details_picture", nullable = false, length = 1024, columnDefinition = "VARCHAR(1024) COMMENT '详细图路径'")
     @Convert(converter = StringListConverter.class)
     private List<String> detailsPicture;
 }

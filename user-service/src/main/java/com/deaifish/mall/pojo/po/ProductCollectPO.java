@@ -51,7 +51,7 @@ public class ProductCollectPO extends BasePO implements Serializable {
     /**
      * 商品名称
      */
-    @Column(name = "product_name", nullable = false, length = 32, columnDefinition = "VARCHAR(256) COMMENT '商品名称'")
+    @Column(name = "product_name", nullable = false, length = 128, columnDefinition = "VARCHAR(128) COMMENT '商品名称'")
     private String productName;
 
     /**

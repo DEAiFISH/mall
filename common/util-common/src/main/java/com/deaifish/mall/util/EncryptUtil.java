@@ -10,7 +10,6 @@ import cn.hutool.crypto.digest.BCrypt;
  * @date 2024/12/18 11:08
  */
 public class EncryptUtil {
-    private static final String PREFIX_STR = "{bcrypt}";
 
     /**
      * 加密密码
@@ -21,7 +20,7 @@ public class EncryptUtil {
         if (StrUtil.isBlank(value)) {
             return null;
         }
-        return PREFIX_STR + BCrypt.hashpw(value);
+        return BCrypt.hashpw(value);
     }
 
     /**
@@ -34,7 +33,6 @@ public class EncryptUtil {
         if (StrUtil.isBlank(rawPassword) || StrUtil.isBlank(encodedPassword)) {
             return false;
         }
-        encodedPassword = encodedPassword.substring(PREFIX_STR.length());
         return BCrypt.checkpw(rawPassword, encodedPassword);
     }
 }

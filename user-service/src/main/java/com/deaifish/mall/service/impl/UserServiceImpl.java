@@ -2,7 +2,7 @@ package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.deaifish.mall.api.BIZServiceApi;
-import com.deaifish.mall.config.oss.PathProperties;
+import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.SetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
@@ -52,7 +52,6 @@ public class UserServiceImpl implements UserService {
         userPOS.forEach(userPO -> {
             UserBriefVO bean = BeanUtil.toBean(userPO, UserBriefVO.class);
             list.add(bean);
-            log.info("{}", bean);
         });
 
         return list;
@@ -102,6 +101,8 @@ public class UserServiceImpl implements UserService {
     public UserDetailedVO signUp(UserDTO userDTO) {
         UserPO po = BeanUtil.toBean(userDTO, UserPO.class);
         po.setLastLogin(new Date());
+        po.setPassword(EncryptUtil.encode(po.getPassword()));
+        po.setPaymentPassword(EncryptUtil.encode(po.getPaymentPassword()));
         userRepository.save(po);
         UserPO user = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.wxId.eq(userDTO.getWxId())).fetchOne();
         if (user == null) {
@@ -140,8 +141,13 @@ public class UserServiceImpl implements UserService {
         if (po == null) {
             throw new MallException("用户不存在");
         }
+
         String avatar = po.getAvatar();
-        bizServiceApi.delete(avatar);
+        // 如果不是默认头像，则删除
+        if (!avatar.endsWith(pathProperties.getUserDefaultPhotoName())) {
+            bizServiceApi.delete(avatar);
+        }
+
         jpaQueryFactory.delete(USER_PO).where(USER_PO.userId.eq(id)).execute();
     }
 }

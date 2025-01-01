@@ -65,7 +65,7 @@ public class UserDTO {
      * 头像
      */
     @Schema(description = "头像")
-    private String avatar = "default-user-photo.png";
+    private String avatar;
 
     /**
      * 电话号
@@ -124,5 +124,9 @@ public class UserDTO {
 
     public void setIntegral(Integer integral) {
         this.integral = integral == null ? 0 : integral;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar == null ? "https://mall-j-bucket.oss-cn-hangzhou.aliyuncs.com/avatar/default-user-photo.png" : avatar;
     }
 }
