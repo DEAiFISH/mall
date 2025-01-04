@@ -77,7 +77,7 @@ public class ProductPO extends BasePO implements Serializable {
     /**
      * 特有规格参数（JSON）
      */
-    @Column(name = "parameter", nullable = false, length = 512, columnDefinition = "VARCHAR(512) COMMENT '特有规格参数（JSON格式：{属性：参数}）'")
+    @Column(name = "parameter", length = 512, columnDefinition = "VARCHAR(512) COMMENT '特有规格参数（JSON格式：{属性：参数}）'")
     @Convert(converter = StringJSONObjectConverter.class)
     private JSONObject parameter;
 

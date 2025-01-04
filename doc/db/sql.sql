@@ -9,7 +9,8 @@ CREATE TABLE role
     user_id     BIGINT                                                         NOT NULL COMMENT '创建者ID',
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
-    PRIMARY KEY (role_id)
+    PRIMARY KEY (role_id),
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='角色表';
 
@@ -21,7 +22,8 @@ CREATE TABLE permission
     user_id       BIGINT                                                         NOT NULL COMMENT '创建者ID',
     create_time   DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
-    PRIMARY KEY (permission_id)
+    PRIMARY KEY (permission_id),
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='权限表';
 
@@ -34,8 +36,9 @@ CREATE TABLE role_permission
     create_time        DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time        DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
     PRIMARY KEY (role_permission_id),
-    CONSTRAINT fk_role_id FOREIGN KEY (role_id) REFERENCES ROLE (role_id),
-    CONSTRAINT fk_permission_id FOREIGN KEY (permission_id) REFERENCES PERMISSION (permission_id)
+    CONSTRAINT FOREIGN KEY (role_id) REFERENCES ROLE (role_id) ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (permission_id) REFERENCES PERMISSION (permission_id),
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='权限角色表';
 
@@ -60,7 +63,7 @@ CREATE TABLE user
     create_time      DATETIME     DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time      DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
     PRIMARY KEY (user_id),
-    CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES ROLE (role_id)
+    CONSTRAINT FOREIGN KEY (role_id) REFERENCES ROLE (role_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='用户表';
 
@@ -72,7 +75,9 @@ CREATE TABLE user_browse_history
     `product_name` varchar(32)                                                    NOT NULL COMMENT '商品名称',
     `picture`      VARCHAR(256)                                                   NOT NULL COMMENT '商品图片路径',
     create_time    DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
-    update_time    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间'
+    update_time    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='用户浏览记录表';
 
@@ -95,8 +100,8 @@ CREATE TABLE user_label
     interest      Long                                                           NOT NULL COMMENT '兴趣度',
     create_time   DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_label FOREIGN KEY (label_id) REFERENCES label (label_id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (label_id) REFERENCES label (label_id) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='用户标签表';
 
@@ -109,7 +114,9 @@ CREATE TABLE `product_collect`
     `picture`      VARCHAR(256)                                                   NOT NULL COMMENT '商品图片路径',
     `create_time`  DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     `update_time`  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
-    PRIMARY KEY (`collect_id`)
+    PRIMARY KEY (`collect_id`),
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
 ) COMMENT ='商品收藏表';
 
 CREATE TABLE `shipping_address`
@@ -126,7 +133,7 @@ CREATE TABLE `shipping_address`
     `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
     PRIMARY KEY (`address_id`),
-    CONSTRAINT `fk_user_address` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
+    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='收货地址表';
 
@@ -140,7 +147,7 @@ CREATE TABLE classify
     icon        VARCHAR(256)                                                       NOT NULL COMMENT '图标路径',
     create_time DATETIME     DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
-    CONSTRAINT fk_parent_classify FOREIGN KEY (parent_id) REFERENCES classify (classify_id) ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT FOREIGN KEY (parent_id) REFERENCES classify (classify_id) ON DELETE SET NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='商品分类表';
 
@@ -166,7 +173,7 @@ CREATE TABLE product
     brand_id           INT           NOT NULL COMMENT '商品品牌ID',
     price              DOUBLE        NOT NULL COMMENT '价格',
     preferential_price DOUBLE                 DEFAULT NULL COMMENT '优惠价格',
-    parameter          varchar(512)  NOT NULL COMMENT '特有规格参数（JSON格式：{属性：参数}）',
+    parameter          VARCHAR(512) COMMENT '特有规格参数（JSON格式：{属性：参数}）',
     sale               INT           NOT NULL DEFAULT 0 COMMENT '销量',
     brief_description  VARCHAR(512)  NOT NULL COMMENT '简述',
     description        VARCHAR(1024)          DEFAULT NULL COMMENT '详细描述',
@@ -175,8 +182,8 @@ CREATE TABLE product
     details_picture    VARCHAR(1024) NOT NULL COMMENT '详细图路径',
     create_time        DATETIME               DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '创建时间',
     update_time        DATETIME               DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
-    FOREIGN KEY (classify_id) REFERENCES classify (classify_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (brand_id) REFERENCES brand (brand_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (classify_id) REFERENCES classify (classify_id) ON DELETE CASCADE,
+    FOREIGN KEY (brand_id) REFERENCES brand (brand_id) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='商品表';
 
@@ -189,7 +196,7 @@ CREATE TABLE stock
     create_time    DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
     PRIMARY KEY (stock_id),
-    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
 ) COMMENT = '库存表';
 
 CREATE TABLE product_label
@@ -200,8 +207,8 @@ CREATE TABLE product_label
     create_time      DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
     update_time      DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
     PRIMARY KEY (product_label_id),
-    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (label_id) REFERENCES label (label_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
+    FOREIGN KEY (label_id) REFERENCES label (label_id) ON DELETE CASCADE
 ) COMMENT = '商品标签表';
 
 CREATE TABLE `product_evaluation`
@@ -221,4 +228,34 @@ CREATE TABLE `product_evaluation`
     KEY `idx_product_user` (`product_id`, `user_id`) -- 联合索引
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='商品评价表';
+
+CREATE TABLE `orders`
+(
+    `order_id`       BIGINT                 NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+    `user_id`        BIGINT                 NOT NULL COMMENT '用户ID',
+    `product_id`     BIGINT                 NOT NULL COMMENT '商品ID',
+    `parameter`      VARCHAR(512) COMMENT '特有规格参数（json{属性：参数}）',
+    `number`         VARCHAR(32)            NOT NULL COMMENT '订单流水号',
+    `money`          DOUBLE                 NOT NULL COMMENT '订单金额',
+    `payment_method` TINYINT                NOT NULL COMMENT '支付方式（微信：0；支付宝：1）',
+    `memo`           VARCHAR(128) DEFAULT NULL COMMENT '订单备注',
+    `status`         TINYINT                NOT NULL COMMENT '状态（1:待付款 2:待发货 3:待收货 4:待评价 5:成功 6:失败）',
+    `address_id`     BIGINT                 NOT NULL COMMENT '地址ID',
+    `courier_number` VARCHAR(32)  DEFAULT NULL COMMENT '快递单号',
+    `amount`         INT                    NOT NULL COMMENT '商品数量',
+    `pay_time`       DATETIME     DEFAULT NULL COMMENT '付款时间',
+    `ship_time`      DATETIME     DEFAULT NULL COMMENT '发货时间',
+    `finish_time`    DATETIME     DEFAULT NULL COMMENT '完成时间',
+    `cancel_time`    DATETIME     DEFAULT NULL COMMENT '取消时间',
+    `is_pay`         BOOLEAN                NOT NULL COMMENT '是否已经支付（1：已支付，0：未支付）',
+    `is_delete`      TINYINT      DEFAULT 0 NOT NULL COMMENT '删除状态（0：没有删除， 1：回收站， 2：永久删除）',
+    `cancel_reason`  TINYINT      DEFAULT NULL COMMENT '关闭原因（1-超时未支付 2-退款关闭 3-买家取消）',
+    `create_time`    DATETIME     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`    DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`order_id`),
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (address_id) REFERENCES shipping_address (address_id) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='订单表';
 

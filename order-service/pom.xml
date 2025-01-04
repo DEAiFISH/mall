@@ -8,9 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>user-service</artifactId>
-    <description>用户模块</description>
-    <packaging>jar</packaging>
+    <artifactId>order-service</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -109,16 +107,11 @@
             <artifactId>util-common</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.deaifish.mall</groupId>
-            <artifactId>biz-service-api</artifactId>
-        </dependency>
-
         <!--登录认证-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.deaifish.mall</groupId>
             <artifactId>base-auth-common</artifactId>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>
@@ -216,4 +209,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
