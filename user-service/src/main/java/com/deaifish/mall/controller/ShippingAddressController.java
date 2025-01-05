@@ -34,7 +34,7 @@ public class ShippingAddressController {
      */
     @GetMapping("/list/{uId}")
     public R<List<ShippingAddressVO>> listAll(@PathVariable("uId") @Parameter(description = "用户id") Long uId) {
-        return R.success(shippingAddressService.listAll(uId));
+        return R.success("查询成功", shippingAddressService.listAll(uId));
     }
 
     /**
@@ -45,7 +45,7 @@ public class ShippingAddressController {
      */
     @PostMapping("/add")
     public R<Boolean> add(@RequestBody @Valid ShippingAddressDTO shippingAddressDTO) {
-        return R.success(shippingAddressService.add(shippingAddressDTO));
+        return R.success("添加成功", shippingAddressService.add(shippingAddressDTO));
     }
 
     /**
@@ -56,7 +56,7 @@ public class ShippingAddressController {
      */
     @PutMapping("/update")
     public R<Boolean> update(@RequestBody @Valid ShippingAddressDTO shippingAddressDTO) {
-        return R.success(shippingAddressService.update(shippingAddressDTO));
+        return R.success("修改成功", shippingAddressService.update(shippingAddressDTO));
     }
 
     /**
@@ -66,6 +66,6 @@ public class ShippingAddressController {
      */
     @DeleteMapping("/delete/{saId}")
     public R<Boolean> delete(@PathVariable("saId") @Parameter(description = "收货地址id") Long saId) {
-        return R.success(shippingAddressService.delete(saId));
+        return R.success("删除成功", shippingAddressService.delete(saId));
     }
 }

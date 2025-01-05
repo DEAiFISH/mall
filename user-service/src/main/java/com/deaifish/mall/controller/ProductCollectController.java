@@ -33,7 +33,7 @@ public class ProductCollectController {
      */
     @GetMapping("/list/{uId}")
     public R<List<ProductCollectVO>> list(@PathVariable("uId") @Parameter(description = "用户id") Long uId) {
-        return R.success(productCollectService.list(uId));
+        return R.success("查询成功", productCollectService.list(uId));
     }
 
     /**
@@ -46,7 +46,7 @@ public class ProductCollectController {
     @GetMapping("/is-collect/{uId}/{pId}")
     public R<Boolean> isCollect(@PathVariable("uId") @Parameter(description = "用户id") Long uId,
                                 @Parameter(description = "商品id") @PathVariable("pId") Long pId) {
-        return R.success(productCollectService.isCollect(uId, pId));
+        return R.success("查询成功", productCollectService.isCollect(uId, pId));
     }
 
     /**
@@ -59,7 +59,7 @@ public class ProductCollectController {
     @PostMapping("/collect")
     public R<Boolean> collect(@RequestParam("uId") @Parameter(description = "用户id") Long uId,
                               @RequestParam("pId") @Parameter(description = "商品id") Long pId) {
-        return R.success(productCollectService.collect(uId, pId));
+        return R.success("收藏成功", productCollectService.collect(uId, pId));
     }
 
     /**
@@ -72,7 +72,7 @@ public class ProductCollectController {
     @DeleteMapping("/cancel-collect")
     public R<Boolean> cancelCollect(@RequestParam("uId") @Parameter(description = "用户id") Long uId,
                                     @RequestParam("pId") @Parameter(description = "商品id") Long pId) {
-        return R.success(productCollectService.cancelCollect(uId, pId));
+        return R.success("取消收藏成功", productCollectService.cancelCollect(uId, pId));
     }
 
 }

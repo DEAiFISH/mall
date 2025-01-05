@@ -33,7 +33,7 @@ public class ClassifyController {
      */
     @GetMapping("/list")
     public R<List<ClassifyVO>> list() {
-        return R.success(classifyService.list());
+        return R.success("查询成功", classifyService.list());
     }
 
     /**
@@ -43,7 +43,7 @@ public class ClassifyController {
      */
     @PostMapping("/add")
     public R<ClassifyVO> add(@RequestBody @Validated ClassifyDTO classifyDTO) {
-        return R.success(classifyService.add(classifyDTO));
+        return R.success("添加成功", classifyService.add(classifyDTO));
     }
 
     /**
@@ -53,7 +53,7 @@ public class ClassifyController {
      */
     @PutMapping("/update")
     public R<ClassifyVO> update(@RequestBody @Validated(UpdateGroup.class) ClassifyDTO classifyDTO) {
-        return R.success(classifyService.update(classifyDTO));
+        return R.success("修改成功", classifyService.update(classifyDTO));
     }
 
     /**
@@ -64,6 +64,6 @@ public class ClassifyController {
     @DeleteMapping("/delete/{classifyId}")
     public R<Boolean> delete(@PathVariable(value = "classifyId") @Parameter(description = "商品分类id") Integer classifyId) {
         classifyService.delete(classifyId);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 }

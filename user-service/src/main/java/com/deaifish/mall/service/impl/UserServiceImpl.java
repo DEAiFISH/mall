@@ -64,12 +64,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetailedVO getById(Long id) {
-        UserPO userPO = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.userId.eq(id)).fetchOne();
-        if (userPO == null) {
+        UserPO userPo = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.userId.eq(id)).fetchOne();
+        if (userPo == null) {
             throw new MallException("用户不存在");
         }
 
-        return getUserDetailedVO(userPO);
+        return getUserDetailedVO(userPo);
     }
 
     @Override
@@ -109,12 +109,13 @@ public class UserServiceImpl implements UserService {
         po.setPassword(EncryptUtil.encode(po.getPassword()));
         po.setPaymentPassword(EncryptUtil.encode(po.getPaymentPassword()));
         userRepository.save(po);
+
         UserPO user = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.wxId.eq(userDTO.getWxId())).fetchOne();
         if (user == null) {
             throw new MallException("用户注册失败，请稍后再试");
         }
 
-        return getUserDetailedVO(po);
+        return getUserDetailedVO(user);
     }
 
     @Override

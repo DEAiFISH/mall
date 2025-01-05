@@ -117,16 +117,4 @@ public class UserDTO {
      */
     @Schema(description = "角色ID")
     private Byte roleId;
-
-    public void setStatus(Byte status) {
-        this.status = status == null ? 1 : status;
-    }
-
-    public void setIntegral(Integer integral) {
-        this.integral = integral == null ? 0 : integral;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar == null ? "https://mall-j-bucket.oss-cn-hangzhou.aliyuncs.com/avatar/default-user-photo.png" : avatar;
-    }
 }

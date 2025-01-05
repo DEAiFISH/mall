@@ -73,7 +73,7 @@ public class UserPO extends BasePO implements Serializable {
     /**
      * 头像
      */
-    @Column(name = "avatar", length = 256, columnDefinition = "default-user-photo.png' COMMENT '头像路径'")
+    @Column(name = "avatar", length = 256, columnDefinition = "https://mall-j-bucket.oss-cn-hangzhou.aliyuncs.com/avatar/default-user-photo.png' COMMENT '头像路径'")
     private String avatar;
 
     /**

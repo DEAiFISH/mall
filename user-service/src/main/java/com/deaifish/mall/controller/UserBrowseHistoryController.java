@@ -34,7 +34,7 @@ public class UserBrowseHistoryController {
      */
     @GetMapping("/list/{uId}")
     public R<List<UserBrowseHistoryVO>> list(@PathVariable(name = "uId") Long uId) {
-        return R.success(userBrowseHistoryService.list(uId));
+        return R.success("查询成功", userBrowseHistoryService.list(uId));
     }
 
     /**
@@ -45,7 +45,7 @@ public class UserBrowseHistoryController {
     @PostMapping("/add")
     public R<Boolean> add(@RequestBody @Validated(ADDGroup.class) UserBrowseHistoryDTO userBrowseHistoryDTO) {
         userBrowseHistoryService.add(userBrowseHistoryDTO);
-        return R.success(true);
+        return R.success("添加成功", true);
     }
 
     /**
@@ -56,6 +56,6 @@ public class UserBrowseHistoryController {
     @DeleteMapping("/delete")
     public R<Boolean> delete(@RequestParam("ids") List<Long> ids) {
         userBrowseHistoryService.delete(ids);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 }

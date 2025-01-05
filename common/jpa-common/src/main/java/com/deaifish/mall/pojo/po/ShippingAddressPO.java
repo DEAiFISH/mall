@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.io.Serializable;
 
@@ -22,6 +23,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 public class ShippingAddressPO extends BasePO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -81,4 +83,8 @@ public class ShippingAddressPO extends BasePO implements Serializable {
      */
     @Column(name = "phone", nullable = false, length = 16, columnDefinition = "VARCHAR(16) COMMENT '电话'")
     private String phone;
+
+    public String getAddress() {
+        return name + " " + phone + " 送至 " + province + " " + city + " " + area + " " + street + " " + full;
+    }
 }

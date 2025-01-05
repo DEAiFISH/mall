@@ -27,23 +27,23 @@ public class StockController {
 
     @GetMapping("/get/{pId}")
     public R<StockVO> getStockByProductId(@PathVariable("pId") @Parameter(description = "商品id") Long pId) {
-        return R.success(stockService.getStockByProductId(pId));
+        return R.success("查询成功", stockService.getStockByProductId(pId));
     }
 
     @PostMapping("/add")
     public R<StockVO> addStock(@RequestBody @Validated StockDTO stockDTO) {
-        return R.success(stockService.addStock(stockDTO));
+        return R.success("添加成功", stockService.addStock(stockDTO));
     }
 
     @PutMapping("/update")
     public R<StockVO> updateStock(@RequestBody @Validated(UpdateGroup.class) StockDTO stockDTO) {
-        return R.success(stockService.updateStock(stockDTO));
+        return R.success("修改成功", stockService.updateStock(stockDTO));
     }
 
     @DeleteMapping("/delete/{stockId}")
     public R<Boolean> deleteStock(@PathVariable("stockId") Long stockId) {
         stockService.deleteStock(stockId);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 
 

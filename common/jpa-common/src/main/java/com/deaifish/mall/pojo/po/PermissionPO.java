@@ -1,8 +1,12 @@
 package com.deaifish.mall.pojo.po;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.DynamicInsert;
 
 /**
  * @description 权限表
@@ -17,7 +21,8 @@ import org.hibernate.annotations.Comment;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionPO extends BasePO{
+@DynamicInsert
+public class PermissionPO extends BasePO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "permission_id", nullable = false, updatable = false, columnDefinition = "COMMENT '权限id'")

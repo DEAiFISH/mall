@@ -36,7 +36,7 @@ public class ProductLabelController {
      */
     @GetMapping("/list/label/{lId}")
     public R<List<ProductBriefVO>> listByLabelId(@PathVariable("lId") @Parameter(description = "标签id") Integer lId) {
-        return R.success(productService.listByLabelId(lId));
+        return R.success("查询成功", productService.listByLabelId(lId));
     }
 
     /**
@@ -46,7 +46,7 @@ public class ProductLabelController {
      */
     @GetMapping("/list/product/{pId}")
     public R<List<LabelVO>> listByProductId(@PathVariable("pId") @Parameter(description = "商品id") Long pId) {
-        return R.success(productService.listByProductId(pId));
+        return R.success("查询成功", productService.listByProductId(pId));
     }
 
     /**
@@ -56,7 +56,7 @@ public class ProductLabelController {
      */
     @PostMapping("/add")
     public R<ProductLabelVO> add(@RequestBody @Validated ProductLabelDTO productLabelDTO) {
-        return R.success(productService.add(productLabelDTO));
+        return R.success("添加成功", productService.add(productLabelDTO));
     }
 
     /**
@@ -66,7 +66,7 @@ public class ProductLabelController {
      */
     @PutMapping("/update")
     public R<ProductLabelVO> update(@RequestBody @Validated(UpdateGroup.class) ProductLabelDTO productLabelDTO) {
-        return R.success(productService.update(productLabelDTO));
+        return R.success("修改成功", productService.update(productLabelDTO));
     }
 
     /**
@@ -77,6 +77,6 @@ public class ProductLabelController {
     @DeleteMapping("/delete/{plId}")
     public R<Boolean> delete(@PathVariable("plId") @Parameter(description = "商品标签id") Long plId) {
         productService.delete(plId);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 }

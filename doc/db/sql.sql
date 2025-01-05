@@ -50,14 +50,14 @@ CREATE TABLE user
     real_name        VARCHAR(16) COMMENT '真实姓名',
     gender           TINYINT      DEFAULT 2 COMMENT '性别（男：1；女：0；未知：2）',
     birthday         DATETIME COMMENT '生日（例如：2024/6/4）',
-    avatar           VARCHAR(256) DEFAULT 'default-user-photo.png' COMMENT '头像路径',
+    avatar           VARCHAR(256) DEFAULT 'https://mall-j-bucket.oss-cn-hangzhou.aliyuncs.com/avatar/default-user-photo.png' COMMENT '头像路径',
     phone            VARCHAR(16) COMMENT '手机号',
     message          VARCHAR(128) COMMENT '个性签名',
     password         VARCHAR(32)                                                        NOT NULL COMMENT '登录密码',
     payment_password VARCHAR(6) COMMENT '支付密码',
     email            VARCHAR(32) COMMENT '邮箱',
     last_login       DATETIME                                                           NOT NULL COMMENT '最后一次登录时间',
-    status           TINYINT                                                            NOT NULL COMMENT '状态（启用：1；禁用：0）',
+    status           TINYINT                                                            NOT NULL DEFAULT 1 COMMENT '状态（启用：1；禁用：0）',
     integral         INT          DEFAULT 0 COMMENT '用户积分',
     role_id          TINYINT COMMENT '角色ID',
     create_time      DATETIME     DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
@@ -258,4 +258,41 @@ CREATE TABLE `orders`
     CONSTRAINT FOREIGN KEY (address_id) REFERENCES shipping_address (address_id) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='订单表';
+
+CREATE TABLE `search_keyword`
+(
+    `search_keyword_id` BIGINT AUTO_INCREMENT                                          NOT NULL COMMENT '搜索关键词ID',
+    `content`           VARCHAR(32)                                                    NOT NULL COMMENT '关键词内容',
+    `amount`            BIGINT                                                         NOT NULL COMMENT '搜索次数',
+    `create_time`       DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
+    `update_time`       DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
+    PRIMARY KEY (`search_keyword_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='搜索关键词表';
+
+CREATE TABLE `homepage_carousel`
+(
+    `chart_id`    BIGINT AUTO_INCREMENT                                          NOT NULL COMMENT '轮播图ID',
+    `product_id`  BIGINT                                                         NOT NULL COMMENT '商品ID',
+    `picture`     VARCHAR(256)                                                   NOT NULL COMMENT '图片路径',
+    `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
+    `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
+    PRIMARY KEY (`chart_id`),
+    CONSTRAINT FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='主页轮播图表';
+
+CREATE TABLE `voucher`
+(
+    `voucher_id`  BIGINT AUTO_INCREMENT                                              NOT NULL COMMENT '优惠卷ID',
+    `name`        VARCHAR(32)                                                        NOT NULL COMMENT '优惠卷名称',
+    `description` VARCHAR(256) DEFAULT NULL COMMENT '优惠卷描述',
+    `price`       DOUBLE                                                             NOT NULL COMMENT '优惠金额',
+    `amount`      INT                                                                NOT NULL COMMENT '余量',
+    `create_time` DATETIME     DEFAULT CURRENT_TIMESTAMP                             NOT NULL COMMENT '创建时间',
+    `update_time` DATETIME     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL COMMENT '修改时间',
+    PRIMARY KEY (`voucher_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT ='优惠卷表';
+
 

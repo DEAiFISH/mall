@@ -33,7 +33,7 @@ public class BrandController {
      */
     @GetMapping("/list")
     public R<List<BrandVO>> list() {
-        return R.success(brandService.list());
+        return R.success("查询成功", brandService.list());
     }
 
     /**
@@ -43,7 +43,7 @@ public class BrandController {
      */
     @PostMapping("/add")
     public R<BrandVO> add(@RequestBody @Validated BrandDTO brandDTO) {
-        return R.success(brandService.add(brandDTO));
+        return R.success("添加成功", brandService.add(brandDTO));
     }
 
     /**
@@ -53,7 +53,7 @@ public class BrandController {
      */
     @PutMapping("/update")
     public R<BrandVO> update(@RequestBody @Validated(UpdateGroup.class) BrandDTO brandDTO) {
-        return R.success(brandService.update(brandDTO));
+        return R.success("修改成功", brandService.update(brandDTO));
     }
 
     /**
@@ -64,6 +64,6 @@ public class BrandController {
     @DeleteMapping("/delete/{id}")
     public R<Boolean> delete(@PathVariable("id") @Parameter(description = "品牌id") Integer id) {
         brandService.delete(id);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 }

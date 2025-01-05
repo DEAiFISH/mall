@@ -94,6 +94,12 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-common -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-common</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.deaifish.mall</groupId>
             <artifactId>jpa-common</artifactId>
@@ -108,10 +114,10 @@
         </dependency>
 
         <!--登录认证-->
-        <!--<dependency>
+        <dependency>
             <groupId>com.deaifish.mall</groupId>
             <artifactId>base-auth-common</artifactId>
-        </dependency>-->
+        </dependency>
     </dependencies>
 
     <build>

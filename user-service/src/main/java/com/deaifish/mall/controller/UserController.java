@@ -38,7 +38,7 @@ public class UserController {
      */
     @GetMapping("/get/all")
     public R<List<UserBriefVO>> getAll() {
-        return R.success(userService.getAll());
+        return R.success("查询成功", userService.getAll());
     }
 
     /**
@@ -48,7 +48,7 @@ public class UserController {
      */
     @GetMapping("/get/{id}")
     public R<UserDetailedVO> get(@PathVariable(name = "id") @Parameter(description = "用户ID") Long id) {
-        return R.success(userService.getById(id));
+        return R.success("查询成功", userService.getById(id));
     }
 
     /**
@@ -86,7 +86,7 @@ public class UserController {
     /**
      * 判断用户是否存在
      * @param wxId
-     * @return
+     * @return true 存在，false 不存在
      */
     @GetMapping("/get/exists/{wxId}")
     public R<Boolean> exists(@PathVariable(name = "wxId") @Parameter(description = "微信id") String wxId) {
@@ -100,7 +100,7 @@ public class UserController {
      */
     @PostMapping("/update")
     public R<UserDetailedVO> update(@RequestBody @Validated(UpdateGroup.class) UserDTO userDTO) {
-        return R.success(userService.update(userDTO));
+        return R.success("修改成功", userService.update(userDTO));
     }
 
     /**

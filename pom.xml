@@ -20,6 +20,7 @@
         <module>biz-service</module>
         <module>login-service</module>
         <module>order-service</module>
+        <module>manage-service</module>
     </modules>
 
     <properties>
@@ -48,6 +49,7 @@
         <jasypt-spring-boot-starter.version>3.0.5</jasypt-spring-boot-starter.version>
         <java-jwt.version>4.4.0</java-jwt.version>
         <netty.resolver-dns.version>4.1.116.Final</netty.resolver-dns.version>
+        <springdoc-openapi-common.version>1.8.0</springdoc-openapi-common.version>
     </properties>
 
     <dependencyManagement>
@@ -231,13 +233,6 @@
                 <version>${jasypt-spring-boot-starter.version}</version>
             </dependency>
 
-            <!--BCrypt加密-->
-            <dependency>
-                <groupId>org.mindrot</groupId>
-                <artifactId>jbcrypt</artifactId>
-                <version>0.4</version>
-            </dependency>
-
             <!-- jwt -->
             <dependency>
                 <groupId>com.auth0</groupId>
@@ -251,6 +246,13 @@
                 <artifactId>netty-resolver-dns-native-macos</artifactId>
                 <version>${netty.resolver-dns.version}</version>
                 <classifier>osx-aarch_64</classifier> <!-- 如果是 M1/M2 芯片 -->
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-common -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-common</artifactId>
+                <version>${springdoc-openapi-common.version}</version>
             </dependency>
 
 
@@ -267,11 +269,6 @@
             <dependency>
                 <groupId>com.deaifish.mall</groupId>
                 <artifactId>util-common</artifactId>
-                <version>${common-mall.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.deaifish.mall</groupId>
-                <artifactId>biz-common</artifactId>
                 <version>${common-mall.version}</version>
             </dependency>
 

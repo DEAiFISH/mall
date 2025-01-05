@@ -29,10 +29,28 @@ public class OrderVO {
     private Long userId;
 
     /**
+     * 用户名称
+     */
+    @Schema(description = "用户名称")
+    private String username;
+
+    /**
      * 商品ID
      */
     @Schema(description = "商品ID")
     private Long productId;
+
+    /**
+     * 商品名称
+     */
+    @Schema(description = "商品名称")
+    private String productName;
+
+    /**
+     * 商品图片地址
+     */
+    @Schema(description = "商品图片地址")
+    private String productImage;
 
     /**
      * 特有规格参数（{属性：参数}）
@@ -75,6 +93,12 @@ public class OrderVO {
      */
     @Schema(description = "地址ID")
     private Long addressId;
+
+    /**
+     * 地址（省市区+详细地址）
+     */
+    @Schema(description = "地址")
+    private String address;
 
     /**
      * 快递单号

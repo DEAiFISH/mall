@@ -1,7 +1,6 @@
 package com.deaifish.mall.pojo.dto;
 
 import com.deaifish.mall.group.UpdateGroup;
-import com.deaifish.mall.pojo.po.BasePO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

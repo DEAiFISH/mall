@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.DynamicInsert;
 
 /**
  * @description 角色权限表
@@ -20,6 +21,7 @@ import org.hibernate.annotations.Comment;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
 public class RolePermissionPO extends BasePO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,7 +5,10 @@ import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductEvaluationDTO;
-import com.deaifish.mall.pojo.po.*;
+import com.deaifish.mall.pojo.po.ProductEvaluationPO;
+import com.deaifish.mall.pojo.po.QProductEvaluationPO;
+import com.deaifish.mall.pojo.po.QUserPO;
+import com.deaifish.mall.pojo.po.UserPO;
 import com.deaifish.mall.pojo.vo.ProductEvaluationVO;
 import com.deaifish.mall.repository.ProductEvaluationRepository;
 import com.deaifish.mall.service.ProductEvaluationService;
@@ -92,7 +95,7 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
         Long userId = po.getUserId();
         UserPO userPO = jpaQueryFactory.selectFrom(USER_PO).where(USER_PO.userId.eq(userId)).fetchOne();
         ProductEvaluationVO vo = BeanUtil.toBean(po, ProductEvaluationVO.class);
-        if(userPO == null){
+        if (userPO == null) {
             return vo;
         }
 

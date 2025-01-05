@@ -68,7 +68,7 @@ public class ProductLabelServiceImpl implements ProductLabelService {
                 .execute();
 
         ProductLabelPO po = jpaQueryFactory.selectFrom(PRODUCT_LABEL_PO).where(PRODUCT_LABEL_PO.productLabelId.eq(productLabelDTO.getProductLabelId())).fetchOne();
-        if(po == null) {
+        if (po == null) {
             throw new MallException("更新失败，找不到对应的产品标签记录");
         }
 

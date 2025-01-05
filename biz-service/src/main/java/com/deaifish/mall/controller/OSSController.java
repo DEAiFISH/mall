@@ -33,7 +33,7 @@ public class OSSController {
     @PostMapping("/oss/upload")
     public R<List<String>> upload(@RequestParam("dir") String dir,
                                   @RequestParam("files") List<MultipartFile> files) {
-        return R.success(ossService.upload(dir, files));
+        return R.success("查询成功", ossService.upload(dir, files));
     }
 
     /**
@@ -44,6 +44,6 @@ public class OSSController {
     @DeleteMapping("/oss/delete")
     public R<Boolean> delete(@RequestParam("url") String url) {
         ossService.delete(url);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 }

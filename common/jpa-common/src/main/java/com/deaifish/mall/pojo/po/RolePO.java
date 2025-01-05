@@ -1,8 +1,12 @@
 package com.deaifish.mall.pojo.po;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.DynamicInsert;
 
 /**
  * @description 角色表
@@ -17,7 +21,8 @@ import org.hibernate.annotations.Comment;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RolePO extends BasePO{
+@DynamicInsert
+public class RolePO extends BasePO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

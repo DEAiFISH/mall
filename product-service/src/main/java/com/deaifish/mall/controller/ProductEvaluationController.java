@@ -34,7 +34,7 @@ public class ProductEvaluationController {
      */
     @GetMapping("/list/{pId}")
     public R<List<ProductEvaluationVO>> listByProductId(@PathVariable(name = "pId") @Parameter(description = "商品id") Long pId) {
-        return R.success(productEvaluationService.listByProductId(pId));
+        return R.success("查询成功", productEvaluationService.listByProductId(pId));
     }
 
     /**
@@ -44,7 +44,7 @@ public class ProductEvaluationController {
      */
     @PostMapping("/add")
     public R<ProductEvaluationVO> add(@RequestBody @Validated ProductEvaluationDTO productEvaluationDTO) {
-        return R.success(productEvaluationService.add(productEvaluationDTO));
+        return R.success("添加成功", productEvaluationService.add(productEvaluationDTO));
     }
 
     /**
@@ -54,7 +54,7 @@ public class ProductEvaluationController {
      */
     @PutMapping("/update")
     public R<ProductEvaluationVO> update(@RequestBody @Validated(UpdateGroup.class) ProductEvaluationDTO productEvaluationDTO) {
-        return R.success(productEvaluationService.update(productEvaluationDTO));
+        return R.success("修改成功", productEvaluationService.update(productEvaluationDTO));
     }
 
     /**
@@ -65,6 +65,6 @@ public class ProductEvaluationController {
     @DeleteMapping("/delete/{evaluationId}")
     public R<Boolean> delete(@PathVariable(value = "evaluationId") @Parameter(description = "评价id") Long evaluationId) {
         productEvaluationService.delete(evaluationId);
-        return R.success(true);
+        return R.success("删除成功", true);
     }
 }
