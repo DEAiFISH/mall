@@ -33,7 +33,7 @@ public class OSSController {
     @PostMapping("/oss/upload")
     public R<List<String>> upload(@RequestParam("dir") String dir,
                                   @RequestParam("files") List<MultipartFile> files) {
-        return R.success("查询成功", ossService.upload(dir, files));
+        return R.success("添加成功", ossService.upload(dir, files));
     }
 
     /**

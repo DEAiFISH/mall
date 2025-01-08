@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * @description 商品简要信息VO类，用于前端展示。
+ * @description TODO
  *
  * @author DEAiFISH
- * @date 2024/12/28 15:19
+ * @date 2025/1/8 17:31
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductBriefVO implements Serializable {
+public class ProductESVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -28,16 +28,16 @@ public class ProductBriefVO implements Serializable {
     private Long productId;
 
     /**
-     * 商品名称
-     */
-    @Schema(description = "商品名称")
-    private String name;
-
-    /**
      * 商品编码
      */
     @Schema(description = "商品编码")
     private String number;
+
+    /**
+     * 商品名称
+     */
+    @Schema(description = "商品名称")
+    private String name;
 
     /**
      * 商品分类ID
@@ -80,12 +80,6 @@ public class ProductBriefVO implements Serializable {
      */
     @Schema(description = "销量")
     private Integer sale;
-
-    /**
-     * 库存量
-     */
-    @Schema(description = "库存量")
-    private Integer stock;
 
     /**
      * 简述

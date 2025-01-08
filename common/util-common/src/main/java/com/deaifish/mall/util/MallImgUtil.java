@@ -62,7 +62,7 @@ public class MallImgUtil {
         try {
             InputStream is = thumbnail(inputStream);
             // 创建PutObjectRequest对象。
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketProperties.bucketName, dir + File.separator + fileName, is);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketProperties.bucketName, dir + "/" + fileName, is);
             // 创建PutObject请求。
             ossClient.putObject(putObjectRequest);
 
@@ -83,7 +83,7 @@ public class MallImgUtil {
                 ossClient.shutdown();
             }
         }
-        return getImgURL(dir + File.separator + fileName);
+        return getImgURL(dir + "/" + fileName);
     }
 
     /**

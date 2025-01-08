@@ -21,6 +21,7 @@
         <module>login-service</module>
         <module>order-service</module>
         <module>manage-service</module>
+        <module>search-service</module>
     </modules>
 
     <properties>
@@ -33,7 +34,7 @@
         <mysql-connector.version>8.0.33</mysql-connector.version>
         <gateway.version>4.2.0</gateway.version>
         <spring-cloud-alibaba>2023.0.1.2</spring-cloud-alibaba>
-        <elasticsearch.version>7.17.21</elasticsearch.version>
+        <elasticsearch.version>7.14.0</elasticsearch.version>
         <fastjson.version>1.2.83</fastjson.version>
         <fastjson2.version>2.0.51</fastjson2.version>
         <hutool.version>5.8.26</hutool.version>
@@ -50,6 +51,7 @@
         <java-jwt.version>4.4.0</java-jwt.version>
         <netty.resolver-dns.version>4.1.116.Final</netty.resolver-dns.version>
         <springdoc-openapi-common.version>1.8.0</springdoc-openapi-common.version>
+        <easy-es-boot-starter.version>2.0.0</easy-es-boot-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -140,6 +142,14 @@
                 <version>${mysql-connector.version}</version>
             </dependency>
 
+            <!-- 引入easy-es最新版本的依赖-->
+            <dependency>
+                <groupId>org.dromara.easy-es</groupId>
+                <artifactId>easy-es-boot-starter</artifactId>
+                <!--这里Latest Version是指最新版本的依赖,比如2.0.0,可以通过下面的图片获取-->
+                <version>${easy-es-boot-starter.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
@@ -149,17 +159,6 @@
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
                 <version>${elasticsearch.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch.client</groupId>
-                <artifactId>elasticsearch-rest-client</artifactId>
-                <version>${elasticsearch.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>commons-logging</artifactId>
-                        <groupId>commons-logging</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <dependency>
@@ -255,7 +254,6 @@
                 <version>${springdoc-openapi-common.version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>com.deaifish.mall</groupId>
                 <artifactId>core-common</artifactId>
@@ -280,7 +278,18 @@
 
             <dependency>
                 <groupId>com.deaifish.mall</groupId>
+                <artifactId>es-common</artifactId>
+                <version>${common-mall.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
                 <artifactId>biz-service-api</artifactId>
+                <version>${api-mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>search-service-api</artifactId>
                 <version>${api-mall.version}</version>
             </dependency>
         </dependencies>

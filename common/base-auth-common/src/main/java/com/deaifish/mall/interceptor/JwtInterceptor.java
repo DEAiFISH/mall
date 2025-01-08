@@ -34,6 +34,12 @@ public class JwtInterceptor implements HandlerInterceptor {
         String requestPath = request.getServletPath();
         log.info("JwtInterceptor 拦截请求：{}", requestPath);
 
+        String road = request.getHeader("ROAD");
+        if(StrUtil.isNotBlank(road)
+        && "FEIGN-CLIENT".equals(road)){
+            return true;
+        }
+
         // 动态排除路径
         if (jwtProperties.getExcludePath().contains(requestPath)) {
             return true;

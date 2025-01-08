@@ -15,6 +15,7 @@
         <module>jpa-common</module>
         <module>util-common</module>
         <module>base-auth-common</module>
+        <module>es-common</module>
     </modules>
 
     <properties>

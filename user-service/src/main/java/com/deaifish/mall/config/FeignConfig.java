@@ -2,7 +2,6 @@ package com.deaifish.mall.config;
 
 import feign.Logger;
 import feign.RequestInterceptor;
-import feign.RequestTemplate;
 import feign.Retryer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -3,13 +3,16 @@ package com.deaifish.mall.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
 import com.deaifish.mall.api.BIZServiceApi;
+import com.deaifish.mall.api.SearchServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductDTO;
+import com.deaifish.mall.pojo.dto.ProductESDTO;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductRepository;
+import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ProductService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
@@ -38,6 +41,8 @@ public class ProductServiceImpl implements ProductService {
     private BIZServiceApi bizServiceApi;
     @Resource
     private PathProperties pathProperties;
+    @Resource
+    private SearchServiceApi searchServiceApi;
 
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
     private static final QBrandPO BRAND_PO = QBrandPO.brandPO;
@@ -63,12 +68,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductVO add(ProductDTO productdto) {
         ProductPO po = productRepository.save(BeanUtil.toBean(productdto, ProductPO.class));
+
+        // 保存商品到es中
+        sync2Es(List.of(po));
+
         return productPo2Vo(po, ProductVO.class);
     }
 
     @Override
     public List<ProductVO> addBatch(List<ProductDTO> list) {
         List<ProductPO> poList = productRepository.saveAll(list.stream().map(dto -> BeanUtil.toBean(dto, ProductPO.class)).toList());
+
+        sync2Es(poList);
+
         return poList.stream().map(po -> productPo2Vo(po, ProductVO.class)).toList();
     }
 
@@ -92,6 +104,9 @@ public class ProductServiceImpl implements ProductService {
                 .where(PRODUCT_PO.productId.eq(productdto.getProductId()))
                 .execute();
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productdto.getProductId())).fetchOne();
+
+        sync2Es(List.of(po));
+
         return productPo2Vo(po, ProductVO.class);
     }
 
@@ -114,6 +129,8 @@ public class ProductServiceImpl implements ProductService {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
         jpaQueryFactory.delete(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).execute();
+
+        searchServiceApi.deleteProductById(productId);
     }
 
     private <T> T productPo2Vo(ProductPO source, Class<T> clazz) {
@@ -133,5 +150,21 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return vo;
+    }
+
+    private Boolean sync2Es(List<ProductPO> list) {
+        if (list.isEmpty()) {
+            return false;
+        }
+
+        List<ProductESDTO> esdtos = list.stream().map(po -> {
+            ProductVO vo = productPo2Vo(po, ProductVO.class);
+            return BeanUtil.toBean(vo, ProductESDTO.class);
+        }).toList();
+
+        R<Boolean> booleanR = searchServiceApi.saveProductBatch(esdtos);
+        log.info("保存商品到es中:{}", booleanR.getData());
+
+        return booleanR.getData();
     }
 }
