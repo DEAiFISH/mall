@@ -52,6 +52,7 @@
         <netty.resolver-dns.version>4.1.116.Final</netty.resolver-dns.version>
         <springdoc-openapi-common.version>1.8.0</springdoc-openapi-common.version>
         <easy-es-boot-starter.version>2.0.0</easy-es-boot-starter.version>
+        <sentive-word.version>0.24.0</sentive-word.version>
     </properties>
 
     <dependencyManagement>
@@ -252,6 +253,12 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-common</artifactId>
                 <version>${springdoc-openapi-common.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sensitive-word</artifactId>
+                <version>${sentive-word.version}</version>
             </dependency>
 
             <dependency>

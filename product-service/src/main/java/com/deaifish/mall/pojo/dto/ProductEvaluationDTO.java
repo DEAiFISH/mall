@@ -59,7 +59,6 @@ public class ProductEvaluationDTO implements Serializable {
      * 商家回复
      */
     @Schema(description = "商家回复")
-    @NotBlank(message = "商家回复不能为空")
     @Length(max = 512, message = "商家回复长度不能超过{max}")
     private String reply;
 
@@ -67,7 +66,6 @@ public class ProductEvaluationDTO implements Serializable {
      * 是否回复
      */
     @Schema(description = "是否回复")
-    @NotNull(message = "是否回复不能为空")
     private Boolean isReply;
 
     /**
@@ -81,8 +79,6 @@ public class ProductEvaluationDTO implements Serializable {
      * 图片路径
      */
     @Schema(description = "图片路径")
-    @NotBlank(message = "图片路径不能为空")
-    @Length(max = 256, message = "图片路径长度不能超过{max}")
     private List<String> picture;
 
     /**

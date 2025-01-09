@@ -12,6 +12,7 @@ import com.deaifish.mall.pojo.po.UserPO;
 import com.deaifish.mall.pojo.vo.ProductEvaluationVO;
 import com.deaifish.mall.repository.ProductEvaluationRepository;
 import com.deaifish.mall.service.ProductEvaluationService;
+import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @description TODO
+ * @description 商品评价业务实现类
  *
  * @author DEAiFISH
  * @date 2024/12/28 20:17
@@ -52,6 +53,7 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     @Override
     @Transactional
     public ProductEvaluationVO add(ProductEvaluationDTO productEvaluationDTO) {
+        wordTool(productEvaluationDTO);
         ProductEvaluationPO po = productEvaluationRepository.save(BeanUtil.toBean(productEvaluationDTO, ProductEvaluationPO.class));
 
         return getProductEvaluationVO(po);
@@ -60,6 +62,7 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     @Override
     @Transactional
     public ProductEvaluationVO update(ProductEvaluationDTO productEvaluationDTO) {
+        wordTool(productEvaluationDTO);
         jpaQueryFactory.update(PRODUCT_EVALUATION_PO)
                 .set(PRODUCT_EVALUATION_PO.productId, productEvaluationDTO.getProductId())
                 .set(PRODUCT_EVALUATION_PO.userId, productEvaluationDTO.getUserId())
@@ -102,5 +105,11 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
         vo.setUserName(userPO.getNickName());
         vo.setAvatar(userPO.getAvatar());
         return vo;
+    }
+
+    private static void wordTool(ProductEvaluationDTO dto) {
+        String content = dto.getContent();
+        content = SensitiveWordHelper.replace(content);
+        dto.setContent(content);
     }
 }
