@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>core-common</artifactId>
+    <description>核心通用模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>order-service</artifactId>
+    <description>订单模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>login-service</artifactId>
+    <description>登录模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

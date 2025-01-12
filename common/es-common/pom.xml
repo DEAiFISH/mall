@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>es-common</artifactId>
+    <description>es相关通用类</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

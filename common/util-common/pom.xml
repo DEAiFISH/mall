@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>util-common</artifactId>
+    <description>通用工具模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

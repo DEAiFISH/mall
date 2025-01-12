@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>base-auth-common</artifactId>
+    <description>身份认证模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

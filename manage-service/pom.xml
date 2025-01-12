@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>manage-service</artifactId>
+    <description>平台管理模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
