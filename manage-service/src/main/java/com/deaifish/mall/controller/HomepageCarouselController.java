@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @Tag(name = "首页轮播图管理")
-@RequestMapping("/homepageCarousel/v1")
+@RequestMapping("/homepage-carousel/v1")
 @Validated
 public class HomepageCarouselController {
     @Resource

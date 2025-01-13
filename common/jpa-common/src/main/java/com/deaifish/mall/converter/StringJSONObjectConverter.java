@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import jakarta.persistence.AttributeConverter;
 
 /**
- * @description TODO
+ * @description JSON 转 String 转换器
  *
  * @author DEAiFISH
  * @date 2024/12/28 15:09

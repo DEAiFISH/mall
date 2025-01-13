@@ -1,7 +1,8 @@
 package com.deaifish.mall.config;
 
 import com.deaifish.mall.exception.MallException;
-import com.deaifish.mall.pojo.JwtUser;
+import com.deaifish.mall.pojo.bo.JwtUser;
+import com.deaifish.mall.pojo.bo.UserNamePasswordUserAuthToken;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.util.JWTUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -69,7 +70,7 @@ public class UserDetailsConfig implements UserDetailsService, UserDetailsPasswor
         Byte status = userPO.getStatus();
 
         // 生成token
-        String token = jwtUtil.createToken(new JwtUser(wxId, password, authorities));
+        String token = jwtUtil.createToken(new JwtUser(userPO.getUserId(), wxId, password, authorities));
 
         // 封装用户信息
         UserNamePasswordUserAuthToken user = new UserNamePasswordUserAuthToken(wxId, password, token,

@@ -53,6 +53,8 @@
         <springdoc-openapi-common.version>1.8.0</springdoc-openapi-common.version>
         <easy-es-boot-starter.version>2.0.0</easy-es-boot-starter.version>
         <sentive-word.version>0.24.0</sentive-word.version>
+        <spring-statemachine-core.version>4.0.0</spring-statemachine-core.version>
+        <spring-statemachine-redis.version>1.2.14.RELEASE</spring-statemachine-redis.version>
     </properties>
 
     <dependencyManagement>
@@ -255,12 +257,14 @@
                 <version>${springdoc-openapi-common.version}</version>
             </dependency>
 
+            <!-- 敏感词过滤 -->
             <dependency>
                 <groupId>com.github.houbb</groupId>
                 <artifactId>sensitive-word</artifactId>
                 <version>${sentive-word.version}</version>
             </dependency>
 
+            <!-- 自定义模块 -->
             <dependency>
                 <groupId>com.deaifish.mall</groupId>
                 <artifactId>core-common</artifactId>
@@ -297,6 +301,11 @@
             <dependency>
                 <groupId>com.deaifish.mall</groupId>
                 <artifactId>search-service-api</artifactId>
+                <version>${api-mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>product-service-api</artifactId>
                 <version>${api-mall.version}</version>
             </dependency>
         </dependencies>

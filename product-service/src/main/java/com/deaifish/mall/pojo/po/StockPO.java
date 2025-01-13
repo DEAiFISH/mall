@@ -38,18 +38,18 @@ public class StockPO extends BasePO implements Serializable {
     /**
      * 商品ID
      */
-    @Column(name = "product_id", nullable = false, unique = true, columnDefinition = "BIGINT COMMENT '商品ID'")
+    @Column(name = "product_id", unique = true, columnDefinition = "BIGINT NOT NULL UNIQUE COMMENT '商品ID'")
     private Long productId;
 
     /**
      * 库存量
      */
-    @Column(name = "amount", nullable = false, columnDefinition = "INT COMMENT '库存量'")
+    @Column(name = "amount", columnDefinition = "INT NOT NULL DEFAULT 0 COMMENT '库存量'")
     private Integer amount;
 
     /**
      * 警报库存量
      */
-    @Column(name = "warning_amount", nullable = false, columnDefinition = "INT COMMENT '警报库存量'")
+    @Column(name = "warning_amount", columnDefinition = "INT NOT NULL DEFAULT 0 COMMENT '警报库存量'")
     private Integer warningAmount;
 }

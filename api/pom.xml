@@ -15,6 +15,7 @@
         <module>pay-service-api</module>
         <module>biz-service-api</module>
         <module>search-service-api</module>
+        <module>product-service-api</module>
     </modules>
 
 

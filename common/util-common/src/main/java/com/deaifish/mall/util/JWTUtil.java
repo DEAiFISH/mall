@@ -7,12 +7,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.deaifish.mall.config.JWTProperties;
-import com.deaifish.mall.pojo.JwtUser;
-import jakarta.annotation.Resource;
+import com.deaifish.mall.pojo.bo.JwtUser;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -32,11 +33,10 @@ import java.util.stream.Collectors;
 @Data
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JWTUtil {
-    @Resource
-    private JWTProperties jwtProperties;
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    private final JWTProperties jwtProperties;
+    private final StringRedisTemplate stringRedisTemplate;
 
     /**
      * 生成用户token,设置token超时时间
@@ -46,7 +46,7 @@ public class JWTUtil {
     public String createToken(JwtUser user) {
         Assert.notNull(user, "用户信息不能为空");
 
-        String username = user.getUsername();
+        String wxId = user.getWxId();
 
         //过期时间
         Date expireDate = new Date(System.currentTimeMillis() + jwtProperties.getExpiration() * 1000);
@@ -57,13 +57,14 @@ public class JWTUtil {
         // 提取权限名称
         List<String> authorities = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .toList();
 
         String token = JWT.create()
                 // 添加头部
                 .withHeader(map)
                 //可以将基本信息放到claims中
-                .withClaim("username", username)
+                .withClaim("userId", user.getUserId())
+                .withClaim("wxId", wxId)
                 .withClaim("password", user.getPassword())
                 .withClaim("authorities", authorities)
                 //超时设置,设置过期的日期
@@ -74,7 +75,7 @@ public class JWTUtil {
                 .sign(Algorithm.HMAC256(jwtProperties.getSecret()));
 
         //保存到redis
-        this.saveJwtToRedis(username, token);
+        this.saveJwtToRedis(wxId, token);
 
         return token;
     }
@@ -87,9 +88,9 @@ public class JWTUtil {
     public Map<String, Claim> verifyToken(String token) {
         DecodedJWT jwt = JWT.decode(token);
         //校验token是否正确
-        String username = jwt.getClaim("username").asString();
+        String wxId = jwt.getClaim("wxId").asString();
         // 校验 Redis 中是否存在该用户的 JWT
-        String redisToken = getJwtFromRedis(username);
+        String redisToken = getJwtFromRedis(wxId);
         if (StrUtil.isBlank(redisToken) || !token.equals(redisToken)) {
             return null;
         }
@@ -98,32 +99,50 @@ public class JWTUtil {
 
     /**
      * 将 JWT 保存到 Redis
-     * @param username
+     * @param wxId
      * @param jwt
      */
-    public void saveJwtToRedis(String username, String jwt) {
+    public void saveJwtToRedis(String wxId, String jwt) {
         // Redis key 的前缀
-        String key = "JWT:" + username;
+        String key = "JWT:" + wxId;
         stringRedisTemplate.opsForValue().set(key, jwt, jwtProperties.getExpiration(), TimeUnit.SECONDS);
     }
 
     /**
      * 从 Redis 获取 JWT
-     * @param username
+     * @param wxId
      * @return
      */
-    public String getJwtFromRedis(String username) {
-        String key = "JWT:" + username;
+    public String getJwtFromRedis(String wxId) {
+        String key = "JWT:" + wxId;
         return stringRedisTemplate.opsForValue().get(key);
     }
 
     /**
      * 删除 Redis 中的 JWT
-     * @param username
+     * @param wxId
      */
-    public void deleteJwtFromRedis(String username) {
-        String key = "JWT:" + username;
+    public void deleteJwtFromRedis(String wxId) {
+        String key = "JWT:" + wxId;
         stringRedisTemplate.delete(key);
     }
 
+    public JwtUser parseToken(Map<String, Claim> userData) {
+        Long userId = userData.get("userId").asLong();
+        String wxId = userData.get("wxId").asString();
+        String password = userData.get("password").asString();
+        List<String> roles = userData.get("authorities").asList(String.class);
+
+        // 将每个角色字符串转换为 SimpleGrantedAuthority
+        List<GrantedAuthority> authorities = roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        return JwtUser.builder()
+                .userId(userId)
+                .wxId(wxId)
+                .password(password)
+                .authorities(authorities)
+                .build();
+    }
 }

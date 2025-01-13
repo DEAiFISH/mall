@@ -1,7 +1,10 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.AuthUserContext;
 import com.deaifish.mall.group.ADDGroup;
 import com.deaifish.mall.group.UpdateGroup;
+import com.deaifish.mall.pojo.annotation.RequiresRole;
+import com.deaifish.mall.pojo.bo.JwtUser;
 import com.deaifish.mall.pojo.dto.SetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
@@ -13,6 +16,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,15 +32,18 @@ import java.util.List;
 @RequestMapping("/user/v1")
 @Tag(name = "用户信息接口")
 @Validated
+@RequiresRole("ADMIN")
+@RequiredArgsConstructor
 public class UserController {
-    @Resource
-    private UserService userService;
+
+    private final UserService userService;
 
     /**
      * 获取所有用户信息
      * @return
      */
     @GetMapping("/get/all")
+    @RequiresRole("ROLE_CUSTOMER")
     public R<List<UserBriefVO>> getAll() {
         return R.success("查询成功", userService.getAll());
     }

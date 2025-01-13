@@ -39,49 +39,49 @@ public class ShippingAddressPO extends BasePO implements Serializable {
     /**
      * 用户ID
      */
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT COMMENT '用户ID'")
+    @Column(name = "user_id", columnDefinition = "BIGINT NOT NULL COMMENT '用户ID'")
     private Long userId;
 
     /**
      * 收货人名字
      */
-    @Column(name = "name", nullable = false, length = 32, columnDefinition = "VARCHAR(32) COMMENT '收货人名字'")
+    @Column(name = "name", columnDefinition = "VARCHAR(32) NOT NULL COMMENT '收货人名字'")
     private String name;
 
     /**
      * 省
      */
-    @Column(name = "province", nullable = false, length = 16, columnDefinition = "VARCHAR(16) COMMENT '省'")
+    @Column(name = "province", columnDefinition = "VARCHAR(16) NOT NULL COMMENT '省'")
     private String province;
 
     /**
      * 市
      */
-    @Column(name = "city", nullable = false, length = 16, columnDefinition = "VARCHAR(16) COMMENT '市'")
+    @Column(name = "city", columnDefinition = "VARCHAR(16) NOT NULL COMMENT '市'")
     private String city;
 
     /**
      * 区/县
      */
-    @Column(name = "area", nullable = false, length = 16, columnDefinition = "VARCHAR(16) COMMENT '区/县'")
+    @Column(name = "area", columnDefinition = "VARCHAR(16) NOT NULL COMMENT '区/县'")
     private String area;
 
     /**
      * 街道
      */
-    @Column(name = "street", nullable = false, length = 32, columnDefinition = "VARCHAR(32) COMMENT '街道'")
+    @Column(name = "street", columnDefinition = "VARCHAR(32) NOT NULL COMMENT '街道'")
     private String street;
 
     /**
      * 详细地址
      */
-    @Column(name = "full", nullable = false, length = 32, columnDefinition = "VARCHAR(32) COMMENT '详细地址'")
+    @Column(name = "full", columnDefinition = "VARCHAR(32) NOT NULL COMMENT '详细地址'")
     private String full;
 
     /**
      * 电话
      */
-    @Column(name = "phone", nullable = false, length = 16, columnDefinition = "VARCHAR(16) COMMENT '电话'")
+    @Column(name = "phone", columnDefinition = "VARCHAR(16) NOT NULL COMMENT '电话'")
     private String phone;
 
     public String getAddress() {

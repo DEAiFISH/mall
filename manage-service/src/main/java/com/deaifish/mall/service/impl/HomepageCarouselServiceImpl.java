@@ -9,6 +9,7 @@ import com.deaifish.mall.repository.HomepageCarouseRepository;
 import com.deaifish.mall.service.HomepageCarouselService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,11 @@ import java.util.List;
  * @date 2025/1/5 23:04
  */
 @Service
+@RequiredArgsConstructor
 public class HomepageCarouselServiceImpl implements HomepageCarouselService {
 
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private HomepageCarouseRepository homepageCarouseRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final HomepageCarouseRepository homepageCarouseRepository;
 
     private static final QHomepageCarouselPO HOMEPAGE_CAROUSEL_PO = QHomepageCarouselPO.homepageCarouselPO;
 

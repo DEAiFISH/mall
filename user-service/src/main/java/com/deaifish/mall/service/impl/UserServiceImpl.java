@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
         po.setLastLogin(new Date());
         po.setPassword(EncryptUtil.encode(po.getPassword()));
         po.setPaymentPassword(EncryptUtil.encode(po.getPaymentPassword()));
-        userRepository.save(po);
+        userRepository.saveAndFlush(po);
 
         UserPO user = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.wxId.eq(userDTO.getWxId())).fetchOne();
         if (user == null) {

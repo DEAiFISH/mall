@@ -8,12 +8,14 @@ import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.dto.ProductESDTO;
+import com.deaifish.mall.pojo.dto.StockDTO;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductRepository;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ProductService;
+import com.deaifish.mall.service.StockService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +45,8 @@ public class ProductServiceImpl implements ProductService {
     private PathProperties pathProperties;
     @Resource
     private SearchServiceApi searchServiceApi;
+    @Resource
+    private StockService stokeService;
 
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
     private static final QBrandPO BRAND_PO = QBrandPO.brandPO;
@@ -68,6 +72,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductVO add(ProductDTO productdto) {
         ProductPO po = productRepository.save(BeanUtil.toBean(productdto, ProductPO.class));
+
+        stokeService.createStock(productdto.getProductId(), 0);
 
         // 保存商品到es中
         sync2Es(List.of(po));

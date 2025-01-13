@@ -7,7 +7,7 @@ import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.OrderService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +23,9 @@ import java.util.List;
 @RequestMapping("/order/v1")
 @Tag(name = "订单接口")
 @Validated
+@RequiredArgsConstructor
 public class OrderController {
-    @Resource
-    private OrderService orderService;
+    private final OrderService orderService;
 
 
     /**

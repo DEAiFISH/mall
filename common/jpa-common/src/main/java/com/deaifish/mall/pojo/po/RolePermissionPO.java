@@ -25,24 +25,24 @@ import org.hibernate.annotations.DynamicInsert;
 public class RolePermissionPO extends BasePO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_permission_id", nullable = false, updatable = false, columnDefinition = "COMMENT '主键'")
+    @Column(name = "role_permission_id", columnDefinition = "TINYINT COMMENT '角色权限id'")
     private Byte rolePermissionId;
 
     /**
      * 角色id
      */
-    @Column(name = "role_id", columnDefinition = "COMMENT '角色id")
+    @Column(name = "role_id",columnDefinition = "TINYINT NOT NULL COMMENT '角色id'")
     private Byte roleId;
 
     /**
      * 权限id
      */
-    @Column(name = "permission_id", columnDefinition = "COMMENT '权限id")
+    @Column(name = "permission_id", columnDefinition = "TINYINT NOT NULL COMMENT '权限id'")
     private Byte permissionId;
 
     /**
      * 用户id
      */
-    @Column(name = "user_id", nullable = false, columnDefinition = "COMMENT '用户id")
+    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT NOT NULL COMMENT '用户id'")
     private Long userId;
 }

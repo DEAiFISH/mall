@@ -1,9 +1,7 @@
 package com.deaifish.mall.handler;
 
-import com.deaifish.mall.pojo.po.UserNamePasswordUserAuthToken;
-import com.deaifish.mall.util.JWTUtil;
+import com.deaifish.mall.pojo.bo.UserNamePasswordUserAuthToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,8 +21,6 @@ import java.util.Map;
  */
 @Component
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-    @Resource
-    private JWTUtil jwtUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

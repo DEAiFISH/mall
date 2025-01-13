@@ -38,12 +38,12 @@ public class ProductLabelPO extends BasePO implements Serializable {
     /**
      * 商品ID
      */
-    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT COMMENT '商品ID'")
+    @Column(name = "product_id", columnDefinition = "BIGINT NOT NULL COMMENT '商品ID'")
     private Long productId;
 
     /**
      * 标签ID
      */
-    @Column(name = "label_id", nullable = false, columnDefinition = "INT COMMENT '标签ID'")
+    @Column(name = "label_id", columnDefinition = "INT NOT NULL COMMENT '标签ID'")
     private Integer labelId;
 }

@@ -33,24 +33,24 @@ public class LabelPO extends BasePO implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "label_id", nullable = false, columnDefinition = "INT COMMENT '标签ID'")
+    @Column(name = "label_id", columnDefinition = "INT COMMENT '标签ID'")
     private Integer labelId;
 
     /**
      * 名称
      */
-    @Column(name = "name", nullable = false, length = 32, unique = true, columnDefinition = "VARCHAR(32) COMMENT '名称'")
+    @Column(name = "name", columnDefinition = "VARCHAR(32) NOT NULL UNIQUE COMMENT '名称'")
     private String name;
 
     /**
      * 权重
      */
-    @Column(name = "weights", nullable = false, columnDefinition = "BIGINT COMMENT '权重'")
+    @Column(name = "weights", columnDefinition = "BIGINT NOT NULL COMMENT '权重'")
     private Long weights;
 
     /**
      * 描述
      */
-    @Column(name = "description", length = 512, columnDefinition = "VARCHAR(512) COMMENT '描述'")
+    @Column(name = "description", columnDefinition = "VARCHAR(512) COMMENT '描述'")
     private String description;
 }

@@ -1,4 +1,4 @@
-package com.deaifish.mall.pojo.po;
+package com.deaifish.mall.pojo.bo;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;

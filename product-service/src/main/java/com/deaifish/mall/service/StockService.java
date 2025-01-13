@@ -3,6 +3,8 @@ package com.deaifish.mall.service;
 import com.deaifish.mall.pojo.dto.StockDTO;
 import com.deaifish.mall.pojo.vo.StockVO;
 
+import java.util.List;
+
 /**
  * @description TODO
  *
@@ -10,6 +12,13 @@ import com.deaifish.mall.pojo.vo.StockVO;
  * @date 2024/12/28 21:22
  */
 public interface StockService {
+
+    /**
+     * 查询所有库存信息
+     * @return
+     */
+    List<StockVO> listStock();
+
     /**
      * 根据商品ID查询库存信息
      * @param pId
@@ -36,4 +45,11 @@ public interface StockService {
      * @param stockId
      */
     void deleteStock(Long stockId);
+
+    /**
+     * 创建库存信息
+     * @param productId
+     * @param amount
+     */
+    void createStock(Long productId, Integer amount);
 }

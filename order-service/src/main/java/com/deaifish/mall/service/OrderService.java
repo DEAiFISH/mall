@@ -34,6 +34,13 @@ public interface OrderService {
     List<OrderVO> getByProductId(Long productId);
 
     /**
+     * 查询订单是否超时
+     * @param orderId
+     * @return
+     */
+    boolean checkOrderIsTimeout(Long orderId);
+
+    /**
      * 根据订单状态查询
      * @param orderDTO
      * @return

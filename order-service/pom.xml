@@ -103,6 +103,11 @@
 
         <dependency>
             <groupId>com.deaifish.mall</groupId>
+            <artifactId>product-service-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.deaifish.mall</groupId>
             <artifactId>jpa-common</artifactId>
         </dependency>
         <dependency>

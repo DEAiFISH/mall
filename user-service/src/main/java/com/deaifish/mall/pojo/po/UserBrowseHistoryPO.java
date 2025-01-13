@@ -33,30 +33,30 @@ public class UserBrowseHistoryPO extends BasePO implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "history_id", nullable = false, columnDefinition = "BIGINT COMMENT '用户浏览记录ID'")
+    @Column(name = "history_id", columnDefinition = "BIGINT COMMENT '用户浏览记录ID'")
     private Long historyId;
 
     /**
      * 用户ID
      */
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT COMMENT '用户ID'")
+    @Column(name = "user_id", columnDefinition = "BIGINT NOT NULL COMMENT '用户ID'")
     private Long userId;
 
     /**
      * 商品ID
      */
-    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT COMMENT '商品ID'")
+    @Column(name = "product_id", columnDefinition = "BIGINT NOT NULL COMMENT '商品ID'")
     private Long productId;
 
     /**
      * 商品名称
      */
-    @Column(name = "product_name", nullable = false, length = 128, columnDefinition = "VARCHAR(128) COMMENT '商品名称'")
+    @Column(name = "product_name", columnDefinition = "VARCHAR(128) NOT NULL COMMENT '商品名称'")
     private String productName;
 
     /**
      * 商品图片路径
      */
-    @Column(name = "picture", nullable = false, length = 256, columnDefinition = "VARCHAR(256) COMMENT '商品图片路径'")
+    @Column(name = "picture", columnDefinition = "VARCHAR(256) NOT NULL COMMENT '商品图片路径'")
     private String picture;
 }

@@ -34,55 +34,55 @@ public class ProductEvaluationPO extends BasePO implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "evaluation_id", nullable = false, columnDefinition = "BIGINT NOT NULL AUTO_INCREMENT COMMENT '商品评价ID'")
+    @Column(name = "evaluation_id", columnDefinition = "BIGINT COMMENT '商品评价ID'")
     private Long evaluationId;
 
     /**
      * 商品ID
      */
-    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT NOT NULL COMMENT '商品ID'")
+    @Column(name = "product_id", columnDefinition = "BIGINT NOT NULL COMMENT '商品ID'")
     private Long productId;
 
     /**
      * 用户ID
      */
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT NOT NULL COMMENT '用户ID'")
+    @Column(name = "user_id", columnDefinition = "BIGINT NOT NULL COMMENT '用户ID'")
     private Long userId;
 
     /**
      * 评价内容
      */
-    @Column(name = "content", nullable = false, length = 512, columnDefinition = "VARCHAR(512) NOT NULL COMMENT '内容'")
+    @Column(name = "content", columnDefinition = "VARCHAR(512) NOT NULL COMMENT '评价内容'")
     private String content;
 
     /**
      * 商家回复
      */
-    @Column(name = "reply", length = 512, columnDefinition = "VARCHAR(512) DEFAULT NULL COMMENT '商家回复'")
+    @Column(name = "reply", columnDefinition = "VARCHAR(512) COMMENT '商家回复'")
     private String reply;
 
     /**
      * 是否回复
      */
-    @Column(name = "is_reply", nullable = false, columnDefinition = "BOOLEAN NOT NULL COMMENT '是否回复'")
+    @Column(name = "is_reply", columnDefinition = "BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否回复'")
     private Boolean isReply;
 
     /**
      * 评分
      */
-    @Column(name = "star", nullable = false, columnDefinition = "TINYINT NOT NULL COMMENT '评分'")
+    @Column(name = "star", columnDefinition = "TINYINT NOT NULL COMMENT '评分'")
     private Byte star;
 
     /**
      * 图片路径
      */
-    @Column(name = "picture", length = 256, columnDefinition = "VARCHAR(256) DEFAULT NULL COMMENT '图片路径'")
+    @Column(name = "picture", columnDefinition = "VARCHAR(256) COMMENT '图片路径'")
     @Convert(converter = StringListConverter.class)
     private List<String> picture;
 
     /**
      * 是否匿名
      */
-    @Column(name = "is_anonymous", nullable = false, columnDefinition = "BOOLEAN NOT NULL COMMENT '是否匿名'")
+    @Column(name = "is_anonymous", columnDefinition = "BOOLEAN NOT NULL DEFAULT FALSE COMMENT '是否匿名'")
     private Boolean isAnonymous;
 }

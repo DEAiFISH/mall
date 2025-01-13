@@ -12,6 +12,8 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @description TODO
  *
@@ -28,6 +30,13 @@ public class StockServiceImpl implements StockService {
 
     private static final QStockPO STOCK_PO = QStockPO.stockPO;
 
+
+    @Override
+    public List<StockVO> listStock() {
+        List<StockPO> pos = jpaQueryFactory.selectFrom(STOCK_PO).fetch();
+
+        return pos.stream().map(po -> BeanUtil.toBean(po, StockVO.class)).toList();
+    }
 
     @Override
     public StockVO getStockByProductId(Long pId) {
@@ -59,5 +68,16 @@ public class StockServiceImpl implements StockService {
     @Transactional
     public void deleteStock(Long stockId) {
         jpaQueryFactory.delete(STOCK_PO).where(STOCK_PO.stockId.eq(stockId)).execute();
+    }
+
+    @Override
+    public void createStock(Long productId, Integer amount) {
+        StockPO po = StockPO.builder()
+                .productId(productId)
+                .amount(amount)
+                .warningAmount(amount / 10)
+                .build();
+
+        stockRepository.save(po);
     }
 }

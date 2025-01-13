@@ -26,24 +26,24 @@ public class RolePO extends BasePO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id", nullable = false, updatable = false, columnDefinition = "COMMENT '角色ID'")
+    @Column(name = "role_id", columnDefinition = "TINYINT COMMENT '角色 ID'")
     private Byte roleId;
 
     /**
      * 角色名称
      */
-    @Column(name = "name", nullable = false, length = 32, columnDefinition = "COMMENT '角色名称'")
+    @Column(name = "name", columnDefinition = "VARCHAR(64) NOT NULL COMMENT '角色名称'")
     private String name;
 
     /**
      * 描述
      */
-    @Column(name = "description", length = 128, columnDefinition = "COMMENT '描述'")
+    @Column(name = "description", columnDefinition = "VARCHAR(128) COMMENT '描述'")
     private String description;
 
     /**
      * 创建者 ID
      */
-    @Column(name = "user_id", nullable = false, columnDefinition = "COMMENT '创建者 ID'")
+    @Column(name = "user_id", columnDefinition = "BIGINT NOT NULL COMMENT '创建者 ID'")
     private Long userId;
 }

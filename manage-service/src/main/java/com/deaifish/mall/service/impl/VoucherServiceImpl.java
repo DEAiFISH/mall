@@ -9,6 +9,7 @@ import com.deaifish.mall.repository.VoucherRepository;
 import com.deaifish.mall.service.VoucherService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,11 @@ import java.util.List;
  * @date 2025/1/5 23:00
  */
 @Service
+@RequiredArgsConstructor
 public class VoucherServiceImpl implements VoucherService {
 
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private VoucherRepository voucherRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final VoucherRepository voucherRepository;
 
     private static final QVoucherPO VOUCHER_PO = QVoucherPO.voucherPO;
 

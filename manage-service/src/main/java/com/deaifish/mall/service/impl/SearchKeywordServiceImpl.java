@@ -10,6 +10,7 @@ import com.deaifish.mall.repository.SearchKeywordRepository;
 import com.deaifish.mall.service.SearchKeywordService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +23,11 @@ import java.util.List;
  * @date 2025/1/5 23:04
  */
 @Service
+@RequiredArgsConstructor
 public class SearchKeywordServiceImpl implements SearchKeywordService {
 
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private SearchKeywordRepository searchKeywordRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final SearchKeywordRepository searchKeywordRepository;
 
     private static final QSearchKeywordPO SEARCH_KEYWORD_PO = QSearchKeywordPO.searchKeywordPO;
 

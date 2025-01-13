@@ -33,25 +33,25 @@ public class UserLabelPO extends BasePO implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_label_id", nullable = false, columnDefinition = "BIGINT COMMENT '用户标签表ID'")
+    @Column(name = "user_label_id", columnDefinition = "BIGINT COMMENT '用户标签表ID'")
     private Long userLabelId;
 
     /**
      * 用户ID
      */
-    @Column(name = "user_id", nullable = false, columnDefinition = "BIGINT COMMENT '用户ID'")
+    @Column(name = "user_id", columnDefinition = "BIGINT NOT NULL COMMENT '用户ID'")
     private Long userId;
 
     /**
      * 标签ID
      */
-    @Column(name = "label_id", nullable = false, columnDefinition = "INT COMMENT '标签ID'")
+    @Column(name = "label_id", columnDefinition = "INT NOT NULL COMMENT '标签ID'")
     private Integer labelId;
 
     /**
      * 兴趣度
      */
-    @Column(name = "interest", nullable = false, columnDefinition = "BIGINT COMMENT '兴趣度'")
+    @Column(name = "interest", columnDefinition = "BIGINT NOT NULL COMMENT '兴趣度'")
     private Long interest;
 
     public void addInterest(Long weight) {

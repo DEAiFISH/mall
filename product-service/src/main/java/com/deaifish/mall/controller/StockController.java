@@ -11,6 +11,8 @@ import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @description TODO
  *
@@ -25,26 +27,54 @@ public class StockController {
     @Resource
     private StockService stockService;
 
+    /**
+     * 查询库存列表
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<StockVO>> createStock(){
+        return R.success("查询成功", stockService.listStock());
+    }
+
+    /**
+     * 根据商品id查询库存
+     * @param pId
+     * @return
+     */
     @GetMapping("/get/{pId}")
     public R<StockVO> getStockByProductId(@PathVariable("pId") @Parameter(description = "商品id") Long pId) {
         return R.success("查询成功", stockService.getStockByProductId(pId));
     }
 
+    /**
+     * 添加库存
+     * @param stockDTO
+     * @return
+     */
     @PostMapping("/add")
     public R<StockVO> addStock(@RequestBody @Validated StockDTO stockDTO) {
         return R.success("添加成功", stockService.addStock(stockDTO));
     }
 
+    /**
+     * 修改库存
+     * @param stockDTO
+     * @return
+     */
     @PutMapping("/update")
     public R<StockVO> updateStock(@RequestBody @Validated(UpdateGroup.class) StockDTO stockDTO) {
         return R.success("修改成功", stockService.updateStock(stockDTO));
     }
 
+    /**
+     * 删除库存
+     * @param stockId
+     * @return
+     */
     @DeleteMapping("/delete/{stockId}")
     public R<Boolean> deleteStock(@PathVariable("stockId") Long stockId) {
         stockService.deleteStock(stockId);
         return R.success("删除成功", true);
     }
-
 
 }
