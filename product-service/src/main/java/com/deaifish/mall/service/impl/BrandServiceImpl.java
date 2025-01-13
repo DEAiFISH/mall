@@ -12,6 +12,8 @@ import com.deaifish.mall.repository.BrandRepository;
 import com.deaifish.mall.service.BrandService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,15 +26,14 @@ import java.util.List;
  * @date 2024/12/28 15:53
  */
 @Service
+@RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private BrandRepository brandRepository;
-    @Resource
-    private BIZServiceApi bizServiceApi;
-    @Resource
-    private PathProperties pathProperties;
+
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final BrandRepository brandRepository;
+    private final BIZServiceApi bizServiceApi;
+    private final PathProperties pathProperties;
 
     private static final QBrandPO BRAND_PO = QBrandPO.brandPO;
 
@@ -48,6 +49,7 @@ public class BrandServiceImpl implements BrandService {
     public BrandVO add(BrandDTO brandDTO) {
         BrandPO brandPO = BeanUtil.toBean(brandDTO, BrandPO.class);
         brandPO = brandRepository.save(brandPO);
+        entityManager.refresh(brandPO);
         return BeanUtil.toBean(brandPO, BrandVO.class);
     }
 

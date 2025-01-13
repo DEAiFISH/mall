@@ -9,6 +9,8 @@ import com.deaifish.mall.repository.StockRepository;
 import com.deaifish.mall.service.StockService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +23,12 @@ import java.util.List;
  * @date 2024/12/28 21:22
  */
 @Service
+@RequiredArgsConstructor
 public class StockServiceImpl implements StockService {
 
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private StockRepository stockRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final StockRepository stockRepository;
 
     private static final QStockPO STOCK_PO = QStockPO.stockPO;
 
@@ -47,7 +49,9 @@ public class StockServiceImpl implements StockService {
     @Override
     @Transactional
     public StockVO addStock(StockDTO stockDTO) {
-        StockPO po = stockRepository.save(BeanUtil.toBean(stockDTO, StockPO.class));
+        StockPO po = BeanUtil.toBean(stockDTO, StockPO.class);
+        stockRepository.save(po);
+        entityManager.refresh(po);
         return BeanUtil.toBean(po, StockVO.class);
     }
 

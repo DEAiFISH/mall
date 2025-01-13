@@ -1,9 +1,6 @@
-package com.deaifish.mall.pojo.dto;
+package com.deaifish.mall.pojo.vo;
 
-import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,26 +14,47 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDTO {
+public class RoleVO {
 
     /**
      * 角色 ID
      */
     @Schema(description = "角色ID")
-    @NotNull(message = "角色ID不能为空", groups = UpdateGroup.class)
     private Byte roleId;
 
     /**
      * 角色名称
      */
     @Schema(description = "角色名称")
-    @NotNull(message = "角色名称不能为空")
     private String name;
 
     /**
      * 描述
      */
     @Schema(description = "描述")
-    @NotNull(message = "描述不能为空")
     private String description;
+
+    /**
+     * 创建者 ID
+     */
+    @Schema(description = "创建者ID")
+    private Long userId;
+
+    /**
+     * 创建者用户名
+     */
+    @Schema(description = "创建者用户名")
+    private String nickName;
+
+    /**
+     * 创建时间
+     */
+    @Schema(description = "创建时间")
+    private String createTime;
+
+    /**
+     * 更新时间
+     */
+    @Schema(description = "更新时间")
+    private String updateTime;
 }

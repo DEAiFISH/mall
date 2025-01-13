@@ -9,6 +9,8 @@ import com.deaifish.mall.repository.ProductCollectRepository;
 import com.deaifish.mall.service.ProductCollectService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +23,10 @@ import java.util.List;
  * @date 2024/12/24 14:14
  */
 @Service
+@RequiredArgsConstructor
 public class ProductCollectServiceImpl implements ProductCollectService {
-    @Resource
-    private ProductCollectRepository productCollectRepository;
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
+    private final ProductCollectRepository productCollectRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     private static final QProductCollectPO PRODUCT_COLLECT_PO = QProductCollectPO.productCollectPO;
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;

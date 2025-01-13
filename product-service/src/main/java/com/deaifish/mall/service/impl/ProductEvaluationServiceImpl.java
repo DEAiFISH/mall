@@ -15,6 +15,8 @@ import com.deaifish.mall.service.ProductEvaluationService;
 import com.github.houbb.sensitive.word.core.SensitiveWordHelper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,16 +30,14 @@ import java.util.concurrent.CompletableFuture;
  * @date 2024/12/28 20:17
  */
 @Service
+@RequiredArgsConstructor
 public class ProductEvaluationServiceImpl implements ProductEvaluationService {
 
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private ProductEvaluationRepository productEvaluationRepository;
-    @Resource
-    private BIZServiceApi bizServiceApi;
-    @Resource
-    private PathProperties pathProperties;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final ProductEvaluationRepository productEvaluationRepository;
+    private final BIZServiceApi bizServiceApi;
+    private final PathProperties pathProperties;
 
     private static final QProductEvaluationPO PRODUCT_EVALUATION_PO = QProductEvaluationPO.productEvaluationPO;
     private static final QUserPO USER_PO = QUserPO.userPO;
@@ -54,8 +54,9 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     @Transactional
     public ProductEvaluationVO add(ProductEvaluationDTO productEvaluationDTO) {
         wordTool(productEvaluationDTO);
-        ProductEvaluationPO po = productEvaluationRepository.save(BeanUtil.toBean(productEvaluationDTO, ProductEvaluationPO.class));
-
+        ProductEvaluationPO po = BeanUtil.toBean(productEvaluationDTO, ProductEvaluationPO.class);
+        productEvaluationRepository.save(po);
+        entityManager.refresh(po);
         return getProductEvaluationVO(po);
     }
 

@@ -26,7 +26,7 @@ public interface ShippingAddressService {
      * @param shippingAddressDTO
      * @return
      */
-    Boolean add(ShippingAddressDTO shippingAddressDTO);
+    ShippingAddressVO add(ShippingAddressDTO shippingAddressDTO);
 
     /**
      * 更新收货地址
@@ -34,7 +34,7 @@ public interface ShippingAddressService {
      * @param shippingAddressDTO
      * @return
      */
-    Boolean update(ShippingAddressDTO shippingAddressDTO);
+    ShippingAddressVO update(ShippingAddressDTO shippingAddressDTO);
 
     /**
      * 删除收货地址

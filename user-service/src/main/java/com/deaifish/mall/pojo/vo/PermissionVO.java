@@ -1,4 +1,4 @@
-package com.deaifish.mall.pojo.dto;
+package com.deaifish.mall.pojo.vo;
 
 import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,31 +10,51 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 /**
- * @description 权限表
+ * @description TODO
  *
  * @author DEAiFISH
- * @date 2024/12/7 21:05
+ * @date 2025/1/13 14:35
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionDTO {
+public class PermissionVO {
     @Schema(description = "权限ID")
-    @NotNull(message = "权限ID不能为空", groups = UpdateGroup.class)
     private Byte permissionId;
 
     /**
      * 权限名称
      */
     @Schema(description = "权限名称")
-    @NotBlank(message = "权限名称不能为空")
-    @Length(max = 32, message = "权限名称长度不能超过{max}")
     private String name;
 
     /**
      * 描述
      */
     @Schema(description = "描述")
-    @Length(max = 128, message = "权限描述长度不能超过{max}")
     private String description;
+
+    /**
+     * 创建者 ID
+     */
+    @Schema(description = "创建者ID")
+    private Long userId;
+
+    /**
+     * 创建者用户名
+     */
+    @Schema(description = "创建者用户名")
+    private String nickName;
+
+    /**
+     * 创建时间
+     */
+    @Schema(description = "创建时间")
+    private String createTime;
+
+    /**
+     * 更新时间
+     */
+    @Schema(description = "更新时间")
+    private String updateTime;
 }

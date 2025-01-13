@@ -12,6 +12,8 @@ import com.deaifish.mall.repository.ClassifyRepository;
 import com.deaifish.mall.service.ClassifyService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,15 +26,14 @@ import java.util.List;
  * @date 2024/12/28 17:17
  */
 @Service
+@RequiredArgsConstructor
 public class ClassifyServiceImpl implements ClassifyService {
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private ClassifyRepository classifyRepository;
-    @Resource
-    private BIZServiceApi bizServiceApi;
-    @Resource
-    private PathProperties pathProperties;
+
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final ClassifyRepository classifyRepository;
+    private final BIZServiceApi bizServiceApi;
+    private final PathProperties pathProperties;
 
     private static final QClassifyPO CLASSIFY_PO = QClassifyPO.classifyPO;
 
@@ -46,7 +47,9 @@ public class ClassifyServiceImpl implements ClassifyService {
     @Transactional
     public ClassifyVO add(ClassifyDTO classifyDTO) {
         ClassifyPO po = BeanUtil.toBean(classifyDTO, ClassifyPO.class);
-        return BeanUtil.toBean(classifyRepository.save(po), ClassifyVO.class);
+        classifyRepository.save(po);
+        entityManager.refresh(po);
+        return BeanUtil.toBean(po, ClassifyVO.class);
     }
 
     @Override

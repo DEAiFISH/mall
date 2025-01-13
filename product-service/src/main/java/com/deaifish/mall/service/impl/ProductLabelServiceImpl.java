@@ -11,6 +11,8 @@ import com.deaifish.mall.repository.ProductLabelRepository;
 import com.deaifish.mall.service.ProductLabelService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +25,12 @@ import java.util.List;
  * @date 2024/12/28 20:40
  */
 @Service
+@RequiredArgsConstructor
 public class ProductLabelServiceImpl implements ProductLabelService {
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private ProductLabelRepository productLabelRepository;
+
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final ProductLabelRepository productLabelRepository;
 
     private static final QProductLabelPO PRODUCT_LABEL_PO = QProductLabelPO.productLabelPO;
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
@@ -53,8 +56,9 @@ public class ProductLabelServiceImpl implements ProductLabelService {
     @Override
     @Transactional
     public ProductLabelVO add(ProductLabelDTO productLabelDTO) {
-        ProductLabelPO po = productLabelRepository.save(BeanUtil.toBean(productLabelDTO, ProductLabelPO.class));
-
+        ProductLabelPO po = BeanUtil.toBean(productLabelDTO, ProductLabelPO.class);
+        productLabelRepository.save(po);
+        entityManager.refresh(po);
         return getProductLabelVO(po);
     }
 

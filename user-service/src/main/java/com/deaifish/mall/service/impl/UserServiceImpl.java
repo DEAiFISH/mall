@@ -17,6 +17,8 @@ import com.deaifish.mall.service.UserService;
 import com.deaifish.mall.util.EncryptUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +35,14 @@ import java.util.List;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private UserRepository userRepository;
-    @Resource
-    private BIZServiceApi bizServiceApi;
-    @Resource
-    private PathProperties pathProperties;
+    
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final UserRepository userRepository;
+    private final BIZServiceApi bizServiceApi;
+    private final PathProperties pathProperties;
 
     private final static QUserPO USER_PO = QUserPO.userPO;
     private final static QRolePO ROLE_PO = QRolePO.rolePO;
@@ -108,14 +109,10 @@ public class UserServiceImpl implements UserService {
         po.setLastLogin(new Date());
         po.setPassword(EncryptUtil.encode(po.getPassword()));
         po.setPaymentPassword(EncryptUtil.encode(po.getPaymentPassword()));
-        userRepository.saveAndFlush(po);
+        userRepository.save(po);
+        entityManager.refresh(po);
 
-        UserPO user = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.wxId.eq(userDTO.getWxId())).fetchOne();
-        if (user == null) {
-            throw new MallException("用户注册失败，请稍后再试");
-        }
-
-        return getUserDetailedVO(user);
+        return getUserDetailedVO(po);
     }
 
     @Override

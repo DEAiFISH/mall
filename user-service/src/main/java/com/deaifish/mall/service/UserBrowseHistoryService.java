@@ -23,11 +23,11 @@ public interface UserBrowseHistoryService {
      * 添加浏览记录
      * @param userBrowseHistoryDTO
      */
-    void add(UserBrowseHistoryDTO userBrowseHistoryDTO);
+    UserBrowseHistoryVO add(UserBrowseHistoryDTO userBrowseHistoryDTO);
 
     /**
      * 删除浏览记录
      * @param ids
      */
-    void delete(List<Long> ids);
+    Boolean delete(List<Long> ids);
 }

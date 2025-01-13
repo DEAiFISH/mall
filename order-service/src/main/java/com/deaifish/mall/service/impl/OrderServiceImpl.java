@@ -12,6 +12,7 @@ import com.deaifish.mall.repository.OrderRepository;
 import com.deaifish.mall.service.OrderService;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
     private final OrderRepository orderRepository;
     private final ProductServiceApi productServiceApi;
     private final RedisTemplate<String, OrderPO> orderRedisTemplate;
@@ -113,6 +115,7 @@ public class OrderServiceImpl implements OrderService {
         productServiceApi.updateStock(BeanUtil.toBean(stockVO, StockDTO.class));
 
         orderRepository.save(po);
+        entityManager.refresh(po);
         orderRedisTemplate.opsForValue().set(REDIS_ORDER_KEY + po.getOrderId(), po);
         return getByOrderId(po.getOrderId());
     }

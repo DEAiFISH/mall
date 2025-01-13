@@ -18,6 +18,8 @@ import com.deaifish.mall.service.ProductService;
 import com.deaifish.mall.service.StockService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,19 +36,16 @@ import java.util.concurrent.CompletableFuture;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private ProductRepository productRepository;
-    @Resource
-    private BIZServiceApi bizServiceApi;
-    @Resource
-    private PathProperties pathProperties;
-    @Resource
-    private SearchServiceApi searchServiceApi;
-    @Resource
-    private StockService stokeService;
+
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final ProductRepository productRepository;
+    private final BIZServiceApi bizServiceApi;
+    private final PathProperties pathProperties;
+    private final SearchServiceApi searchServiceApi;
+    private final StockService stokeService;
 
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
     private static final QBrandPO BRAND_PO = QBrandPO.brandPO;
@@ -71,22 +70,25 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public ProductVO add(ProductDTO productdto) {
-        ProductPO po = productRepository.save(BeanUtil.toBean(productdto, ProductPO.class));
-
+        ProductPO po = BeanUtil.toBean(productdto, ProductPO.class);
+        productRepository.save(po);
         stokeService.createStock(productdto.getProductId(), 0);
 
         // 保存商品到es中
         sync2Es(List.of(po));
 
+        entityManager.refresh(po);
         return productPo2Vo(po, ProductVO.class);
     }
 
     @Override
     public List<ProductVO> addBatch(List<ProductDTO> list) {
-        List<ProductPO> poList = productRepository.saveAll(list.stream().map(dto -> BeanUtil.toBean(dto, ProductPO.class)).toList());
+        List<ProductPO> poList = list.stream().map(dto -> BeanUtil.toBean(dto, ProductPO.class)).toList();
+        productRepository.saveAll(poList);
 
         sync2Es(poList);
 
+        poList.forEach(entityManager::refresh);
         return poList.stream().map(po -> productPo2Vo(po, ProductVO.class)).toList();
     }
 

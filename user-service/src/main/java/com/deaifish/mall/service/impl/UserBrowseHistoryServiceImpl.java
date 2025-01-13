@@ -9,6 +9,8 @@ import com.deaifish.mall.repository.UserBrowseHistoryRepository;
 import com.deaifish.mall.service.UserBrowseHistoryService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +23,11 @@ import java.util.List;
  * @date 2024/12/25 0:32
  */
 @Service
+@RequiredArgsConstructor
 public class UserBrowseHistoryServiceImpl implements UserBrowseHistoryService {
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
-    @Resource
-    private UserBrowseHistoryRepository userBrowseHistoryRepository;
+    private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
+    private final UserBrowseHistoryRepository userBrowseHistoryRepository;
 
     private static final QUserBrowseHistoryPO USER_BROWSE_HISTORY_PO = QUserBrowseHistoryPO.userBrowseHistoryPO;
 
@@ -40,13 +42,17 @@ public class UserBrowseHistoryServiceImpl implements UserBrowseHistoryService {
 
     @Override
     @Transactional
-    public void add(UserBrowseHistoryDTO userBrowseHistoryDTO) {
-        userBrowseHistoryRepository.save(BeanUtil.toBean(userBrowseHistoryDTO, UserBrowseHistoryPO.class));
+    public UserBrowseHistoryVO add(UserBrowseHistoryDTO userBrowseHistoryDTO) {
+        UserBrowseHistoryPO po = BeanUtil.toBean(userBrowseHistoryDTO, UserBrowseHistoryPO.class);
+        userBrowseHistoryRepository.save(po);
+        entityManager.refresh(po);
+        return BeanUtil.toBean(po, UserBrowseHistoryVO.class);
     }
 
     @Override
     @Transactional
-    public void delete(List<Long> ids) {
+    public Boolean delete(List<Long> ids) {
         jpaQueryFactory.delete(USER_BROWSE_HISTORY_PO).where(USER_BROWSE_HISTORY_PO.historyId.in(ids)).execute();
+        return true;
     }
 }

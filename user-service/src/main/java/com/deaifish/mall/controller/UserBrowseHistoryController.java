@@ -43,9 +43,8 @@ public class UserBrowseHistoryController {
      * @return
      */
     @PostMapping("/add")
-    public R<Boolean> add(@RequestBody @Validated(ADDGroup.class) UserBrowseHistoryDTO userBrowseHistoryDTO) {
-        userBrowseHistoryService.add(userBrowseHistoryDTO);
-        return R.success("添加成功", true);
+    public R<UserBrowseHistoryVO> add(@RequestBody @Validated(ADDGroup.class) UserBrowseHistoryDTO userBrowseHistoryDTO) {
+        return R.success("添加成功", userBrowseHistoryService.add(userBrowseHistoryDTO));
     }
 
     /**
@@ -55,7 +54,6 @@ public class UserBrowseHistoryController {
      */
     @DeleteMapping("/delete")
     public R<Boolean> delete(@RequestParam("ids") List<Long> ids) {
-        userBrowseHistoryService.delete(ids);
-        return R.success("删除成功", true);
+        return R.success("删除成功", userBrowseHistoryService.delete(ids));
     }
 }

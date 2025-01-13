@@ -14,20 +14,21 @@ import com.deaifish.mall.repository.UserLabelRepository;
 import com.deaifish.mall.service.LabelService;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class LabelServiceImpl implements LabelService {
-    @Resource
-    private LabelRepository labelRepository;
-    @Resource
-    private UserLabelRepository userLabelRepository;
-    @Resource
-    private JPAQueryFactory jpaQueryFactory;
+
+    private final LabelRepository labelRepository;
+    private final EntityManager entityManager;
+    private final UserLabelRepository userLabelRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     private static final QLabelPO LABEL_PO = QLabelPO.labelPO;
     private static final QUserLabelPO USER_LABEL_PO = QUserLabelPO.userLabelPO;
@@ -48,13 +49,10 @@ public class LabelServiceImpl implements LabelService {
             throw new MallException("标签已存在");
         }
         po = BeanUtil.toBean(labelDTO, LabelPO.class);
-        jpaQueryFactory.insert(LABEL_PO).columns(LABEL_PO.name, LABEL_PO.weights, LABEL_PO.description)
-                .values(po.getName(), po.getWeights(), po.getDescription()).execute();
-        LabelPO label = jpaQueryFactory.select(LABEL_PO).from(LABEL_PO).where(LABEL_PO.name.eq(labelDTO.getName())).fetchOne();
-        if (label == null) {
-            throw new MallException("添加失败");
-        }
-        return BeanUtil.toBean(label, LabelVO.class);
+        labelRepository.save(po);
+
+        entityManager.refresh(po);
+        return BeanUtil.toBean(po, LabelVO.class);
     }
 
     @Override
@@ -66,11 +64,11 @@ public class LabelServiceImpl implements LabelService {
                 .set(LABEL_PO.description, labelDTO.getDescription())
                 .where(LABEL_PO.labelId.eq(labelDTO.getLabelId()))
                 .execute();
-        LabelPO label = jpaQueryFactory.selectFrom(LABEL_PO).where(LABEL_PO.labelId.eq(labelDTO.getLabelId())).fetchOne();
-        if (label == null) {
+        LabelPO po = jpaQueryFactory.selectFrom(LABEL_PO).where(LABEL_PO.labelId.eq(labelDTO.getLabelId())).fetchOne();
+        if (po == null) {
             throw new MallException("更新失败");
         }
-        return BeanUtil.toBean(label, LabelVO.class);
+        return BeanUtil.toBean(po, LabelVO.class);
     }
 
     @Override

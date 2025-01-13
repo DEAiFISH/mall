@@ -44,7 +44,7 @@ public class ShippingAddressController {
      * @return
      */
     @PostMapping("/add")
-    public R<Boolean> add(@RequestBody @Valid ShippingAddressDTO shippingAddressDTO) {
+    public R<ShippingAddressVO> add(@RequestBody @Valid ShippingAddressDTO shippingAddressDTO) {
         return R.success("添加成功", shippingAddressService.add(shippingAddressDTO));
     }
 
@@ -55,7 +55,7 @@ public class ShippingAddressController {
      * @return
      */
     @PutMapping("/update")
-    public R<Boolean> update(@RequestBody @Valid ShippingAddressDTO shippingAddressDTO) {
+    public R<ShippingAddressVO> update(@RequestBody @Valid ShippingAddressDTO shippingAddressDTO) {
         return R.success("修改成功", shippingAddressService.update(shippingAddressDTO));
     }
 

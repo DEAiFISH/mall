@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
- * @description TODO
+ * @description 首页商品推荐
  *
  * @author DEAiFISH
  * @date 2025/1/12 15:39

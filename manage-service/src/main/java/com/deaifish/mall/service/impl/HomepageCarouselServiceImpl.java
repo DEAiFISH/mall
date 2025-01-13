@@ -9,6 +9,7 @@ import com.deaifish.mall.repository.HomepageCarouseRepository;
 import com.deaifish.mall.service.HomepageCarouselService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import java.util.List;
 public class HomepageCarouselServiceImpl implements HomepageCarouselService {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
     private final HomepageCarouseRepository homepageCarouseRepository;
 
     private static final QHomepageCarouselPO HOMEPAGE_CAROUSEL_PO = QHomepageCarouselPO.homepageCarouselPO;
@@ -42,7 +44,8 @@ public class HomepageCarouselServiceImpl implements HomepageCarouselService {
     @Transactional
     public HomepageCarouselVO add(HomepageCarouselDTO homepageCarouselDTO) {
         HomepageCarouselPO po = BeanUtil.toBean(homepageCarouselDTO, HomepageCarouselPO.class);
-        return BeanUtil.toBean(homepageCarouseRepository.save(po), HomepageCarouselVO.class);
+        entityManager.refresh(po);
+        return BeanUtil.toBean(po, HomepageCarouselVO.class);
     }
 
     @Override

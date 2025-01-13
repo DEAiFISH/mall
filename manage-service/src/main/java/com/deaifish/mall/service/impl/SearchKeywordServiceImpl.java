@@ -10,6 +10,7 @@ import com.deaifish.mall.repository.SearchKeywordRepository;
 import com.deaifish.mall.service.SearchKeywordService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.List;
 public class SearchKeywordServiceImpl implements SearchKeywordService {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
     private final SearchKeywordRepository searchKeywordRepository;
 
     private static final QSearchKeywordPO SEARCH_KEYWORD_PO = QSearchKeywordPO.searchKeywordPO;
@@ -43,7 +45,8 @@ public class SearchKeywordServiceImpl implements SearchKeywordService {
     @Transactional
     public SearchKeywordVO add(SearchKeywordDTO searchKeywordDTO) {
         SearchKeywordPO po = BeanUtil.toBean(searchKeywordDTO, SearchKeywordPO.class);
-        return BeanUtil.toBean(searchKeywordRepository.save(po), SearchKeywordVO.class);
+        entityManager.refresh(po);
+        return BeanUtil.toBean(po, SearchKeywordVO.class);
     }
 
     @Override

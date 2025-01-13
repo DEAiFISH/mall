@@ -9,6 +9,7 @@ import com.deaifish.mall.repository.VoucherRepository;
 import com.deaifish.mall.service.VoucherService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import java.util.List;
 public class VoucherServiceImpl implements VoucherService {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final EntityManager entityManager;
     private final VoucherRepository voucherRepository;
 
     private static final QVoucherPO VOUCHER_PO = QVoucherPO.voucherPO;
@@ -41,8 +43,9 @@ public class VoucherServiceImpl implements VoucherService {
     @Transactional
     public VoucherVO add(VoucherDTO voucherDTO) {
         VoucherPO po = BeanUtil.toBean(voucherDTO, VoucherPO.class);
-
-        return BeanUtil.toBean(voucherRepository.save(po), VoucherVO.class);
+        voucherRepository.save(po);
+        entityManager.refresh(po);
+        return BeanUtil.toBean(po, VoucherVO.class);
     }
 
     @Override
