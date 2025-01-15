@@ -6,7 +6,7 @@ package com.deaifish.mall.pojo.contanst;
  * @author DEAiFISH
  * @date 2025/1/12 19:03
  */
-public enum OrderState {
+public enum OrderStatus {
     WAIT_PAY((byte) 1, "待支付"),
     WAIT_SEND((byte) 2, "待发货"),
     WAIT_RECEIVE((byte) 3, "待收货"),
@@ -14,19 +14,29 @@ public enum OrderState {
     FINISH((byte) 5, "完成"),
     FAIL((byte) 6, "失败");
 
-    private final Byte code;
+    private final byte code;
     private final String desc;
 
-    OrderState(Byte code, String desc) {
+    OrderStatus(byte code, String desc) {
         this.code = code;
         this.desc = desc;
     }
 
-    public Byte getCode() {
+    public byte getCode() {
         return code;
     }
 
     public String getDesc() {
         return desc;
+    }
+
+    public static String getDescByCode(byte code) {
+        for (OrderStatus status : OrderStatus.values()) {
+            if (status.getCode() == code) {
+                return status.getDesc();
+            }
+        }
+        // 未找到匹配的枚举值，返回 null 或者其他默认值
+        return null;
     }
 }

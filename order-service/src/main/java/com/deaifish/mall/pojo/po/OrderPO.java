@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLDelete;
 
 import java.io.Serial;
@@ -27,6 +28,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE orders SET is_delete = 1 WHERE order_id = ?")
+@DynamicInsert
 public class OrderPO extends BasePO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -73,7 +75,7 @@ public class OrderPO extends BasePO implements Serializable {
     /**
      * 支付方式（微信：0；支付宝：1）
      */
-    @Column(name = "payment_method", columnDefinition = "TINYINT NOT NULL COMMENT '支付方式（微信：0；支付宝：1）'")
+    @Column(name = "payment_method", columnDefinition = "TINYINT COMMENT '支付方式（微信：0；支付宝：1）'")
     private Byte paymentMethod;
 
     /**
@@ -147,8 +149,8 @@ public class OrderPO extends BasePO implements Serializable {
     private Byte isDelete;
 
     /**
-     * 关闭原因（1-超时未支付 2-退款关闭 3-买家取消）
+     * 关闭原因（1-超时未支付 2-用户主动取消 3-商家取消）
      */
-    @Column(name = "cancel_reason", columnDefinition = "TINYINT COMMENT '关闭原因（1-超时未支付 2-退款关闭 3-买家取消）'")
+    @Column(name = "cancel_reason", columnDefinition = "TINYINT COMMENT '关闭原因（1-超时未支付 2-用户主动取消 3-商家取消）'")
     private Byte cancelReason;
 }

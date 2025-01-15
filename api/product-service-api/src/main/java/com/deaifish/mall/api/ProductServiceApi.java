@@ -1,14 +1,14 @@
 package com.deaifish.mall.api;
 
 import com.deaifish.mall.fallback.ProductServiceFallBack;
-import com.deaifish.mall.pojo.dto.StockDTO;
-import com.deaifish.mall.pojo.vo.StockVO;
+import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.response.R;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @description 产品服务接口
@@ -16,11 +16,24 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author DEAiFISH
  * @date 2024/12/30 20:59
  */
-@FeignClient(value = "product-service", fallback = ProductServiceFallBack.class)
+@FeignClient(value = "product-service", path = "/product-service/v1", fallback = ProductServiceFallBack.class)
 public interface ProductServiceApi {
-    @GetMapping("/stock/v1/get/{pId}")
-    public R<StockVO> getStockByProductId(@PathVariable("pId") Long pId);
 
-    @PutMapping("/stock/v1/update")
-    public R<StockVO> updateStock(@RequestBody StockDTO stockDTO);
+    /**
+     * 根据商品id查询商品详情
+     * @param pId
+     * @return
+     */
+    @GetMapping("/product/get/{pId}")
+    public R<ProductVO> getProductById(@PathVariable("pId") Long pId);
+
+    /**
+     * 减少库存
+     * @param num
+     * @return
+     */
+    @PutMapping("/stock/reduce")
+    public R<Boolean> reduceStock(@RequestParam("num") @NotNull(message = "数量不能为空") Integer num,
+                                  @RequestParam("pId") @NotNull(message = "商品id不能为空") Long pId) ;
+
 }

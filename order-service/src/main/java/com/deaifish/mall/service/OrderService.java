@@ -1,6 +1,7 @@
 package com.deaifish.mall.service;
 
 import com.deaifish.mall.pojo.dto.OrderDTO;
+import com.deaifish.mall.pojo.qo.OrderQO;
 import com.deaifish.mall.pojo.vo.OrderVO;
 
 import java.util.List;
@@ -12,6 +13,13 @@ import java.util.List;
  * @date 2025/1/2 23:01
  */
 public interface OrderService {
+    /**
+     * 查询订单列表
+     * @param qo
+     * @return
+     */
+    List<OrderVO> list(OrderQO qo);
+
     /**
      * 根据订单ID查询
      * @param orderId
@@ -41,19 +49,50 @@ public interface OrderService {
     boolean checkOrderIsTimeout(Long orderId);
 
     /**
-     * 根据订单状态查询
-     * @param orderDTO
+     * 支付订单
+     * @param orderId
+     * @param paymentMethod
      * @return
      */
-    OrderVO update(OrderDTO orderDTO);
+    OrderVO pay(Long orderId, Byte paymentMethod);
 
     /**
-     * 更新订单状态
+     * 发货订单
      * @param orderId
-     * @param status
+     * @param courierNumber
      * @return
      */
-    OrderVO updateStatus(Long orderId, Byte status);
+    OrderVO send(Long orderId, String courierNumber);
+
+    /**
+     * 确认收货
+     * @param orderId
+     * @return
+     */
+    OrderVO receive(Long orderId);
+
+    /**
+     * 完成订单
+     * @param orderId
+     * @return
+     */
+    OrderVO finish(Long orderId);
+
+    /**
+     * 取消订单
+     * @param orderId
+     * @param cancelReason
+     * @return
+     */
+    OrderVO cancel(Long orderId, Byte cancelReason);
+
+    /**
+     * 更新订单备注
+     * @param orderId
+     * @param memos
+     * @return
+     */
+    OrderVO updateMemos(Long orderId, String memos);
 
     /**
      * 更新订单地址
@@ -76,4 +115,5 @@ public interface OrderService {
      * @return
      */
     void delete(Long orderId);
+
 }

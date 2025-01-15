@@ -1,6 +1,7 @@
 package com.deaifish.mall.service;
 
 import com.deaifish.mall.pojo.dto.PermissionDTO;
+import com.deaifish.mall.pojo.qo.RolePermissionQO;
 import com.deaifish.mall.pojo.vo.PermissionVO;
 
 import java.util.List;

@@ -84,13 +84,6 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
                 <version>${security.version}</version>
@@ -308,6 +301,11 @@
                 <artifactId>product-service-api</artifactId>
                 <version>${api-mall.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>order-service-api</artifactId>
+                <version>${api-mall.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -317,6 +315,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
             </plugin>
         </plugins>
     </build>

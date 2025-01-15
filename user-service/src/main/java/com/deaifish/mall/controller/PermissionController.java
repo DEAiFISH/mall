@@ -2,6 +2,7 @@ package com.deaifish.mall.controller;
 
 import com.deaifish.mall.pojo.annotation.RequiresRole;
 import com.deaifish.mall.pojo.dto.PermissionDTO;
+import com.deaifish.mall.pojo.qo.RolePermissionQO;
 import com.deaifish.mall.pojo.vo.PermissionVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.PermissionService;
@@ -62,7 +63,7 @@ public class PermissionController {
      * @return
      */
     @DeleteMapping("/delete")
-    public R<Boolean> delete(@RequestParam Byte id) {
+    public R<Boolean> delete(@RequestParam("id") Byte id) {
         return R.success("删除成功",permissionService.delete(id));
     }
 }

@@ -84,4 +84,14 @@ public class StockServiceImpl implements StockService {
 
         stockRepository.save(po);
     }
+
+    @Override
+    @Transactional
+    public Boolean reduceStock(Integer num, Long productId) {
+        jpaQueryFactory.update(STOCK_PO)
+                .set(STOCK_PO.amount, STOCK_PO.amount.subtract(num))
+                .where(STOCK_PO.productId.eq(productId))
+                .execute();
+        return true;
+    }
 }

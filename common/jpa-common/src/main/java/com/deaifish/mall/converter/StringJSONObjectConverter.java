@@ -12,7 +12,7 @@ import jakarta.persistence.AttributeConverter;
 public class StringJSONObjectConverter implements AttributeConverter<JSONObject, String> {
     @Override
     public String convertToDatabaseColumn(JSONObject jsonObject) {
-        return jsonObject.toJSONString();
+        return jsonObject == null ? "" : jsonObject.toString();
     }
 
     @Override

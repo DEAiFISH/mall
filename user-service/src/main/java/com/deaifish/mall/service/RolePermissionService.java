@@ -1,6 +1,7 @@
 package com.deaifish.mall.service;
 
 import com.deaifish.mall.pojo.dto.RolePermissionDTO;
+import com.deaifish.mall.pojo.qo.RolePermissionQO;
 import com.deaifish.mall.pojo.vo.RolePermissionVO;
 
 import java.util.List;
@@ -16,11 +17,9 @@ public interface RolePermissionService {
      * 查询所有角色权限
      * @return
      */
-    List<RolePermissionVO> list();
+    List<RolePermissionVO> list(RolePermissionQO qo);
 
     RolePermissionVO add(RolePermissionDTO rolePermissionDTO);
-
-    List<RolePermissionVO> addBatch(List<RolePermissionDTO> rolePermissionDTOs);
 
     RolePermissionVO update(RolePermissionDTO rolePermissionDTO);
 

@@ -2,6 +2,7 @@ package com.deaifish.mall.service;
 
 import com.deaifish.mall.pojo.dto.StockDTO;
 import com.deaifish.mall.pojo.vo.StockVO;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -52,4 +53,12 @@ public interface StockService {
      * @param amount
      */
     void createStock(Long productId, Integer amount);
+
+    /**
+     * 减少库存
+     * @param num
+     * @return
+     */
+    Boolean reduceStock(Integer num, Long productId);
+
 }

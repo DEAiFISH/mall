@@ -61,17 +61,9 @@ public class OrderDTO {
     private String number;
 
     /**
-     * 订单金额
-     */
-    @Schema(description = "订单金额")
-    @NotNull(message = "订单金额不能为空")
-    private Double money;
-
-    /**
      * 支付方式（微信：0；支付宝：1）
      */
     @Schema(description = "支付方式（微信：0；支付宝：1）")
-    @NotNull(message = "支付方式不能为空")
     private Byte paymentMethod;
 
     /**
@@ -85,7 +77,6 @@ public class OrderDTO {
      * 状态（1:待付款 2:待发货 3:待收货 4:待评价 5:成功 6:失败）
      */
     @Schema(description = "状态（1:待付款 2:待发货 3:待收货 4:待评价 5:成功 6:失败）")
-    @NotNull(message = "订单状态不能为空")
     private Byte status;
 
     /**
@@ -138,9 +129,9 @@ public class OrderDTO {
     private Date cancelTime;
 
     /**
-     * 是否已经支付（1：已支付，0：未支付）
+     * 是否已经支付（true：已支付，false：未支付）
      */
-    @Schema(description = "是否已经支付（1：已支付，0：未支付）")
+    @Schema(description = "是否已经支付（true：已支付，false：未支付）")
     @NotNull(message = "是否已经支付不能为空")
     private Boolean isPay;
 
@@ -152,8 +143,8 @@ public class OrderDTO {
     private Byte isDelete;
 
     /**
-     * 关闭原因（1-超时未支付 2-退款关闭 3-买家取消）
+     * 关闭原因（1-超时未支付 2-用户主动取消 3-商家取消）
      */
-    @Schema(description = "关闭原因（1-超时未支付 2-退款关闭 3-买家取消）")
+    @Schema(description = "关闭原因（1-超时未支付 2-用户主动取消 3-商家取消）")
     private Byte cancelReason;
 }

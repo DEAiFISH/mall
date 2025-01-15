@@ -28,10 +28,34 @@ public class RolePermissionVO {
     private Byte roleId;
 
     /**
+     * 角色名称
+     */
+    @Schema(description = "角色名称")
+    private String roleName;
+
+    /**
+     * 角色描述
+     */
+    @Schema(description = "角色描述")
+    private String roleDescription;
+
+    /**
      * 权限id
      */
     @Schema(description = "权限id")
     private Byte permissionId;
+
+    /**
+     * 权限名称
+     */
+    @Schema(description = "权限名称")
+    private String permissionName;
+
+    /**
+     * 权限描述
+     */
+    @Schema(description = "权限描述")
+    private String permissionDescription;
 
     /**
      * 创建者id

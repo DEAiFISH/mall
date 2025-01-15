@@ -2,6 +2,7 @@ package com.deaifish.mall.controller;
 
 import com.deaifish.mall.pojo.annotation.RequiresRole;
 import com.deaifish.mall.pojo.dto.RolePermissionDTO;
+import com.deaifish.mall.pojo.qo.RolePermissionQO;
 import com.deaifish.mall.pojo.vo.RolePermissionVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.RolePermissionService;
@@ -32,8 +33,8 @@ public class RolePermissionController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<RolePermissionVO>> list() {
-        return R.success("查询成功",rolePermissionService.list());
+    public R<List<RolePermissionVO>> list(@ModelAttribute("qo") RolePermissionQO qo) {
+        return R.success("查询成功",rolePermissionService.list(qo));
     }
 
     /**
@@ -44,16 +45,6 @@ public class RolePermissionController {
     @PostMapping("/add")
     public R<RolePermissionVO> add(@Validated @RequestBody RolePermissionDTO rolePermissionDTO) {
         return R.success("添加成功",rolePermissionService.add(rolePermissionDTO));
-    }
-
-    /**
-     * 批量添加角色权限
-     * @param rolePermissionDTOs
-     * @return
-     */
-    @PostMapping("/add-batch")
-    public R<List<RolePermissionVO>> addBatch(@Validated @RequestBody List<RolePermissionDTO> rolePermissionDTOs) {
-        return R.success("添加成功",rolePermissionService.addBatch(rolePermissionDTOs));
     }
 
     /**

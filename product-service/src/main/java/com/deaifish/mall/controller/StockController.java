@@ -8,6 +8,7 @@ import com.deaifish.mall.service.StockService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +24,9 @@ import java.util.List;
 @RequestMapping("/stock/v1")
 @Tag(name = "商品库存管理")
 @Validated
+@RequiredArgsConstructor
 public class StockController {
-    @Resource
-    private StockService stockService;
+    private final StockService stockService;
 
     /**
      * 查询库存列表
@@ -34,16 +35,6 @@ public class StockController {
     @GetMapping("/list")
     public R<List<StockVO>> createStock(){
         return R.success("查询成功", stockService.listStock());
-    }
-
-    /**
-     * 根据商品id查询库存
-     * @param pId
-     * @return
-     */
-    @GetMapping("/get/{pId}")
-    public R<StockVO> getStockByProductId(@PathVariable("pId") @Parameter(description = "商品id") Long pId) {
-        return R.success("查询成功", stockService.getStockByProductId(pId));
     }
 
     /**

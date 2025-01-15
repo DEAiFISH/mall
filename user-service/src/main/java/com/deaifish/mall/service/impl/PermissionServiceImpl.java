@@ -2,7 +2,6 @@ package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.deaifish.mall.AuthUserContext;
-import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.PermissionDTO;
 import com.deaifish.mall.pojo.po.PermissionPO;
 import com.deaifish.mall.pojo.po.QPermissionPO;

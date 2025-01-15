@@ -2,6 +2,7 @@ package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.deaifish.mall.api.BIZServiceApi;
+import com.deaifish.mall.api.OrderServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductEvaluationDTO;
@@ -38,6 +39,7 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     private final ProductEvaluationRepository productEvaluationRepository;
     private final BIZServiceApi bizServiceApi;
     private final PathProperties pathProperties;
+    private final OrderServiceApi orderServiceApi;
 
     private static final QProductEvaluationPO PRODUCT_EVALUATION_PO = QProductEvaluationPO.productEvaluationPO;
     private static final QUserPO USER_PO = QUserPO.userPO;
@@ -57,6 +59,9 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
         ProductEvaluationPO po = BeanUtil.toBean(productEvaluationDTO, ProductEvaluationPO.class);
         productEvaluationRepository.save(po);
         entityManager.refresh(po);
+
+        // 订单完成评价后，订单状态改为已完成
+        orderServiceApi.finish(po.getProductId());
         return getProductEvaluationVO(po);
     }
 
