@@ -1,5 +1,6 @@
 package com.deaifish.mall.service;
 
+import com.deaifish.mall.pojo.contanst.OrderCancelReason;
 import com.deaifish.mall.pojo.dto.OrderDTO;
 import com.deaifish.mall.pojo.qo.OrderQO;
 import com.deaifish.mall.pojo.vo.OrderVO;
@@ -84,7 +85,7 @@ public interface OrderService {
      * @param cancelReason
      * @return
      */
-    OrderVO cancel(Long orderId, Byte cancelReason);
+    OrderVO cancel(Long orderId, OrderCancelReason cancelReason);
 
     /**
      * 更新订单备注

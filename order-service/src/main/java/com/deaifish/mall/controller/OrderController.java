@@ -1,5 +1,6 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.pojo.contanst.OrderCancelReason;
 import com.deaifish.mall.pojo.dto.OrderDTO;
 import com.deaifish.mall.pojo.qo.OrderQO;
 import com.deaifish.mall.pojo.vo.OrderVO;
@@ -114,13 +115,13 @@ public class OrderController {
     /**
      * 取消订单
      * @param orderId
-     * @param cancelReason 取消原因（1-超时未支付 2-退款关闭 3-买家取消）
+     * @param cancelReason 取消原因（1-超时未支付 2-用户主动取消 3-商家取消）
      * @return
      */
     @PutMapping("/cancel/{id}")
     public R<OrderVO> cancel(@PathVariable("id") @Parameter(description = "订单id") Long orderId,
-                             @RequestParam(name = "cancelReason") @Parameter(description = "取消原因") Byte cancelReason) {
-        return R.success("取消订单", orderService.cancel(orderId, cancelReason));
+                             @RequestParam(name = "cancelReason") @Parameter(description = "取消原因（1-超时未支付 2-用户主动取消 3-商家取消）") Byte cancelReason) {
+        return R.success("取消订单", orderService.cancel(orderId, OrderCancelReason.getByCode(cancelReason)));
     }
 
     /**

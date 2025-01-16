@@ -133,6 +133,9 @@ public class OrderServiceImpl implements OrderService {
         if (po == null) {
             throw new MallException("订单已超时，请重新下单");
         }
+        if(po.getStatus() != OrderStatus.WAIT_PAY.getCode()){
+            throw new MallException("订单状态不正确，无法支付");
+        }
         po.setPaymentMethod(paymentMethod);
         po.setPayTime(new Date());
         po.setStatus((byte) 2);
@@ -151,6 +154,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderVO send(Long orderId, String courierNumber) {
+        OrderPO po = jpaQueryFactory.selectFrom(ORDER_PO).where(ORDER_PO.orderId.eq(orderId)).fetchOne();
+        if (po == null) {
+            throw new MallException("订单不存在");
+        }
+        if(po.getStatus() != OrderStatus.WAIT_SEND.getCode()){
+            throw new MallException("订单状态不正确，无法发货");
+        }
+
 
         jpaQueryFactory.update(ORDER_PO)
                 .set(ORDER_PO.courierNumber, courierNumber)
@@ -165,6 +176,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderVO receive(Long orderId) {
+        OrderPO po = jpaQueryFactory.selectFrom(ORDER_PO).where(ORDER_PO.orderId.eq(orderId)).fetchOne();
+        if (po == null) {
+            throw new MallException("订单不存在");
+        }
+        if(po.getStatus() != OrderStatus.WAIT_SEND.getCode()){
+            throw new MallException("订单状态不正确，无法收货");
+        }
+
         jpaQueryFactory.update(ORDER_PO)
                 .set(ORDER_PO.status, OrderStatus.WAIT_EVALUATE.getCode())
                 .where(ORDER_PO.orderId.eq(orderId))
@@ -176,6 +195,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderVO finish(Long orderId) {
+        OrderPO po = jpaQueryFactory.selectFrom(ORDER_PO).where(ORDER_PO.orderId.eq(orderId)).fetchOne();
+        if (po == null) {
+            throw new MallException("订单不存在");
+        }
+        if(po.getStatus() != OrderStatus.WAIT_SEND.getCode()){
+            throw new MallException("订单状态不正确，无法完成订单操作");
+        }
+
         jpaQueryFactory.update(ORDER_PO)
                 .set(ORDER_PO.finishTime, new Date())
                 .set(ORDER_PO.status, OrderStatus.FINISH.getCode())
@@ -186,11 +213,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderVO cancel(Long orderId, Byte cancelReason) {
+    public OrderVO cancel(Long orderId, OrderCancelReason cancelReason) {
+
+        orderRedisTemplate.delete(orderProperties.getRedisOrderKey() + orderId);
+
         jpaQueryFactory.update(ORDER_PO)
                 .set(ORDER_PO.cancelTime, new Date())
                 .set(ORDER_PO.status, OrderStatus.FAIL.getCode())
-                .set(ORDER_PO.cancelReason, cancelReason)
+                .set(ORDER_PO.cancelReason, cancelReason.getCode())
                 .where(ORDER_PO.orderId.eq(orderId))
                 .execute();
         return getByOrderId(orderId);

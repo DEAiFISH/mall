@@ -36,4 +36,13 @@ public enum OrderCancelReason {
         // 未找到匹配的枚举值，返回 null 或者其他默认值
         return null;
     }
+
+    public static OrderCancelReason getByCode(byte code) {
+        for (OrderCancelReason status : OrderCancelReason.values()) {
+            if (status.getCode() == code) {
+                return status;
+            }
+        }
+        return null;
+    }
 }
