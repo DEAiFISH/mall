@@ -20,7 +20,7 @@ import java.util.Date;
  */
 
 @Entity
-@Table(schema = "mall_db", name = "user")
+@Table(schema = "mall_db", name = "user", uniqueConstraints = {@UniqueConstraint(name = "idx_user_wx_id", columnNames = {"wx_id"})})
 @Comment("用户表")
 @Data
 @Builder
@@ -42,7 +42,7 @@ public class UserPO extends BasePO implements Serializable {
     /**
      * 微信ID
      */
-    @Column(name = "wx_id", columnDefinition = "VARCHAR(32) UNIQUE COMMENT '微信ID'")
+    @Column(name = "wx_id", columnDefinition = "VARCHAR(32) COMMENT '微信ID'")
     private String wxId;
 
     /**

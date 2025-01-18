@@ -13,9 +13,9 @@ import lombok.Data;
  */
 @Data
 public class SetPasswordDTO {
-    @Schema(description = "用户ID")
-    @NotNull(message = "用户ID不能为空")
-    private Long userId;
+    @Schema(description = "微信id")
+    @NotNull(message = "微信id不能为空")
+    private String wxId;
 
     @Schema(description = "登录密码")
     @NotBlank(message = "登录密码不能为空")

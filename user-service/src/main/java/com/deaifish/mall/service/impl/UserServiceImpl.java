@@ -76,13 +76,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void setPassword(SetPasswordDTO passwordDTO) {
+        if (!userRepository.existsByWxId(passwordDTO.getWxId())) {
+            throw new MallException("用户不存在");
+        }
         String password = EncryptUtil.encode(passwordDTO.getPassword());
         if (password == null) {
             throw new MallException("密码格式有误，请重新输入");
         }
         jpaQueryFactory.update(USER_PO)
                 .set(USER_PO.password, password)
-                .where(USER_PO.userId.eq(passwordDTO.getUserId())).execute();
+                .where(USER_PO.wxId.eq(passwordDTO.getWxId())).execute();
     }
 
     @Override

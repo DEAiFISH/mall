@@ -1,41 +1,12 @@
 spring:
-    profiles:
-        active: @profiles.active@
+  profiles:
+    active: @profiles.active@
 
-    application:
-        name: gateway
-    cloud:
-        nacos:
-            server-addr: localhost:8848 # Nacos 作为服务注册地址
-            config:
-                file-extension: yaml
-                server-addr: localhost:8848 # 配置 Nacos 作为服务配置地址
-        gateway:
-            discovery:
-                locator:
-                    enabled: true # 开启服务发现支持
-            routes:
-                -   id: biz-service-route
-                    uri: lb://biz-service
-                    predicates:
-                        - Path=/biz/**
-                -   id: user-service-route
-                    uri: lb://user-service
-                    predicates:
-                        - Path=/user/v1/**
-                -   id: product-service-route
-                    uri: lb://product-service
-                    predicates:
-                        - Path=/product/**
-                -   id: login-service-route
-                    uri: lb://login-service
-                    predicates:
-                        - Path=/doLogin
-management:
-    endpoints:
-        web:
-            exposure:
-                include: gateway,health,info,env,metrics,loggers  # 包含需要暴露的 Actuator 端点
-    endpoint:
-        gateway:
-            enabled: true  # 启用 Gateway 的 Actuator 支持
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: localhost:8848 # Nacos 作为服务注册地址
+      config:
+        file-extension: yaml
+        server-addr: localhost:8848 # 配置 Nacos 作为服务配置地址

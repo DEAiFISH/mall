@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @date 2024/12/12 12:25
  */
 @Entity
-@Table(schema = "mall_db", name = "label")
+@Table(schema = "mall_db", name = "label", uniqueConstraints = {@UniqueConstraint(name = "idx_label_name", columnNames = {"name"})})
 @Comment("标签")
 @Data
 @Builder
@@ -39,7 +39,7 @@ public class LabelPO extends BasePO implements Serializable {
     /**
      * 名称
      */
-    @Column(name = "name", columnDefinition = "VARCHAR(32) NOT NULL UNIQUE COMMENT '名称'")
+    @Column(name = "name", columnDefinition = "VARCHAR(32) NOT NULL COMMENT '名称'")
     private String name;
 
     /**

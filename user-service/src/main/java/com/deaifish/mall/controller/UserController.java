@@ -32,7 +32,7 @@ import java.util.List;
 @RequestMapping("/user/v1")
 @Tag(name = "用户信息接口")
 @Validated
-@RequiresRole("ADMIN")
+//@RequiresRole("ADMIN")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -43,7 +43,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/get/all")
-    @RequiresRole("ROLE_CUSTOMER")
+//    @RequiresRole("ROLE_CUSTOMER")
     public R<List<UserBriefVO>> getAll() {
         return R.success("查询成功", userService.getAll());
     }
@@ -59,12 +59,12 @@ public class UserController {
     }
 
     /**
-     * 修改密码
+     * 忘记密码，重置密码
      * @param passwordDTO
      * @return
      */
-    @PostMapping("/set/password")
-    public R<Boolean> setPassword(@Valid @RequestBody SetPasswordDTO passwordDTO) {
+    @PutMapping("/forget-password")
+    public R<Boolean> forgetPassword(@Valid @RequestBody SetPasswordDTO passwordDTO) {
         userService.setPassword(passwordDTO);
         return R.success("修改密码成功", true);
     }
