@@ -3,6 +3,8 @@ package com.deaifish.mall.config;
 import feign.Logger;
 import feign.RequestInterceptor;
 import feign.Retryer;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,7 +15,9 @@ import org.springframework.context.annotation.Configuration;
  * @date 2024/12/30 21:23
  */
 @Configuration
+@RequiredArgsConstructor
 public class FeignConfig {
+    private final HttpServletRequest httpServletRequest;
     @Bean
     public Retryer myRetryer() {
 //        return Retryer.NEVER_RETRY; // 默认，不启动重试策略
@@ -30,6 +34,14 @@ public class FeignConfig {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
+            // 获取当前请求中的 Authorization 请求头
+            String authorizationHeader = httpServletRequest.getHeader("Authorization");
+
+            // 如果存在 Authorization 头，动态添加到 Feign 请求头中
+            if (authorizationHeader != null) {
+                requestTemplate.header("Authorization", authorizationHeader);
+            }
+
             // 这里可以添加自定义的 Header
             requestTemplate.header("ROAD", "FEIGN-CLIENT");
         };

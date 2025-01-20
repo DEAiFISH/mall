@@ -3,7 +3,9 @@ package com.deaifish.mall.config;
 import com.deaifish.mall.filter.JsonAuthenticationFilter;
 import com.deaifish.mall.handler.LoginFailureHandler;
 import com.deaifish.mall.handler.LoginSuccessHandler;
+import com.deaifish.mall.handler.MyLogoutSuccessHandler;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,11 +24,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-    @Resource
-    private LoginSuccessHandler successHandler;
-    @Resource
-    private LoginFailureHandler failureHandler;
+    private final LoginSuccessHandler successHandler;
+    private final LoginFailureHandler failureHandler;
+    private final MyLogoutSuccessHandler logoutSuccessHandler;
 
     /**
      * @description 配置拦截器链
@@ -39,9 +41,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests.requestMatchers(new AntPathRequestMatcher("/loginPage", "GET"),
-                                new AntPathRequestMatcher("/doLogin", "POST")).permitAll()
+                authorizeRequests.requestMatchers(new AntPathRequestMatcher("/doLogin", "POST")).permitAll()
                         .anyRequest().authenticated());
+
+        http.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/doLogout", "POST"))
+                .logoutSuccessHandler(logoutSuccessHandler));
 
         http.sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 不使用 Session

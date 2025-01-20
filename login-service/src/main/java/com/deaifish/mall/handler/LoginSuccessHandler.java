@@ -29,7 +29,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Map<String, Object> result = new HashMap<>();
         result.put("msg", "成功");
         result.put("code", 200);
-        result.put("data", "token:" + userDetails.getToken());
+        result.put("token", userDetails.getToken());
+        result.put("data", userDetails);
         response.setContentType("application/json;charset=UTF-8");
         String s = new ObjectMapper().writeValueAsString(result);
         response.getWriter().write(s);

@@ -73,10 +73,8 @@ public class UserDetailsConfig implements UserDetailsService, UserDetailsPasswor
         String token = jwtUtil.createToken(new JwtUser(userPO.getUserId(), wxId, password, authorities));
 
         // 封装用户信息
-        UserNamePasswordUserAuthToken user = new UserNamePasswordUserAuthToken(wxId, password, token,
-                status == 1, true, true, true, authorities);
-
         // 返回用户信息
-        return user;
+        return new UserNamePasswordUserAuthToken(userPO.getUserId(), userPO.getNickName(), userPO.getAvatar(), wxId, password, token,
+                status == 1, true, true, true, authorities);
     }
 }

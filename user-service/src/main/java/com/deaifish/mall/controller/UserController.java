@@ -1,11 +1,8 @@
 package com.deaifish.mall.controller;
 
-import com.deaifish.mall.AuthUserContext;
 import com.deaifish.mall.group.ADDGroup;
 import com.deaifish.mall.group.UpdateGroup;
-import com.deaifish.mall.pojo.annotation.RequiresRole;
-import com.deaifish.mall.pojo.bo.JwtUser;
-import com.deaifish.mall.pojo.dto.SetPasswordDTO;
+import com.deaifish.mall.pojo.dto.ResetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
 import com.deaifish.mall.pojo.vo.UserBriefVO;
@@ -14,7 +11,6 @@ import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -54,18 +50,31 @@ public class UserController {
      * @return
      */
     @GetMapping("/get/{id}")
-    public R<UserDetailedVO> get(@PathVariable(name = "id") @Parameter(description = "用户ID") Long id) {
+    public R<UserDetailedVO> get(@PathVariable("id") @Parameter(description = "用户id") Long id) {
         return R.success("查询成功", userService.getById(id));
     }
 
     /**
-     * 忘记密码，重置密码
-     * @param passwordDTO
+     * 设置用户头像
+     * @param id
+     * @param avatar
      * @return
      */
-    @PutMapping("/forget-password")
-    public R<Boolean> forgetPassword(@Valid @RequestBody SetPasswordDTO passwordDTO) {
-        userService.setPassword(passwordDTO);
+    @PutMapping("/set/avatar")
+    public R<Boolean> setAvatar(@RequestParam("id") @Parameter(description = "用户id") Long id,
+                                @RequestParam("avatar") @Parameter(description = "头像") String avatar) {
+        userService.setAvatar(id, avatar);
+        return R.success("修改头像成功", true);
+    }
+
+    /**
+     * 修改密码
+     * @param resetPasswordDTO
+     * @return
+     */
+    @PutMapping("/set-password")
+    public R<Boolean> forgetPassword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
+        userService.setPassword(resetPasswordDTO);
         return R.success("修改密码成功", true);
     }
 
@@ -75,7 +84,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/set/payment-password")
-    public R<Boolean> setPaymentPassword(@Valid @RequestBody SetPaymentDTO paymentDTO) {
+    public R<Boolean> setPaymentPassword(@Validated(UpdateGroup.class) @RequestBody SetPaymentDTO paymentDTO) {
         userService.setPaymentPassword(paymentDTO);
         return R.success("修改支付密码成功", true);
     }
@@ -85,7 +94,7 @@ public class UserController {
      * @param userDTO
      * @return
      */
-    @PutMapping("/sign-up")
+    @PostMapping("/sign-up")
     public R<UserDetailedVO> signUp(@RequestBody @Validated(ADDGroup.class) UserDTO userDTO) {
         return R.success("注册成功", userService.signUp(userDTO));
     }
@@ -105,7 +114,7 @@ public class UserController {
      * @param userDTO
      * @return
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public R<UserDetailedVO> update(@RequestBody @Validated(UpdateGroup.class) UserDTO userDTO) {
         return R.success("修改成功", userService.update(userDTO));
     }

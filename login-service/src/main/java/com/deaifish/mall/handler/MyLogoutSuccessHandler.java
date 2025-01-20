@@ -1,6 +1,6 @@
 package com.deaifish.mall.handler;
 
-import com.deaifish.mall.pojo.bo.UserNamePasswordUserAuthToken;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.util.JWTUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -19,15 +19,15 @@ import java.io.IOException;
  * @date 2025/1/18 14:42
  */
 @Component
-@Resource
 public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
+    @Resource
     private JWTUtil jwtUtil;
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        UserNamePasswordUserAuthToken userDetails = (UserNamePasswordUserAuthToken) authentication.getPrincipal();
-        jwtUtil.deleteJwtFromRedis(userDetails.getUsername());
-
-        response.sendRedirect("/login");
+        String token = request.getHeader("Authorization");
+        if (StrUtil.isNotBlank(token)) {
+            jwtUtil.deleteTokenFromRedis(token);
+        }
     }
 }

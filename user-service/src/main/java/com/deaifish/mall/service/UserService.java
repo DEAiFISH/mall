@@ -1,6 +1,6 @@
 package com.deaifish.mall.service;
 
-import com.deaifish.mall.pojo.dto.SetPasswordDTO;
+import com.deaifish.mall.pojo.dto.ResetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
 import com.deaifish.mall.pojo.vo.UserBriefVO;
@@ -29,10 +29,17 @@ public interface UserService {
     UserDetailedVO getById(Long id);
 
     /**
-     * 设置用户密码
-     * @param passwordDTO
+     * 设置用户头像
+     * @param id
+     * @param avatar
      */
-    void setPassword(SetPasswordDTO passwordDTO);
+    void setAvatar(Long id, String avatar);
+
+    /**
+     * 设置用户密码
+     * @param resetPasswordDTO
+     */
+    void setPassword(ResetPasswordDTO resetPasswordDTO);
 
     /**
      * 设置用户支付密码
@@ -64,4 +71,5 @@ public interface UserService {
      * @param id
      */
     void delete(Long id);
+
 }

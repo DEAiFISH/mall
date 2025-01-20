@@ -42,7 +42,7 @@ public class OrderExpirationListener implements MessageListener {
         }
 
         try {
-            orderService.cancel(orderId, OrderCancelReason.TIMEOUT.getCode());
+            orderService.cancel(orderId, OrderCancelReason.TIMEOUT);
             log.info("成功取消订单：{}", orderId);
         } catch (Exception e) {
             log.error("取消订单失败，订单 ID: {}", orderId, e);

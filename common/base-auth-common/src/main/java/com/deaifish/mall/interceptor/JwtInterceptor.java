@@ -7,6 +7,7 @@ import com.deaifish.mall.config.JWTProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.annotation.RequiresRole;
 import com.deaifish.mall.pojo.bo.JwtUser;
+import com.deaifish.mall.response.ResponseEnum;
 import com.deaifish.mall.util.JWTUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,20 +41,25 @@ public class JwtInterceptor implements HandlerInterceptor {
         log.info("JwtInterceptor 拦截请求：{}", requestPath);
 
         // 动态排除路径
-        if (jwtProperties.getExcludePath().contains(requestPath)) {
-            return true;
+        List<String> excludePath = jwtProperties.getExcludePath();
+        for (String path : excludePath) {
+            // 正则匹配
+            if (requestPath.matches(path)) {
+                log.info("JwtInterceptor 排除路径：{}", requestPath);
+                return true;
+            }
         }
 
         // 获取 Header 中的 Token
-        String token = request.getHeader("authorization");
+        String token = request.getHeader("Authorization");
         if (StrUtil.isBlank(token)) {
-            throw new MallException("未携带 Token，请重新登录!");
+            throw new MallException(ResponseEnum.UNAUTHORIZED,"Token 不能为空!");
         }
 
         // 验证 Token
         Map<String, Claim> userData = jwtUtil.verifyToken(token);
         if (userData == null) {
-            throw new MallException("登录失效，请重新登录!");
+            throw new MallException(ResponseEnum.CLEAN_TOKEN,"Token 已失效，请重新登录!");
         }
 
         JwtUser userInfo =  jwtUtil.parseToken(userData);

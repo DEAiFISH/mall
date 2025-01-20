@@ -131,6 +131,10 @@
             <groupId>com.deaifish.mall</groupId>
             <artifactId>util-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.deaifish.mall</groupId>
+            <artifactId>base-auth-common</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

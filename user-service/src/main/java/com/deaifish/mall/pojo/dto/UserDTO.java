@@ -1,5 +1,6 @@
 package com.deaifish.mall.pojo.dto;
 
+import com.deaifish.mall.group.ADDGroup;
 import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -29,7 +30,7 @@ public class UserDTO {
      * 微信ID
      */
     @Schema(description = "微信ID")
-    @NotBlank(message = "微信ID不能为空", groups = {UpdateGroup.class})
+    @NotBlank(message = "微信ID不能为空", groups = {ADDGroup.class})
     private String wxId;
 
     /**
@@ -62,12 +63,6 @@ public class UserDTO {
     private Date birthday;
 
     /**
-     * 头像
-     */
-    @Schema(description = "头像")
-    private String avatar;
-
-    /**
      * 电话号
      */
     @Schema(description = "电话号")
@@ -84,14 +79,14 @@ public class UserDTO {
      * 密码
      */
     @Schema(description = "密码")
-    @NotBlank(message = "密码不能为空")
+    @NotBlank(message = "密码不能为空", groups = {ADDGroup.class})
     private String password;
 
     /**
      * 支付密码
      */
     @Schema(description = "支付密码")
-    @NotBlank(message = "支付密码不能为空")
+    @NotBlank(message = "支付密码不能为空", groups = {ADDGroup.class})
     private String paymentPassword;
 
     /**
@@ -101,20 +96,9 @@ public class UserDTO {
     private String email;
 
     /**
-     * 状态（启用：1；禁用：0）
+     * 状态
      */
-    @Schema(description = "状态（启用：1；禁用：0）")
+    @Schema(description = "状态")
+    @NotNull(message = "状态不能为空", groups = {UpdateGroup.class})
     private Byte status;
-
-    /**
-     * 用户积分
-     */
-    @Schema(description = "用户积分")
-    private Integer integral;
-
-    /**
-     * 角色ID
-     */
-    @Schema(description = "角色ID")
-    private Byte roleId;
 }

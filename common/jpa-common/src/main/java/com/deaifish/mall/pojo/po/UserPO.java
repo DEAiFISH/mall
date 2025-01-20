@@ -42,7 +42,7 @@ public class UserPO extends BasePO implements Serializable {
     /**
      * 微信ID
      */
-    @Column(name = "wx_id", columnDefinition = "VARCHAR(32) COMMENT '微信ID'")
+    @Column(name = "wx_id", columnDefinition = "VARCHAR(32) NOT NULL COMMENT '微信ID'")
     private String wxId;
 
     /**
@@ -128,6 +128,6 @@ public class UserPO extends BasePO implements Serializable {
     /**
      * 角色ID
      */
-    @Column(name = "role_id", columnDefinition = "TINYINT NOT NULL COMMENT '角色ID'")
+    @Column(name = "role_id", columnDefinition = "TINYINT NOT NULL DEFAULT 2 COMMENT '角色ID'")
     private Byte roleId;
 }

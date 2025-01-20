@@ -29,7 +29,7 @@ public enum ResponseEnum {
     /**
      * 未授权
      */
-    UNAUTHORIZED("A00004", "Unauthorized"),
+    UNAUTHORIZED("A00004","未携带 Token，请重新登录!"),
 
     /**
      * 服务器出了点小差
@@ -45,7 +45,7 @@ public enum ResponseEnum {
      * 一些需要登录的接口，而实际上因为前端无法知道token是否已过期，导致token已失效时，
      * 应该返回一个状态码，告诉前端token已经失效了，及时清理
      */
-    CLEAN_TOKEN("A00008", "clean token"),
+    CLEAN_TOKEN("A00008", "登录失效，请重新登录!"),
 
     /**
      * 刷新token已过期

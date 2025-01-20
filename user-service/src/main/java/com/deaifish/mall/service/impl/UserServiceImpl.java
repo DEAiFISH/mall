@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
-import com.deaifish.mall.pojo.dto.SetPasswordDTO;
+import com.deaifish.mall.pojo.dto.ResetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
 import com.deaifish.mall.pojo.po.QRolePO;
@@ -15,8 +15,8 @@ import com.deaifish.mall.pojo.vo.UserDetailedVO;
 import com.deaifish.mall.repository.UserRepository;
 import com.deaifish.mall.service.UserService;
 import com.deaifish.mall.util.EncryptUtil;
+import com.deaifish.mall.util.JWTUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +37,13 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    
+
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager entityManager;
     private final UserRepository userRepository;
     private final BIZServiceApi bizServiceApi;
     private final PathProperties pathProperties;
+    private final JWTUtil jwtUtil;
 
     private final static QUserPO USER_PO = QUserPO.userPO;
     private final static QRolePO ROLE_PO = QRolePO.rolePO;
@@ -75,17 +76,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void setPassword(SetPasswordDTO passwordDTO) {
-        if (!userRepository.existsByWxId(passwordDTO.getWxId())) {
+    public void setAvatar(Long id, String avatar) {
+        UserPO userPo = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.userId.eq(id)).fetchOne();
+        if(userPo == null) {
             throw new MallException("用户不存在");
         }
-        String password = EncryptUtil.encode(passwordDTO.getPassword());
+        bizServiceApi.delete(userPo.getAvatar());
+        jpaQueryFactory.update(USER_PO)
+                .set(USER_PO.avatar, avatar)
+                .where(USER_PO.userId.eq(id)).execute();
+    }
+
+    @Override
+    @Transactional
+    public void setPassword(ResetPasswordDTO resetPasswordDTO) {
+        UserPO po = jpaQueryFactory.selectFrom(USER_PO).where(USER_PO.userId.eq(resetPasswordDTO.getUserId())).fetchOne();
+        if (po == null) {
+            throw new MallException("用户不存在");
+        }
+        EncryptUtil.matches(resetPasswordDTO.getOldPassword(), po.getPassword());
+        String password = EncryptUtil.encode(resetPasswordDTO.getPassword());
         if (password == null) {
             throw new MallException("密码格式有误，请重新输入");
         }
         jpaQueryFactory.update(USER_PO)
                 .set(USER_PO.password, password)
-                .where(USER_PO.wxId.eq(passwordDTO.getWxId())).execute();
+                .where(USER_PO.userId.eq(resetPasswordDTO.getUserId())).execute();
     }
 
     @Override
@@ -131,16 +147,17 @@ public class UserServiceImpl implements UserService {
                 .set(USER_PO.realName, userDTO.getRealName())
                 .set(USER_PO.gender, userDTO.getGender())
                 .set(USER_PO.birthday, userDTO.getBirthday())
-                .set(USER_PO.avatar, userDTO.getAvatar())
                 .set(USER_PO.phone, userDTO.getPhone())
                 .set(USER_PO.message, userDTO.getMessage())
                 .set(USER_PO.email, userDTO.getEmail())
                 .set(USER_PO.status, userDTO.getStatus())
-                .set(USER_PO.integral, userDTO.getIntegral())
-                .set(USER_PO.roleId, userDTO.getRoleId())
                 .where(USER_PO.userId.eq(userDTO.getUserId())).execute();
 
         UserPO po = jpaQueryFactory.selectFrom(USER_PO).where(USER_PO.userId.eq(userDTO.getUserId())).fetchOne();
+
+        if(po.getStatus() == 0){
+            jwtUtil.deleteJwtFromRedis(po.getWxId());
+        }
 
         return getUserDetailedVO(po);
     }

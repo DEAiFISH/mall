@@ -44,7 +44,7 @@ public class DefaultExceptionHandlerConfig {
             fieldErrors = ((BindException) e).getBindingResult().getFieldErrors();
         }
         if (fieldErrors == null) {
-            return ResponseEntity.status(HttpStatus.OK)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(R.fail(ResponseEnum.METHOD_ARGUMENT_NOT_VALID));
         }
 
@@ -52,7 +52,7 @@ public class DefaultExceptionHandlerConfig {
         for (FieldError fieldError : fieldErrors) {
             defaultMessages.add(fieldError.getField() + ":" + fieldError.getDefaultMessage());
         }
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(R.fail(ResponseEnum.METHOD_ARGUMENT_NOT_VALID, defaultMessages));
     }
 
@@ -65,7 +65,7 @@ public class DefaultExceptionHandlerConfig {
     public ResponseEntity<R<List<FieldError>>> methodArgumentNotValidExceptionHandler(
             HttpMessageNotReadableException e) {
         log.error("methodArgumentNotValidExceptionHandler", e);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(R.fail(ResponseEnum.HTTP_MESSAGE_NOT_READABLE));
     }
 
@@ -81,10 +81,10 @@ public class DefaultExceptionHandlerConfig {
         ResponseEnum responseEnum = e.getResponseEnum();
         // 失败返回失败消息 + 状态码
         if (responseEnum != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(R.fail(responseEnum, e.getObject()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(R.fail(responseEnum, e.getObject()));
         }
         // 失败返回消息 状态码固定为直接显示消息的状态码
-        return ResponseEntity.status(HttpStatus.OK).body(R.showFailMsg(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(R.showFailMsg(e.getMessage()));
     }
 
     /**

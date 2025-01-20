@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-@EntityScan("com.deaifish.mall.pojo.po")
 public class UserServiceApplication {
 
     public static void main(String[] args) {

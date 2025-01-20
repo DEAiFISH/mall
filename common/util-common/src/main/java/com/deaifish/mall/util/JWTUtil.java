@@ -127,6 +127,17 @@ public class JWTUtil {
         stringRedisTemplate.delete(key);
     }
 
+    /**
+     * 删除 Redis 中的 JWT，通过 token 解析 wxId
+     * @param token
+     */
+    public void deleteTokenFromRedis(String token) {
+        DecodedJWT jwt = JWT.decode(token);
+        String wxId = jwt.getClaim("wxId").asString();
+        log.info("退出登录，wxId:{}", wxId);
+        deleteJwtFromRedis(wxId);
+    }
+
     public JwtUser parseToken(Map<String, Claim> userData) {
         Long userId = userData.get("userId").asLong();
         String wxId = userData.get("wxId").asString();
