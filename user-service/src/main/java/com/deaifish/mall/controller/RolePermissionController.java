@@ -1,5 +1,6 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.annotation.RequiresRole;
 import com.deaifish.mall.pojo.dto.RolePermissionDTO;
 import com.deaifish.mall.pojo.qo.RolePermissionQO;
@@ -53,7 +54,7 @@ public class RolePermissionController {
      * @return
      */
     @PutMapping("/update")
-    public R<RolePermissionVO> update(@Validated @RequestBody RolePermissionDTO rolePermissionDTO) {
+    public R<RolePermissionVO> update(@Validated(UpdateGroup.class) @RequestBody RolePermissionDTO rolePermissionDTO) {
         return R.success("更新成功",rolePermissionService.update(rolePermissionDTO));
     }
 
@@ -62,10 +63,13 @@ public class RolePermissionController {
      * @param rolePermissionId
      * @return
      */
-    @DeleteMapping("/delete")
-    public R<Boolean> delete(@RequestParam("rolePermissionId") Byte rolePermissionId) {
+    @DeleteMapping("/delete/{rpId}")
+    public R<Boolean> delete(@PathVariable("rpId") Byte rolePermissionId) {
         return R.success("删除成功",rolePermissionService.delete(rolePermissionId));
     }
 
-
+    @DeleteMapping("/delete")
+    public R<Boolean> deleteRolePermission(@Validated @RequestBody RolePermissionDTO rolePermissionDTO) {
+        return R.success("删除成功",rolePermissionService.deleteRolePermission(rolePermissionDTO));
+    }
 }

@@ -1,6 +1,7 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
@@ -10,6 +11,7 @@ import com.deaifish.mall.pojo.po.QClassifyPO;
 import com.deaifish.mall.pojo.vo.ClassifyVO;
 import com.deaifish.mall.repository.ClassifyRepository;
 import com.deaifish.mall.service.ClassifyService;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,8 +41,9 @@ public class ClassifyServiceImpl implements ClassifyService {
     private static final QClassifyPO CLASSIFY_PO = QClassifyPO.classifyPO;
 
     @Override
-    public List<ClassifyVO> list() {
-        List<ClassifyPO> poList = jpaQueryFactory.selectFrom(CLASSIFY_PO).fetch();
+    public List<ClassifyVO> list(String name) {
+        List<ClassifyPO> poList = jpaQueryFactory.selectFrom(CLASSIFY_PO)
+                .where(createParam(name)).fetch();
         return poList.stream().map(po -> BeanUtil.toBean(po, ClassifyVO.class)).toList();
     }
 
@@ -78,5 +82,13 @@ public class ClassifyServiceImpl implements ClassifyService {
         }
         bizServiceApi.delete(po.getIcon());
         jpaQueryFactory.delete(CLASSIFY_PO).where(CLASSIFY_PO.classifyId.eq(classifyId)).execute();
+    }
+
+    private Predicate[] createParam(String name){
+        List<Predicate> param = new ArrayList<>();
+        if(StrUtil.isNotBlank(name)){
+            param.add(CLASSIFY_PO.name.like("%" + name + "%"));
+        }
+        return param.toArray(new Predicate[0]);
     }
 }

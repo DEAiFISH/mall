@@ -1,6 +1,7 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.AuthUserContext;
 import com.deaifish.mall.pojo.dto.RoleDTO;
 import com.deaifish.mall.pojo.po.QRolePO;
@@ -9,12 +10,15 @@ import com.deaifish.mall.pojo.po.RolePO;
 import com.deaifish.mall.pojo.vo.RoleVO;
 import com.deaifish.mall.repository.RoleRepository;
 import com.deaifish.mall.service.RoleService;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,8 +39,10 @@ public class RoleServiceImpl implements RoleService {
     private static final QUserPO USER_PO = QUserPO.userPO;
 
     @Override
-    public List<RoleVO> list() {
-        List<RolePO> pos = jpaQueryFactory.selectFrom(ROLE_PO).fetch();
+    public List<RoleVO> list(String name) {
+        createParam(name);
+        List<RolePO> pos = jpaQueryFactory.selectFrom(ROLE_PO)
+                .where(createParam(name)).fetch();
 
         return rolePO2VO(pos);
     }
@@ -59,6 +65,7 @@ public class RoleServiceImpl implements RoleService {
                 .set(ROLE_PO.name, roleDTO.getName())
                 .set(ROLE_PO.description, roleDTO.getDescription())
                 .set(ROLE_PO.userId, AuthUserContext.get().getUserId())
+                .set(ROLE_PO.status, roleDTO.getStatus())
                 .where(ROLE_PO.roleId.eq(roleDTO.getRoleId())).execute();
         RolePO po = jpaQueryFactory.selectFrom(ROLE_PO).where(ROLE_PO.roleId.eq(roleDTO.getRoleId())).fetchOne();
         return rolePO2VO(List.of(po)).get(0);
@@ -66,8 +73,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public Boolean delete(Byte id) {
-        jpaQueryFactory.delete(ROLE_PO).where(ROLE_PO.roleId.eq(id)).execute();
+    public Boolean delete(Byte roleId) {
+        jpaQueryFactory.delete(ROLE_PO).where(ROLE_PO.roleId.eq(roleId)).execute();
         return true;
     }
 
@@ -78,5 +85,13 @@ public class RoleServiceImpl implements RoleService {
             vo.setNickName(nickName);
             return vo;
         }).toList();
+    }
+
+    private Predicate[] createParam(String name) {
+        List<Predicate> param = new ArrayList<>();
+        if(StrUtil.isNotBlank(name)){
+            param.add(ROLE_PO.name.like("%" + name + "%"));
+        }
+        return param.toArray(new Predicate[0]);
     }
 }

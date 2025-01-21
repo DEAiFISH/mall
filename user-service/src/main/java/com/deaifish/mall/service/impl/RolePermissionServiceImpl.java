@@ -92,6 +92,16 @@ public class RolePermissionServiceImpl implements RolePermissionService {
         return true;
     }
 
+    @Override
+    @Transactional
+    public Boolean deleteRolePermission(RolePermissionDTO rolePermissionDTO) {
+        jpaQueryFactory.delete(ROLE_PERMISSION_PO).where(
+                ROLE_PERMISSION_PO.roleId.eq(rolePermissionDTO.getRoleId())
+                        .and(ROLE_PERMISSION_PO.permissionId.eq(rolePermissionDTO.getPermissionId()))
+        ).execute();
+        return true;
+    }
+
     private List<RolePermissionVO> rolePermissionPo2Vo(List<RolePermissionPO> pos) {
         return pos.stream().map(po -> {
             RolePermissionVO vo = BeanUtil.toBean(po, RolePermissionVO.class);

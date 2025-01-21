@@ -28,11 +28,12 @@ public class LabelController {
 
     /**
      * 标签列表
+     * @param name
      * @return
      */
     @RequestMapping("/list")
-    public R<List<LabelVO>> list() {
-        return R.success("查询成功", labelService.list());
+    public R<List<LabelVO>> list(@RequestParam("name") String name) {
+        return R.success("查询成功", labelService.list(name));
     }
 
     /**

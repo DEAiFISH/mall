@@ -9,9 +9,10 @@ import java.util.List;
 public interface LabelService {
     /**
      * 查询所有标签
+     * @param name
      * @return
      */
-    List<LabelVO> list();
+    List<LabelVO> list(String name);
 
     /**
      * 添加标签

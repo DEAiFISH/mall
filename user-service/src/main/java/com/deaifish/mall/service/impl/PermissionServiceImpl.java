@@ -9,12 +9,14 @@ import com.deaifish.mall.pojo.po.QUserPO;
 import com.deaifish.mall.pojo.vo.PermissionVO;
 import com.deaifish.mall.repository.PermissionRepository;
 import com.deaifish.mall.service.PermissionService;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,8 +37,10 @@ public class PermissionServiceImpl implements PermissionService {
     private static final QUserPO USER_PO = QUserPO.userPO;
 
     @Override
-    public List<PermissionVO> list() {
-        List<PermissionPO> pos = jpaQueryFactory.selectFrom(PERMISSION_PO).fetch();
+    public List<PermissionVO> list(String name) {
+
+        List<PermissionPO> pos = jpaQueryFactory.selectFrom(PERMISSION_PO)
+                .where(createParam(name)).fetch();
 
         return permissionPo2Vo(pos);
     }
@@ -79,5 +83,13 @@ public class PermissionServiceImpl implements PermissionService {
             vo.setNickName(nickName);
             return vo;
         }).toList();
+    }
+
+    private Predicate[] createParam(String name){
+        List<Predicate> param = new ArrayList<>();
+        if (name != null) {
+            param.add(PERMISSION_PO.name.like("%" + name + "%"));
+        }
+        return param.toArray(new Predicate[0]);
     }
 }

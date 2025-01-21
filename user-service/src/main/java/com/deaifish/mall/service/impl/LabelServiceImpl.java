@@ -1,6 +1,7 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.LabelDTO;
 import com.deaifish.mall.pojo.po.LabelPO;
@@ -12,6 +13,7 @@ import com.deaifish.mall.pojo.vo.UserInterestVO;
 import com.deaifish.mall.repository.LabelRepository;
 import com.deaifish.mall.repository.UserLabelRepository;
 import com.deaifish.mall.service.LabelService;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,8 +38,9 @@ public class LabelServiceImpl implements LabelService {
 
 
     @Override
-    public List<LabelVO> list() {
-        List<LabelPO> poList = jpaQueryFactory.select(LABEL_PO).from(LABEL_PO).fetch();
+    public List<LabelVO> list(String name) {
+        List<LabelPO> poList = jpaQueryFactory.select(LABEL_PO).from(LABEL_PO)
+                .where(createParam(name)).fetch();
         List<LabelVO> list = poList.stream().map(label -> BeanUtil.toBean(label, LabelVO.class)).toList();
         return list;
     }
@@ -105,5 +109,13 @@ public class LabelServiceImpl implements LabelService {
     @Transactional
     public void interestDelete(Long userID) {
         jpaQueryFactory.delete(USER_LABEL_PO).where(USER_LABEL_PO.userId.eq(userID)).execute();
+    }
+
+    private Predicate[] createParam(String name){
+        List<Predicate> param = new ArrayList<>();
+        if(StrUtil.isNotBlank(name)){
+            param.add(LABEL_PO.name.like("%" + name + "%"));
+        }
+        return param.toArray(new Predicate[0]);
     }
 }

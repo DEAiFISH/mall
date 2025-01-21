@@ -24,4 +24,6 @@ public interface RolePermissionService {
     RolePermissionVO update(RolePermissionDTO rolePermissionDTO);
 
     Boolean delete(Byte rolePermissionId);
+
+    Boolean deleteRolePermission(RolePermissionDTO rolePermissionDTO);
 }

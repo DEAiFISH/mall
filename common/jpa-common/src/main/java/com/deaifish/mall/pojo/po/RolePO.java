@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 /**
  * @description 角色表
@@ -40,6 +43,12 @@ public class RolePO extends BasePO {
      */
     @Column(name = "description", columnDefinition = "VARCHAR(128) COMMENT '描述'")
     private String description;
+
+    /**
+     * 角色状态
+     */
+    @Column(name = "status", columnDefinition = "TINYINT NOT NULL DEFAULT 1 COMMENT '角色状态'")
+    private Byte status;
 
     /**
      * 创建者 ID

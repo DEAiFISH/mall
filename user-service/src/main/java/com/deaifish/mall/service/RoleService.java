@@ -17,7 +17,7 @@ public interface RoleService {
      * 查询所有角色信息
      * @return
      */
-    List<RoleVO> list();
+    List<RoleVO> list(String name);
 
     /**
      * 添加角色信息
@@ -35,9 +35,9 @@ public interface RoleService {
 
     /**
      * 删除角色信息
-     * @param id
+     * @param roleId
      * @return
      */
-    Boolean delete(Byte id);
+    Boolean delete(Byte roleId);
 
 }

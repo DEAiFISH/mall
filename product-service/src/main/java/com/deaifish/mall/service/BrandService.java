@@ -1,6 +1,7 @@
 package com.deaifish.mall.service;
 
 import com.deaifish.mall.pojo.dto.BrandDTO;
+import com.deaifish.mall.pojo.qo.BrandQO;
 import com.deaifish.mall.pojo.vo.BrandVO;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface BrandService {
      * 查询品牌列表
      * @return
      */
-    List<BrandVO> list();
+    List<BrandVO> list( BrandQO qo);
 
     /**
      * 添加品牌

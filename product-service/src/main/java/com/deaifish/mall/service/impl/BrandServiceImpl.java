@@ -1,15 +1,18 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.BrandDTO;
 import com.deaifish.mall.pojo.po.BrandPO;
 import com.deaifish.mall.pojo.po.QBrandPO;
+import com.deaifish.mall.pojo.qo.BrandQO;
 import com.deaifish.mall.pojo.vo.BrandVO;
 import com.deaifish.mall.repository.BrandRepository;
 import com.deaifish.mall.service.BrandService;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
@@ -17,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,8 +43,9 @@ public class BrandServiceImpl implements BrandService {
 
 
     @Override
-    public List<BrandVO> list() {
-        List<BrandPO> list = jpaQueryFactory.selectFrom(BRAND_PO).fetch();
+    public List<BrandVO> list( BrandQO qo) {
+        List<BrandPO> list = jpaQueryFactory.selectFrom(BRAND_PO)
+                .where(createParam(qo)).fetch();
         return list.stream().map(po -> BeanUtil.toBean(po, BrandVO.class)).toList();
     }
 
@@ -78,5 +83,16 @@ public class BrandServiceImpl implements BrandService {
         bizServiceApi.delete(po.getIcon());
         bizServiceApi.delete(po.getPicture());
         jpaQueryFactory.delete(BRAND_PO).where(BRAND_PO.brandId.eq(id)).execute();
+    }
+
+    private Predicate[] createParam(BrandQO qo){
+        List<Predicate> param = new ArrayList<>();
+        if (StrUtil.isNotBlank(qo.getNumber())) {
+            param.add(BRAND_PO.number.like("%" + qo.getNumber() + "%"));
+        }
+        if (StrUtil.isNotBlank(qo.getName())) {
+            param.add(BRAND_PO.name.like("%" + qo.getName() + "%"));
+        }
+        return param.toArray(new Predicate[0]);
     }
 }

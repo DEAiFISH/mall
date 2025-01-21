@@ -30,11 +30,12 @@ public class RoleController {
 
     /**
      * 查询所有角色
+     * @param name
      * @return
      */
     @GetMapping("/list")
-    public R<List<RoleVO>> list() {
-        return R.success("查询成功",roleService.list());
+    public R<List<RoleVO>> list(@RequestParam("name") String name) {
+        return R.success("查询成功",roleService.list(name));
     }
 
     /**
@@ -59,11 +60,11 @@ public class RoleController {
 
     /**
      * 删除角色信息
-     * @param id
+     * @param roleId
      * @return
      */
-    @DeleteMapping("/delete")
-    public R<Boolean> delete(@RequestParam("id") Byte id) {
-        return R.success("删除成功",roleService.delete(id));
+    @DeleteMapping("/delete/{roleId}")
+    public R<Boolean> delete(@PathVariable("roleId") Byte roleId) {
+        return R.success("删除成功",roleService.delete(roleId));
     }
 }

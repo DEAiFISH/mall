@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2025/1/13 14:36
  */
 public interface PermissionService {
-    List<PermissionVO> list();
+    List<PermissionVO> list(String name);
 
     PermissionVO add(PermissionDTO permissionDTO);
 

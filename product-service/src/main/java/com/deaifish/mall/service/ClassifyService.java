@@ -16,7 +16,7 @@ public interface ClassifyService {
      * 查询分类列表
      * @return
      */
-    List<ClassifyVO> list();
+    List<ClassifyVO> list(String name);
 
     /**
      * 添加分类

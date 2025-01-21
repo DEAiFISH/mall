@@ -94,16 +94,35 @@ public class DefaultExceptionHandlerConfig {
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<R<String>> handleMaxUploadSizeExceededExceptionHandler(MaxUploadSizeExceededException ex) {
+        log.error("MaxUploadSizeExceededException", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(R.fail(ResponseEnum.SHOW_FAIL, "上传文件大小超过限制:" + ex.getMaxUploadSize() / 1024 / 1024 + "MB"));
     }
 
+    /**
+     * 数据库约束异常处理
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<R<String>> handleSQLConstraintViolationException(
             SQLIntegrityConstraintViolationException ex) {
         String errorMessage = "数据异常：" + ex.getMessage();
+        log.error("SQLConstraintViolationException", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(R.fail(ResponseEnum.DATA_ERROR, errorMessage));
+    }
+
+    /**
+     * 兜底异常处理
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<R<Object>> exceptionHandler(Exception e) {
+        log.error("exceptionHandler", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(R.fail(ResponseEnum.DATA_ERROR, e.getMessage()));
     }
 
 }

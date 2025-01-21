@@ -29,11 +29,12 @@ public class ClassifyController {
 
     /**
      * 查询所有分类
+     * @param name
      * @return
      */
     @GetMapping("/list")
-    public R<List<ClassifyVO>> list() {
-        return R.success("查询成功", classifyService.list());
+    public R<List<ClassifyVO>> list(@RequestParam("name") String name) {
+        return R.success("查询成功", classifyService.list(name));
     }
 
     /**

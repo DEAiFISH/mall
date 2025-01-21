@@ -34,6 +34,13 @@ public class RoleDTO {
     private String name;
 
     /**
+     * 角色状态
+     */
+    @Schema(description = "角色状态")
+    @NotNull(message = "角色状态不能为空", groups = UpdateGroup.class)
+    private Byte status;
+
+    /**
      * 描述
      */
     @Schema(description = "描述")

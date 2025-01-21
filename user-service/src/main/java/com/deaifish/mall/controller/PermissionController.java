@@ -30,11 +30,12 @@ public class PermissionController {
 
     /**
      * 查询角色权限列表
+     * @param name
      * @return
      */
     @GetMapping("/list")
-    public R<List<PermissionVO>> list() {
-        return R.success("查询成功",permissionService.list());
+    public R<List<PermissionVO>> list(@RequestParam("name") String name) {
+        return R.success("查询成功",permissionService.list(name));
     }
 
     /**
@@ -42,7 +43,7 @@ public class PermissionController {
      * @param permissionDTO
      * @return
      */
-    @PutMapping("/add")
+    @PostMapping("/add")
     public R<PermissionVO> add(@Validated @RequestBody PermissionDTO permissionDTO) {
         return R.success("添加成功",permissionService.add(permissionDTO));
     }
@@ -62,8 +63,8 @@ public class PermissionController {
      * @param id
      * @return
      */
-    @DeleteMapping("/delete")
-    public R<Boolean> delete(@RequestParam("id") Byte id) {
+    @DeleteMapping("/delete/{id}")
+    public R<Boolean> delete(@PathVariable("id") Byte id) {
         return R.success("删除成功",permissionService.delete(id));
     }
 }

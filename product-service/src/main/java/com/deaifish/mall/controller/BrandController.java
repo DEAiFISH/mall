@@ -2,6 +2,7 @@ package com.deaifish.mall.controller;
 
 import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.dto.BrandDTO;
+import com.deaifish.mall.pojo.qo.BrandQO;
 import com.deaifish.mall.pojo.vo.BrandVO;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.BrandService;
@@ -29,11 +30,12 @@ public class BrandController {
 
     /**
      * 查询所有品牌
+     * @param qo
      * @return
      */
     @GetMapping("/list")
-    public R<List<BrandVO>> list() {
-        return R.success("查询成功", brandService.list());
+    public R<List<BrandVO>> list(@ModelAttribute BrandQO qo) {
+        return R.success("查询成功", brandService.list(qo));
     }
 
     /**

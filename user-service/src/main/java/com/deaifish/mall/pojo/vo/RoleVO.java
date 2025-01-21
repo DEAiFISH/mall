@@ -1,6 +1,7 @@
 package com.deaifish.mall.pojo.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,12 @@ public class RoleVO {
      */
     @Schema(description = "角色名称")
     private String name;
+
+    /**
+     * 角色状态
+     */
+    @Schema(description = "角色状态")
+    private Byte status;
 
     /**
      * 描述

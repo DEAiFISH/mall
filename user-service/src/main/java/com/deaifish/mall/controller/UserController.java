@@ -5,6 +5,7 @@ import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.dto.ResetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
+import com.deaifish.mall.pojo.qo.UserQO;
 import com.deaifish.mall.pojo.vo.UserBriefVO;
 import com.deaifish.mall.pojo.vo.UserDetailedVO;
 import com.deaifish.mall.response.R;
@@ -36,12 +37,13 @@ public class UserController {
 
     /**
      * 获取所有用户信息
+     * @param qo
      * @return
      */
     @GetMapping("/get/all")
 //    @RequiresRole("ROLE_CUSTOMER")
-    public R<List<UserBriefVO>> getAll() {
-        return R.success("查询成功", userService.getAll());
+    public R<List<UserBriefVO>> getAll(@ModelAttribute UserQO qo) {
+        return R.success("查询成功", userService.getAll(qo));
     }
 
     /**

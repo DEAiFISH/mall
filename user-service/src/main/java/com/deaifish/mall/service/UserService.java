@@ -3,6 +3,7 @@ package com.deaifish.mall.service;
 import com.deaifish.mall.pojo.dto.ResetPasswordDTO;
 import com.deaifish.mall.pojo.dto.SetPaymentDTO;
 import com.deaifish.mall.pojo.dto.UserDTO;
+import com.deaifish.mall.pojo.qo.UserQO;
 import com.deaifish.mall.pojo.vo.UserBriefVO;
 import com.deaifish.mall.pojo.vo.UserDetailedVO;
 
@@ -19,7 +20,7 @@ public interface UserService {
      * 获取所有用户信息
      * @return
      */
-    List<UserBriefVO> getAll();
+    List<UserBriefVO> getAll(UserQO qo);
 
     /**
      * 根据id获取用户详细信息

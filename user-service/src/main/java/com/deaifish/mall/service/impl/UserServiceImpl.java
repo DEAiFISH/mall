@@ -1,6 +1,7 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
@@ -10,12 +11,14 @@ import com.deaifish.mall.pojo.dto.UserDTO;
 import com.deaifish.mall.pojo.po.QRolePO;
 import com.deaifish.mall.pojo.po.QUserPO;
 import com.deaifish.mall.pojo.po.UserPO;
+import com.deaifish.mall.pojo.qo.UserQO;
 import com.deaifish.mall.pojo.vo.UserBriefVO;
 import com.deaifish.mall.pojo.vo.UserDetailedVO;
 import com.deaifish.mall.repository.UserRepository;
 import com.deaifish.mall.service.UserService;
 import com.deaifish.mall.util.EncryptUtil;
 import com.deaifish.mall.util.JWTUtil;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -50,8 +53,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserBriefVO> getAll() {
-        List<UserPO> userPOS = jpaQueryFactory.select(USER_PO).from(USER_PO).fetch();
+    public List<UserBriefVO> getAll(UserQO qo) {
+
+        List<UserPO> userPOS = jpaQueryFactory.select(USER_PO)
+                .where(createParam(qo)).from(USER_PO)
+                .where().fetch();
         ArrayList<UserBriefVO> list = new ArrayList<>();
         userPOS.forEach(userPO -> {
             UserBriefVO bean = BeanUtil.toBean(userPO, UserBriefVO.class);
@@ -78,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void setAvatar(Long id, String avatar) {
         UserPO userPo = jpaQueryFactory.select(USER_PO).from(USER_PO).where(USER_PO.userId.eq(id)).fetchOne();
-        if(userPo == null) {
+        if (userPo == null) {
             throw new MallException("用户不存在");
         }
         bizServiceApi.delete(userPo.getAvatar());
@@ -155,7 +161,7 @@ public class UserServiceImpl implements UserService {
 
         UserPO po = jpaQueryFactory.selectFrom(USER_PO).where(USER_PO.userId.eq(userDTO.getUserId())).fetchOne();
 
-        if(po.getStatus() == 0){
+        if (po.getStatus() == 0) {
             jwtUtil.deleteJwtFromRedis(po.getWxId());
         }
 
@@ -186,5 +192,22 @@ public class UserServiceImpl implements UserService {
         vo.setRoleName(roleName);
 
         return vo;
+    }
+
+    private static Predicate[] createParam(UserQO qo) {
+        List<Predicate> param = new ArrayList<>();
+        if (StrUtil.isNotBlank(qo.getWxId())) {
+            param.add(USER_PO.wxId.like("%" + qo.getWxId() + "%"));
+        }
+        if (StrUtil.isNotBlank(qo.getNickName())) {
+            param.add(USER_PO.nickName.like("%" + qo.getNickName() + "%"));
+        }
+        if (StrUtil.isNotBlank(qo.getEmail())) {
+            param.add(USER_PO.email.like("%" + qo.getEmail() + "%"));
+        }
+        if (StrUtil.isNotBlank(qo.getPhone())) {
+            param.add(USER_PO.phone.like("%" + qo.getPhone() + "%"));
+        }
+        return param.toArray(new Predicate[0]);
     }
 }

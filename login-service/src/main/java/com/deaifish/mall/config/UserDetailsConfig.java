@@ -8,6 +8,8 @@ import com.deaifish.mall.util.JWTUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,6 +29,7 @@ import java.util.List;
  */
 @Configuration
 public class UserDetailsConfig implements UserDetailsService, UserDetailsPasswordService {
+    private static final Logger log = LoggerFactory.getLogger(UserDetailsConfig.class);
     @Resource
     private JPAQueryFactory jpaQueryFactory;
     @Resource
@@ -62,10 +65,14 @@ public class UserDetailsConfig implements UserDetailsService, UserDetailsPasswor
 
 
         ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(rolePO.getName()));
-        for (PermissionPO permissionPO : permissions) {
-            authorities.add(new SimpleGrantedAuthority(permissionPO.getName()));
+
+        if(rolePO != null) {
+            authorities.add(new SimpleGrantedAuthority(rolePO.getName()));
+            for (PermissionPO permissionPO : permissions) {
+                authorities.add(new SimpleGrantedAuthority(permissionPO.getName()));
+            }
         }
+
         // 获取用户状态
         Byte status = userPO.getStatus();
 
