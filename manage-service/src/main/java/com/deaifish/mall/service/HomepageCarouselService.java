@@ -14,9 +14,10 @@ import java.util.List;
 public interface HomepageCarouselService {
     /**
      * 查询轮播图列表
+     * @param productName 产品名称，模糊查询
      * @return
      */
-    List<HomepageCarouselVO> list();
+    List<HomepageCarouselVO> list(String productName);
 
     /**
      * 添加轮播图

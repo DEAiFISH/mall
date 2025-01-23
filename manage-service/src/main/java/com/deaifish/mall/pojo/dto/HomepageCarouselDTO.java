@@ -30,10 +30,25 @@ public class HomepageCarouselDTO {
     private Long productId;
 
     /**
+     * 商品名称
+     */
+    @Schema(description = "商品名称")
+    @NotBlank(message = "商品名称不能为空")
+    @Length(max = 127, message = "商品名称长度不能超过{max}")
+    private String productName;
+
+    /**
      * 图片路径
      */
     @Schema(description = "图片路径")
     @NotBlank(message = "图片路径不能为空")
     @Length(max = 255, message = "图片路径长度不能超过{max}")
     private String picture;
+
+    /**
+     * 状态：0-禁用，1-启用
+     */
+    @Schema(description = "状态")
+    @NotNull(message = "状态不能为空", groups = UpdateGroup.class)
+    private Byte status;
 }

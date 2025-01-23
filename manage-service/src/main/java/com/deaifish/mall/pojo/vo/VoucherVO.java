@@ -1,6 +1,8 @@
 package com.deaifish.mall.pojo.vo;
 
+import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -40,4 +42,10 @@ public class VoucherVO {
      */
     @Schema(description = "优惠卷余量")
     private Integer amount;
+
+    /**
+     *  优惠卷状态
+     */
+    @Schema(description = "优惠卷状态")
+    private Byte status;
 }

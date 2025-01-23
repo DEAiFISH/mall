@@ -24,6 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
                 // 拦截所有路径
                 .addPathPatterns("/**")
                 // 排除登录相关接口
-                .excludePathPatterns("/doLogin", "/loginPage");
+                .excludePathPatterns("/doLogin");
     }
 }

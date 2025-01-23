@@ -28,11 +28,12 @@ public class HomepageCarouselController {
 
     /**
      * 查询所有轮播图
+     * @param productName 商品名称
      * @return 轮播图列表
      */
     @GetMapping("/list")
-    public R<List<HomepageCarouselVO>> list() {
-        return R.success("查询成功", homepageCarouselService.list());
+    public R<List<HomepageCarouselVO>> list(@RequestParam("productName") String productName) {
+        return R.success("查询成功", homepageCarouselService.list(productName));
     }
 
     /**

@@ -45,6 +45,7 @@ public class SearchKeywordServiceImpl implements SearchKeywordService {
     @Transactional
     public SearchKeywordVO add(SearchKeywordDTO searchKeywordDTO) {
         SearchKeywordPO po = BeanUtil.toBean(searchKeywordDTO, SearchKeywordPO.class);
+        searchKeywordRepository.save(po);
         entityManager.refresh(po);
         return BeanUtil.toBean(po, SearchKeywordVO.class);
     }

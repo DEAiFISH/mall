@@ -41,8 +41,20 @@ public class HomepageCarouselPO extends BasePO implements Serializable {
     private Long productId;
 
     /**
+     * 商品名称
+     */
+    @Column(name = "product_name", columnDefinition = "VARCHAR(256) NOT NULL COMMENT '商品名称'")
+    private String productName;
+
+    /**
      * 图片路径
      */
     @Column(name = "picture", columnDefinition = "VARCHAR(256) NOT NULL COMMENT '图片路径'")
     private String picture;
+
+    /**
+     * 轮播图状态，0-禁用，1-开启
+     */
+    @Column(name = "status", columnDefinition = "TINYINT NOT NULL DEFAULT '1' COMMENT '轮播图状态，0-禁用，1-开启'")
+    private Byte status;
 }

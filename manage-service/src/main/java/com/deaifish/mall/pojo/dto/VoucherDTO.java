@@ -2,6 +2,7 @@ package com.deaifish.mall.pojo.dto;
 
 import com.deaifish.mall.group.UpdateGroup;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -42,6 +43,7 @@ public class VoucherDTO {
      */
     @Schema(description = "优惠金额")
     @NotNull(message = "优惠金额不能为空")
+    @Min(value = 0, message = "优惠金额不能小于{min}")
     private Double price;
 
     /**
@@ -49,5 +51,13 @@ public class VoucherDTO {
      */
     @Schema(description = "优惠卷余量")
     @NotNull(message = "余量不能为空")
+    @Min(value = 0, message = "余量不能小于{min}")
     private Integer amount;
+
+    /**
+     *  优惠卷状态
+     */
+    @Schema(description = "优惠卷状态")
+    @NotNull(message = "优惠卷状态不能为空", groups = UpdateGroup.class)
+    private Byte status;
 }

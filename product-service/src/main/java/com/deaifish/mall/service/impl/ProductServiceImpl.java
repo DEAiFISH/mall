@@ -2,6 +2,7 @@ package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.api.SearchServiceApi;
 import com.deaifish.mall.config.PathProperties;
@@ -9,12 +10,14 @@ import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.dto.ProductESDTO;
 import com.deaifish.mall.pojo.po.*;
+import com.deaifish.mall.pojo.qo.ProductQO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductRepository;
 import com.deaifish.mall.response.R;
 import com.deaifish.mall.service.ProductService;
 import com.deaifish.mall.service.StockService;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +54,9 @@ public class ProductServiceImpl implements ProductService {
     private static final QStockPO STOCK_PO = QStockPO.stockPO;
 
     @Override
-    public List<ProductBriefVO> list() {
-        List<ProductPO> pos = jpaQueryFactory.selectFrom(PRODUCT_PO).fetch();
+    public List<ProductBriefVO> list( ProductQO qo) {
+        List<ProductPO> pos = jpaQueryFactory.selectFrom(PRODUCT_PO)
+                .where(createParam(qo)).fetch();
 
         return pos.stream().map(po -> productPo2Vo(po, ProductBriefVO.class)).toList();
     }
@@ -64,13 +68,15 @@ public class ProductServiceImpl implements ProductService {
         return productPo2Vo(po, ProductVO.class);
     }
 
-
     @Transactional
     @Override
     public ProductVO add(ProductDTO productdto) {
         ProductPO po = BeanUtil.toBean(productdto, ProductPO.class);
         productRepository.save(po);
-        stokeService.createStock(productdto.getProductId(), 0);
+
+        entityManager.refresh(po);
+
+        stokeService.createStock(po.getProductId(), 0);
 
         // 保存商品到es中
         sync2Es(List.of(po));
@@ -172,5 +178,25 @@ public class ProductServiceImpl implements ProductService {
         log.info("保存商品到es中:{}", booleanR.getData());
 
         return booleanR.getData();
+    }
+
+    private Predicate[] createParam(ProductQO qo) {
+        List<Predicate> predicates = new ArrayList<>();
+        if (StrUtil.isNotBlank(qo.getNumber())) {
+            predicates.add(PRODUCT_PO.number.like("%" + qo.getNumber() + "%"));
+        }
+        if (StrUtil.isNotBlank(qo.getName())) {
+            predicates.add(PRODUCT_PO.name.like("%" + qo.getName() + "%"));
+        }
+        if(qo.getPriceUP() != null && qo.getPriceDown() != null) {
+            predicates.add(PRODUCT_PO.price.between(qo.getPriceDown(), qo.getPriceUP()));
+        }
+        if(qo.getPreferentialPriceUP() != null && qo.getPreferentialPriceDown() != null) {
+            predicates.add(PRODUCT_PO.preferentialPrice.between(qo.getPreferentialPriceDown(), qo.getPreferentialPriceUP()));
+        }
+        if(qo.getSaleUP() != null && qo.getSaleDown() != null) {
+            predicates.add(PRODUCT_PO.sale.between(qo.getSaleDown(), qo.getSaleUP()));
+        }
+        return predicates.toArray(new Predicate[0]);
     }
 }

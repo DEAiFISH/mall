@@ -24,8 +24,17 @@ public class HomepageCarouselVO {
     private Long productId;
 
     /**
+     * 商品名称
+     */
+    @Schema(description = "商品名称")
+    private String productName;
+
+    /**
      * 图片路径
      */
     @Schema(description = "图片路径")
     private String picture;
+
+    @Schema(description = "状态")
+    private Byte status;
 }

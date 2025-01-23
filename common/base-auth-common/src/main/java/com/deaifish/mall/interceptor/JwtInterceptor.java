@@ -50,6 +50,11 @@ public class JwtInterceptor implements HandlerInterceptor {
             }
         }
 
+        // openfeign 请求不进行拦截
+        if ("FEIGN-CLIENT".equals(request.getHeader("ROAD"))) {
+            return true;
+        }
+
         // 获取 Header 中的 Token
         String token = request.getHeader("Authorization");
         if (StrUtil.isBlank(token)) {

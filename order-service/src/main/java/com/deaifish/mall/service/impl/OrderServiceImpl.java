@@ -324,7 +324,6 @@ public class OrderServiceImpl implements OrderService {
                 vo.setAddress(addressPo.getAddress());
             }
 
-
             vo.setStatus(OrderStatus.getDescByCode(po.getStatus()));
             if(po.getCancelReason() != null){
                 vo.setCancelReason(OrderCancelReason.getDescByCode(po.getCancelReason()));

@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.deaifish.mall.config.JWTProperties;
@@ -86,7 +87,12 @@ public class JWTUtil {
      * @return
      */
     public Map<String, Claim> verifyToken(String token) {
-        DecodedJWT jwt = JWT.decode(token);
+        DecodedJWT jwt = null;
+        try {
+            jwt = JWT.decode(token);
+        } catch (JWTDecodeException e) {
+            return null;
+        }
         //校验token是否正确
         String wxId = jwt.getClaim("wxId").asString();
         // 校验 Redis 中是否存在该用户的 JWT

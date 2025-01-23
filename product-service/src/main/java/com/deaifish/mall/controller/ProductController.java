@@ -2,6 +2,7 @@ package com.deaifish.mall.controller;
 
 import com.deaifish.mall.group.UpdateGroup;
 import com.deaifish.mall.pojo.dto.ProductDTO;
+import com.deaifish.mall.pojo.qo.ProductQO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.response.R;
@@ -30,11 +31,12 @@ public class ProductController {
 
     /**
      * 查询商品列表
+     * @param qo
      * @return
      */
     @GetMapping("/list")
-    public R<List<ProductBriefVO>> list() {
-        return R.success("查询成功", productService.list());
+    public R<List<ProductBriefVO>> list(@ModelAttribute ProductQO qo) {
+        return R.success("查询成功", productService.list(qo));
     }
 
     /**

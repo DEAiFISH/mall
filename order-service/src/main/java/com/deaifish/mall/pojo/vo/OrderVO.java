@@ -29,9 +29,9 @@ public class OrderVO {
     private Long userId;
 
     /**
-     * 用户名称
+     * 用户昵称
      */
-    @Schema(description = "用户名称")
+    @Schema(description = "用户昵称")
     private String username;
 
     /**

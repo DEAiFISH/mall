@@ -14,9 +14,10 @@ import java.util.List;
 public interface VoucherService {
     /**
      * 查询优惠卷列表
+     * @param name
      * @return
      */
-    List<VoucherVO> list();
+    List<VoucherVO> list(String name);
 
     /**
      * 添加优惠卷

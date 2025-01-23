@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class FeignConfig {
-    private final HttpServletRequest httpServletRequest;
+//    private final HttpServletRequest httpServletRequest;
 
     @Bean
     public Retryer myRetryer() {
@@ -38,13 +38,13 @@ public class FeignConfig {
         return new RequestInterceptor() {
             @Override
             public void apply(RequestTemplate requestTemplate) {
-                // 获取当前请求中的 Authorization 请求头
+                /*// 获取当前请求中的 Authorization 请求头
                 String authorizationHeader = httpServletRequest.getHeader("Authorization");
 
                 // 如果存在 Authorization 头，动态添加到 Feign 请求头中
                 if (authorizationHeader != null) {
                     requestTemplate.header("Authorization", authorizationHeader);
-                }
+                }*/
 
                 // 可以添加其他自定义的请求头，比如 "ROAD"
                 requestTemplate.header("ROAD", "FEIGN-CLIENT");

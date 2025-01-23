@@ -29,11 +29,12 @@ public class VoucherController {
 
     /**
      * 查询所有优惠卷
+     * @param name
      * @return
      */
     @GetMapping("/list")
-    public R<List<VoucherVO>> list() {
-        return R.success("查询成功", voucherService.list());
+    public R<List<VoucherVO>> list(@RequestParam("name") @Parameter(description = "优惠卷名称") String name) {
+        return R.success("查询成功", voucherService.list(name));
     }
 
     /**

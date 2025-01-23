@@ -56,4 +56,10 @@ public class VoucherPO extends BasePO implements Serializable {
      */
     @Column(name = "amount", columnDefinition = "INT NOT NULL COMMENT '优惠卷余量'")
     private Integer amount;
+
+    /**
+     * 优惠卷状态
+     */
+    @Column(name = "status", columnDefinition = "TINYINT NOT NULL default 1 COMMENT '优惠卷状态'")
+    private Byte status;
 }

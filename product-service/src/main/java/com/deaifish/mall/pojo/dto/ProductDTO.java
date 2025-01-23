@@ -84,7 +84,6 @@ public class ProductDTO implements Serializable {
      * 特有规格参数（JSON）
      */
     @Schema(description = "特有规格参数")
-    @NotNull(message = "特有规格参数不能为空")
     private JSONObject parameter;
 
     /**

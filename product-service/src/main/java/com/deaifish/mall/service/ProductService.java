@@ -1,6 +1,7 @@
 package com.deaifish.mall.service;
 
 import com.deaifish.mall.pojo.dto.ProductDTO;
+import com.deaifish.mall.pojo.qo.ProductQO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import jakarta.validation.Valid;
@@ -16,9 +17,10 @@ import java.util.List;
 public interface ProductService {
     /**
      * 查询商品列表
+     * @param qo
      * @return
      */
-    List<ProductBriefVO> list();
+    List<ProductBriefVO> list( ProductQO qo);
 
     /**
      * 查询商品详情

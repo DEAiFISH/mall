@@ -1,12 +1,14 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.pojo.dto.VoucherDTO;
 import com.deaifish.mall.pojo.po.QVoucherPO;
 import com.deaifish.mall.pojo.po.VoucherPO;
 import com.deaifish.mall.pojo.vo.VoucherVO;
 import com.deaifish.mall.repository.VoucherRepository;
 import com.deaifish.mall.service.VoucherService;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,8 +37,9 @@ public class VoucherServiceImpl implements VoucherService {
 
 
     @Override
-    public List<VoucherVO> list() {
-        List<VoucherPO> pos = jpaQueryFactory.selectFrom(VOUCHER_PO).fetch();
+    public List<VoucherVO> list( String name) {
+        List<VoucherPO> pos = jpaQueryFactory.selectFrom(VOUCHER_PO)
+                .where(createParam(name)).fetch();
         return pos.stream().map(po -> BeanUtil.toBean(po, VoucherVO.class)).toList();
     }
 
@@ -56,6 +60,7 @@ public class VoucherServiceImpl implements VoucherService {
                 .set(VOUCHER_PO.description, voucherDTO.getDescription())
                 .set(VOUCHER_PO.price, voucherDTO.getPrice())
                 .set(VOUCHER_PO.amount, voucherDTO.getAmount())
+                .set(VOUCHER_PO.status, voucherDTO.getStatus())
                 .where(VOUCHER_PO.voucherId.eq(voucherDTO.getVoucherId())).execute();
 
         VoucherPO po = jpaQueryFactory.selectFrom(VOUCHER_PO).where(VOUCHER_PO.voucherId.eq(voucherDTO.getVoucherId())).fetchOne();
@@ -66,5 +71,13 @@ public class VoucherServiceImpl implements VoucherService {
     @Transactional
     public void delete(Long id) {
         jpaQueryFactory.delete(VOUCHER_PO).where(VOUCHER_PO.voucherId.eq(id)).execute();
+    }
+
+    private Predicate[] createParam(String name){
+        List<Predicate> param = new ArrayList<>();
+        if(StrUtil.isNotBlank(name)){
+            param.add(VOUCHER_PO.name.like("%"+name+"%"));
+        }
+        return param.toArray(new Predicate[0]);
     }
 }
