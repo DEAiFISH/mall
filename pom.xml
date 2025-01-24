@@ -324,12 +324,14 @@
     <profiles>
         <!--使用 mvn clean package -Pprod 进行激活prod环境的配置，否则激活默认环境-->
         <profile>
-            <id>dev</id>
+            <id>local</id>
             <properties>
                 <!-- 环境标识，需要与配置文件的名称相对应 -->
-                <profiles.active>dev</profiles.active>
+                <profiles.active>local</profiles.active>
                 <!--https://github.com/alibaba/nacos/issues/3460  默认的命名空间不要去设置namespace -->
-                <nacos.namespace />
+                <nacos.group>DEFAULT_GROUP</nacos.group>
+                <nacos.namespace/>
+                <nacos.address>localhost:8848</nacos.address>
             </properties>
             <activation>
                 <!-- 默认环境 -->
@@ -337,17 +339,12 @@
             </activation>
         </profile>
         <profile>
-            <id>test</id>
+            <id>remote</id>
             <properties>
-                <profiles.active>test</profiles.active>
-                <nacos.namespace>x</nacos.namespace>
-            </properties>
-        </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <profiles.active>prod</profiles.active>
-                <nacos.namespace>x</nacos.namespace>
+                <profiles.active>remote</profiles.active>
+                <nacos.group>DEFAULT_GROUP</nacos.group>
+                <nacos.namespace/>
+                <nacos.address>47.108.77.184:8848</nacos.address>
             </properties>
         </profile>
     </profiles>

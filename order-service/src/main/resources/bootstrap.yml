@@ -3,9 +3,11 @@ spring:
         name: order-service
     cloud:
         nacos:
-            server-addr: localhost:8848 # Nacos 作为服务注册地址
+            server-addr: @nacos.address@ # Nacos 作为服务注册地址
             config:
                 file-extension: yaml
-                server-addr: localhost:8848 # 配置 Nacos 作为服务配置地址
+                server-addr: @nacos.address@ # 配置 Nacos 作为服务配置地址
+                namespace: @nacos.namespace@
+                group: @nacos.group@
     profiles:
         active: @profiles.active@
