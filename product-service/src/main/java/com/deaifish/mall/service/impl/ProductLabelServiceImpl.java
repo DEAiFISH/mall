@@ -81,8 +81,8 @@ public class ProductLabelServiceImpl implements ProductLabelService {
 
     @Override
     @Transactional
-    public void delete(Long plId) {
-        jpaQueryFactory.delete(PRODUCT_LABEL_PO).where(PRODUCT_LABEL_PO.productLabelId.eq(plId)).execute();
+    public void delete(Long pId,Integer lId) {
+        jpaQueryFactory.delete(PRODUCT_LABEL_PO).where(PRODUCT_LABEL_PO.productId.eq(pId).and(PRODUCT_LABEL_PO.labelId.eq(lId))).execute();
     }
 
     private ProductLabelVO getProductLabelVO(ProductLabelPO po) {

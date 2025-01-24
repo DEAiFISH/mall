@@ -71,12 +71,14 @@ public class ProductLabelController {
 
     /**
      * 删除商品标签
-     * @param plId
+     * @param pId
+     * @param lId
      * @return
      */
-    @DeleteMapping("/delete/{plId}")
-    public R<Boolean> delete(@PathVariable("plId") @Parameter(description = "商品标签id") Long plId) {
-        productService.delete(plId);
+    @DeleteMapping("/delete/{pId}/{lId}")
+    public R<Boolean> delete(@PathVariable("pId") @Parameter(description = "商品id") Long pId,
+                             @PathVariable("lId") @Parameter(description = "标签id") Integer lId) {
+        productService.delete(pId, lId);
         return R.success("删除成功", true);
     }
 }

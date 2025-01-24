@@ -44,7 +44,8 @@ public interface ProductLabelService {
 
     /**
      * 删除商品标签
-     * @param plId
+     * @param pId
+     * @param lId
      */
-    void delete(Long plId);
+    void delete(Long pId,Integer lId);
 }
