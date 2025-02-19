@@ -48,6 +48,15 @@ public class ProductController {
     }
 
     /**
+     * 首页商品列表展示
+     * @return
+     */
+    @GetMapping("/list/homepage")
+    public R<List<ProductVO>> listHomepage() {
+        return R.success("查询成功", productService.listHomepage());
+    }
+
+    /**
      * 添加商品
      * @param productdto
      * @return

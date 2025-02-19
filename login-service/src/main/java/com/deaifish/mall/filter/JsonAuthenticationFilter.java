@@ -27,7 +27,7 @@ public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilt
     }
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        if ("application/json;charset=UTF-8".equals(request.getContentType())) {
+        if (request.getContentType().startsWith("application/json")) {
             try {
                 Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
                 String username = requestBody.get(getUsernameParameter());

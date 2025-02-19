@@ -44,6 +44,8 @@ public class ProductServiceApiController {
     @PutMapping("/stock/reduce")
     public R<Boolean> reduceStock(@RequestParam("num") @NotNull(message = "数量不能为空") Integer num,
                                   @RequestParam("pId") @NotNull(message = "商品id不能为空") Long pId) {
-        return R.success("减少库存成功", stockService.reduceStock(num, pId));
+        stockService.reduceStock(num, pId);
+        productService.sale(pId, num);
+        return R.success("减少库存,增加销量成功", true);
     }
 }

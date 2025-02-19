@@ -82,12 +82,6 @@ public class ProductESPO implements Serializable {
     private Double preferentialPrice;
 
     /**
-     * 销量
-     */
-    @IndexField(value = "sale")
-    private Integer sale;
-
-    /**
      * 库存量
      */
     @IndexField(value = "stock")
@@ -110,4 +104,10 @@ public class ProductESPO implements Serializable {
      */
     @IndexField(value = "cover_picture")
     private String coverPicture;
+
+    /**
+     * 标签
+     */
+    @IndexField(value = "tags", fieldType = FieldType.TEXT, analyzer = "ik_max_word")
+    private String label;
 }

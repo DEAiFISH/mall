@@ -1,10 +1,12 @@
 package com.deaifish.mall.pojo.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
 
@@ -76,12 +78,6 @@ public class ProductESVO implements Serializable {
     private Double preferentialPrice;
 
     /**
-     * 销量
-     */
-    @Schema(description = "销量")
-    private Integer sale;
-
-    /**
      * 简述
      */
     @Schema(description = "简述")
@@ -98,4 +94,10 @@ public class ProductESVO implements Serializable {
      */
     @Schema(description = "封面图路径")
     private String coverPicture;
+
+    /**
+     * 标签
+     */
+    @Schema(description = "标签")
+    private String label;
 }

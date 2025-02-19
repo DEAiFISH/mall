@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dromara.easyes.annotation.IndexField;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
@@ -93,13 +94,6 @@ public class ProductESDTO implements Serializable {
     private Double preferentialPrice;
 
     /**
-     * 销量
-     */
-    @Schema(description = "销量")
-    @NotNull(message = "销量不能为空")
-    private Integer sale;
-
-    /**
      * 简述
      */
     @Schema(description = "简述")
@@ -121,4 +115,12 @@ public class ProductESDTO implements Serializable {
     @NotBlank(message = "封面图路径不能为空")
     @Length(max = 256, message = "封面图路径长度不能超过{max}个字符")
     private String coverPicture;
+
+    /**
+     * 标签
+     */
+    @Schema(description = "标签")
+    @NotBlank(message = "标签")
+    @Length(max = 256, message = "标签不能超过{max}个字符")
+    private String label;
 }

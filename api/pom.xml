@@ -17,6 +17,7 @@
         <module>search-service-api</module>
         <module>product-service-api</module>
         <module>order-service-api</module>
+        <module>user-service-api</module>
     </modules>
 
 

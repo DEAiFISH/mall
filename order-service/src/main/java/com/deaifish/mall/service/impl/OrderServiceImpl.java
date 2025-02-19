@@ -223,6 +223,12 @@ public class OrderServiceImpl implements OrderService {
                 .set(ORDER_PO.cancelReason, cancelReason.getCode())
                 .where(ORDER_PO.orderId.eq(orderId))
                 .execute();
+
+        OrderPO orderPO = jpaQueryFactory.selectFrom(ORDER_PO).where(ORDER_PO.orderId.eq(orderId)).fetchOne();
+        if (orderPO == null) {
+            throw new MallException("订单不存在");
+        }
+        productServiceApi.reduceStock(Math.negateExact(orderPO.getAmount()),orderPO.getProductId());
         return getByOrderId(orderId);
     }
 

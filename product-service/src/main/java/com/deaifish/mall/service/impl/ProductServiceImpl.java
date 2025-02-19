@@ -1,22 +1,31 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.hash.Hash;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.deaifish.mall.AuthUserContext;
 import com.deaifish.mall.api.BIZServiceApi;
 import com.deaifish.mall.api.SearchServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
+import com.deaifish.mall.mall.api.UserServiceApi;
+import com.deaifish.mall.mall.pojo.vo.UserInterestVO;
+import com.deaifish.mall.pojo.bo.CBProfileBO;
+import com.deaifish.mall.pojo.bo.Item;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.dto.ProductESDTO;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.qo.ProductQO;
+import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductRepository;
 import com.deaifish.mall.response.R;
+import com.deaifish.mall.service.ProductLabelService;
 import com.deaifish.mall.service.ProductService;
 import com.deaifish.mall.service.StockService;
+import com.deaifish.mall.util.CBUtil;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -26,7 +35,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -47,6 +58,8 @@ public class ProductServiceImpl implements ProductService {
     private final PathProperties pathProperties;
     private final SearchServiceApi searchServiceApi;
     private final StockService stokeService;
+    private final ProductLabelService productLabelService;
+    private final UserServiceApi userServiceApi;
 
     private static final QProductPO PRODUCT_PO = QProductPO.productPO;
     private static final QBrandPO BRAND_PO = QBrandPO.brandPO;
@@ -66,6 +79,45 @@ public class ProductServiceImpl implements ProductService {
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
 
         return productPo2Vo(po, ProductVO.class);
+    }
+
+    @Override
+    public List<ProductVO> listHomepage() {
+        List<ProductPO> poList = jpaQueryFactory.selectFrom(PRODUCT_PO).orderBy(PRODUCT_PO.sale.desc()).limit(100).fetch();
+
+        // 处理商品特征
+        Map<Long, ProductPO> beanMap = new HashMap<>();
+
+        List<Item> items = poList.stream().map(po -> {
+            Long productId = po.getProductId();
+            Map<String, Long> futures = new HashMap<>();
+            Item item = new Item(productId, futures);
+
+            productLabelService.listByProductId(productId).forEach(label -> {
+                futures.put(label.getName(), label.getWeights());
+            });
+
+            beanMap.put(productId, po);
+            return item;
+        }).toList();
+
+
+        // 处理用户特征
+        Long userId = AuthUserContext.get().getUserId();
+        List<UserInterestVO> data = userServiceApi.interestList(userId).getData();
+        Map<String, Long> userProfileFeatures = new HashMap<>();
+        if(data != null) {
+            data.forEach((vo -> {
+                userProfileFeatures.put(vo.getLabel(), vo.getValue());
+            }));
+        }
+
+        CBProfileBO<ProductPO> cbProfileBO = new CBProfileBO<>(userProfileFeatures, items,beanMap);
+
+        CBUtil<ProductPO> cbUtil = new CBUtil<>();
+        List<ProductPO> pos = cbUtil.recommend(cbProfileBO, 20);
+
+        return pos.stream().map(po -> productPo2Vo(po, ProductVO.class)).toList();
     }
 
     @Transactional
@@ -96,8 +148,8 @@ public class ProductServiceImpl implements ProductService {
         return poList.stream().map(po -> productPo2Vo(po, ProductVO.class)).toList();
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ProductVO update(ProductDTO productdto) {
         jpaQueryFactory.update(PRODUCT_PO)
                 .set(PRODUCT_PO.number, productdto.getNumber())
@@ -118,6 +170,19 @@ public class ProductServiceImpl implements ProductService {
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productdto.getProductId())).fetchOne();
 
         sync2Es(List.of(po));
+
+        return productPo2Vo(po, ProductVO.class);
+    }
+
+    @Override
+    @Transactional
+    public ProductVO sale(Long productId, Integer sale) {
+        ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
+        if(po == null) {
+            throw new MallException("商品不存在");
+        }
+        jpaQueryFactory.update(PRODUCT_PO)
+                .set(PRODUCT_PO.sale, sale + po.getSale());
 
         return productPo2Vo(po, ProductVO.class);
     }
@@ -171,7 +236,14 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductESDTO> esdtos = list.stream().map(po -> {
             ProductVO vo = productPo2Vo(po, ProductVO.class);
-            return BeanUtil.toBean(vo, ProductESDTO.class);
+            ProductESDTO esdto = BeanUtil.toBean(vo, ProductESDTO.class);
+            List<LabelVO> labelVOS = productLabelService.listByProductId(vo.getProductId());
+            StringBuilder sb = new StringBuilder();
+            for (LabelVO labelVO : labelVOS) {
+                sb.append(labelVO.getName()).append(",");
+            }
+            esdto.setLabel(sb.toString());
+            return esdto;
         }).toList();
 
         R<Boolean> booleanR = searchServiceApi.saveProductBatch(esdtos);

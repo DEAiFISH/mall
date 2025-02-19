@@ -30,6 +30,12 @@ public interface ProductService {
     ProductVO detail(Long productId);
 
     /**
+     * 首页商品列表展示
+     * @return
+     */
+    List<ProductVO> listHomepage();
+
+    /**
      * 添加商品
      * @param productdto
      * @return
@@ -51,9 +57,17 @@ public interface ProductService {
     ProductVO update(ProductDTO productdto);
 
     /**
+     * 增加销量
+     * @param productId
+     * @return
+     */
+    ProductVO sale(Long productId, Integer sale);
+
+    /**
      * 删除商品
      * @param productId
      */
     void delete(Long productId);
+
 
 }

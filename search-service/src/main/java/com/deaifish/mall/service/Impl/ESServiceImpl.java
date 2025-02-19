@@ -77,6 +77,9 @@ public class ESServiceImpl implements ESService {
             if (StrUtil.isNotBlank(qo.getBriefDescription())) {
                 wrapper.like(ProductESPO::getBriefDescription, qo.getBriefDescription());
             }
+            if (StrUtil.isNotBlank(qo.getLabel())) {
+                wrapper.like(ProductESPO::getLabel, qo.getLabel());
+            }
         }
 
         return wrapper;

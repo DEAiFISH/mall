@@ -306,6 +306,11 @@
                 <artifactId>order-service-api</artifactId>
                 <version>${api-mall.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.deaifish.mall</groupId>
+                <artifactId>user-service-api</artifactId>
+                <version>${api-mall.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
