@@ -8,7 +8,7 @@ package com.deaifish.mall.pojo.contanst;
  */
 public enum OrderCancelReason {
     TIMEOUT((byte) 1, "超时未支付"),
-    USER((byte) 2, "用户主动取消"),
+    USER((byte) 2, "用户取消"),
     MERCHANT((byte) 3, "商家取消");
 
     private final byte code;
