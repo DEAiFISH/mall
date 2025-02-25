@@ -26,6 +26,13 @@ public interface ProductCollectService {
     Boolean isCollect(Long uId, Long pId);
 
     /**
+     * 查询用户收藏商品数量
+     * @param uId
+     * @return
+     */
+    Long count(Long uId);
+
+    /**
      * 收藏商品
      * @param uId
      * @param pId
@@ -40,4 +47,5 @@ public interface ProductCollectService {
      * @return
      */
     Boolean cancelCollect(Long uId, Long pId);
+
 }

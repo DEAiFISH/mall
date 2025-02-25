@@ -48,6 +48,13 @@ public class ProductEvaluationDTO implements Serializable {
     private Long userId;
 
     /**
+     * 订单ID
+     */
+    @Schema(description = "订单ID")
+    @NotNull(message = "订单ID不能为空")
+    private Long orderId;
+
+    /**
      * 评价内容
      */
     @Schema(description = "评价内容")

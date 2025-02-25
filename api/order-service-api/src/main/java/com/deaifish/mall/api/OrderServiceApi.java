@@ -6,6 +6,7 @@ import com.deaifish.mall.response.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @description TODO
@@ -22,4 +23,14 @@ public interface OrderServiceApi {
      */
     @PutMapping("/finish/{id}")
     public R<OrderVO> finish(@PathVariable("id") Long orderId) ;
+
+    /**
+     * 支付订单
+     * @param orderId 订单ID
+     * @param paymentMethod 支付方式（0-支付宝 1-微信）
+     * @return
+     */
+    @PutMapping("/pay/{id}")
+    public R<OrderVO> pay(@PathVariable("id") Long orderId,
+                          @RequestParam("paymentMethod")  Byte paymentMethod);
 }

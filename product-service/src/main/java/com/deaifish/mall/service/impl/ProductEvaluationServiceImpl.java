@@ -53,6 +53,11 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
     }
 
     @Override
+    public Long countByProductId(Long pId) {
+        return jpaQueryFactory.select(PRODUCT_EVALUATION_PO.evaluationId.count()).from(PRODUCT_EVALUATION_PO).where(PRODUCT_EVALUATION_PO.productId.eq(pId)).fetchOne();
+    }
+
+    @Override
     @Transactional
     public ProductEvaluationVO add(ProductEvaluationDTO productEvaluationDTO) {
         wordTool(productEvaluationDTO);
@@ -61,7 +66,7 @@ public class ProductEvaluationServiceImpl implements ProductEvaluationService {
         entityManager.refresh(po);
 
         // 订单完成评价后，订单状态改为已完成
-        orderServiceApi.finish(po.getProductId());
+        orderServiceApi.finish(productEvaluationDTO.getOrderId());
         return getProductEvaluationVO(po);
     }
 

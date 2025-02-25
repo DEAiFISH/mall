@@ -14,6 +14,8 @@ import java.util.List;
 public interface ProductEvaluationService {
     List<ProductEvaluationVO> listByProductId(Long pId);
 
+    Long countByProductId(Long pId);
+
     ProductEvaluationVO add(ProductEvaluationDTO productEvaluationDTO);
 
     ProductEvaluationVO update(ProductEvaluationDTO productEvaluationDTO);

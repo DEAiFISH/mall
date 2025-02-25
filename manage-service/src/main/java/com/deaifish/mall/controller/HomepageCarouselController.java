@@ -32,7 +32,7 @@ public class HomepageCarouselController {
      * @return 轮播图列表
      */
     @GetMapping("/list")
-    public R<List<HomepageCarouselVO>> list(@RequestParam("productName") String productName) {
+    public R<List<HomepageCarouselVO>> list(@RequestParam(value = "productName", required = false) String productName) {
         return R.success("查询成功", homepageCarouselService.list(productName));
     }
 

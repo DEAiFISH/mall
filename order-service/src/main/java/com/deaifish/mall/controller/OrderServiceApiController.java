@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @description TODO
@@ -34,5 +31,17 @@ public class OrderServiceApiController {
     @PutMapping("/finish/{id}")
     public R<OrderVO> finish(@PathVariable("id") @Parameter(description = "订单id") Long orderId) {
         return R.success("完成订单", orderService.finish(orderId));
+    }
+
+    /**
+     * 支付订单
+     * @param orderId
+     * @param paymentMethod 支付方式（0-支付宝 1-微信）
+     * @return
+     */
+    @PutMapping("/pay/{id}")
+    public R<OrderVO> pay(@PathVariable("id") @Parameter(description = "订单id") Long orderId,
+                          @RequestParam("paymentMethod") @Parameter(description = "支付方式") Byte paymentMethod) {
+        return R.success("支付成功", orderService.pay(orderId, paymentMethod));
     }
 }

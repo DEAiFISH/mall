@@ -1,11 +1,11 @@
 package com.deaifish.mall.controller;
 
 import com.deaifish.mall.response.R;
+import com.deaifish.mall.service.PayService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @description TODO
@@ -15,12 +15,21 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/pay/v1")
-@Tag(name = "商品品牌管理")
+@Tag(name = "支付接口")
 @Validated
+@RequiredArgsConstructor
 public class PayController {
+    private final PayService payService;
 
-    @GetMapping("/test")
-    public R<Boolean> pay() {
+    /**
+     * 支付
+     *
+     * @param orderId 订单id
+     * @return
+     */
+    @PutMapping("/pay")
+    public R<Boolean> pay(@RequestParam("orderId") Long orderId) {
+        payService.pay(orderId);
         return R.success("支付成功",true);
     }
 }

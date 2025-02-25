@@ -180,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
         if (po == null) {
             throw new MallException("订单不存在");
         }
-        if(po.getStatus() != OrderStatus.WAIT_SEND.getCode()){
+        if(po.getStatus() != OrderStatus.WAIT_RECEIVE.getCode()){
             throw new MallException("订单状态不正确，无法收货");
         }
 
@@ -199,7 +199,7 @@ public class OrderServiceImpl implements OrderService {
         if (po == null) {
             throw new MallException("订单不存在");
         }
-        if(po.getStatus() != OrderStatus.WAIT_SEND.getCode()){
+        if(po.getStatus() != OrderStatus.WAIT_EVALUATE.getCode()){
             throw new MallException("订单状态不正确，无法完成订单操作");
         }
 

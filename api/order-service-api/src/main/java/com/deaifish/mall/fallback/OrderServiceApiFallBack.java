@@ -16,4 +16,9 @@ public class OrderServiceApiFallBack implements OrderServiceApi {
     public R<OrderVO> finish(Long orderId) {
         return R.fail(ResponseEnum.DATA_ERROR,null);
     }
+
+    @Override
+    public R<OrderVO> pay(Long orderId, Byte paymentMethod) {
+        return R.fail(ResponseEnum.DATA_ERROR,null);
+    }
 }

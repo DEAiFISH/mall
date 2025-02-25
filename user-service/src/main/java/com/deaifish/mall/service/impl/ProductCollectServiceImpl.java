@@ -45,6 +45,11 @@ public class ProductCollectServiceImpl implements ProductCollectService {
     }
 
     @Override
+    public Long count(Long uId) {
+        return jpaQueryFactory.select(PRODUCT_COLLECT_PO.collectId.count()).from(PRODUCT_COLLECT_PO).where(PRODUCT_COLLECT_PO.userId.eq(uId)).fetchOne();
+    }
+
+    @Override
     @Transactional
     public Boolean collect(Long uId, Long pId) {
         String coverPicture = jpaQueryFactory.select(PRODUCT_PO.coverPicture).from(PRODUCT_PO).where(PRODUCT_PO.productId.eq(pId)).fetchOne();

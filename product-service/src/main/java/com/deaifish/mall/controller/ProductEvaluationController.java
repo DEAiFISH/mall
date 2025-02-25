@@ -37,6 +37,11 @@ public class ProductEvaluationController {
         return R.success("查询成功", productEvaluationService.listByProductId(pId));
     }
 
+    @GetMapping("/count/{pId}")
+    public R<Long> countByProductId(@PathVariable(name = "pId") @Parameter(description = "商品id") Long pId) {
+        return R.success("查询成功", productEvaluationService.countByProductId(pId));
+    }
+
     /**
      * 添加评价
      * @param productEvaluationDTO

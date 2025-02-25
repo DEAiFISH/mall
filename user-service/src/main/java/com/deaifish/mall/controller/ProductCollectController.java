@@ -6,6 +6,7 @@ import com.deaifish.mall.service.ProductCollectService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +48,16 @@ public class ProductCollectController {
     public R<Boolean> isCollect(@PathVariable("uId") @Parameter(description = "用户id") Long uId,
                                 @Parameter(description = "商品id") @PathVariable("pId") Long pId) {
         return R.success("查询成功", productCollectService.isCollect(uId, pId));
+    }
+
+    /**
+     * 查询用户收藏的商品数量
+     * @param uId 用户id
+     * @return
+     */
+    @GetMapping("/count/{userId}")
+    public R<Long> countCollect(@PathVariable("userId") @Parameter(description = "用户id") Long uId) {
+        return R.success("查询成功", productCollectService.count(uId));
     }
 
     /**
