@@ -69,6 +69,28 @@ public class VoucherServiceImpl implements VoucherService {
 
     @Override
     @Transactional
+    public VoucherVO receive(Long voucherId) {
+        VoucherPO po = jpaQueryFactory.selectFrom(VOUCHER_PO).where(VOUCHER_PO.voucherId.eq(voucherId)).fetchOne();
+        if(po == null || po.getStatus() == 0 || po.getAmount() <= 0){
+            throw new RuntimeException("优惠券不存在或已被领取完");
+        }
+
+        po.setAmount(po.getAmount() - 1);
+        if(po.getAmount() == 0){
+            po.setStatus((byte) 0);
+        }
+
+        jpaQueryFactory.update(VOUCHER_PO)
+                .set(VOUCHER_PO.amount, po.getAmount())
+                .set(VOUCHER_PO.status, po.getStatus())
+                .where(VOUCHER_PO.voucherId.eq(po.getVoucherId())).execute();
+
+        entityManager.refresh(po);
+        return BeanUtil.toBean(po, VoucherVO.class);
+    }
+
+    @Override
+    @Transactional
     public void delete(Long id) {
         jpaQueryFactory.delete(VOUCHER_PO).where(VOUCHER_PO.voucherId.eq(id)).execute();
     }

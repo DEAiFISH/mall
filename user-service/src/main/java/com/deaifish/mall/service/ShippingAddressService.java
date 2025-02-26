@@ -21,6 +21,13 @@ public interface ShippingAddressService {
     List<ShippingAddressVO> listAll(Long uId);
 
     /**
+     * 查询单个收货地址
+     * @param saId 收货地址ID
+     * @return
+     */
+    ShippingAddressVO get(Long saId);
+
+    /**
      * 添加收货地址
      *
      * @param shippingAddressDTO

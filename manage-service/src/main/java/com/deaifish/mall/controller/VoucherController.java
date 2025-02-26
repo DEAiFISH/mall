@@ -58,6 +58,16 @@ public class VoucherController {
     }
 
     /**
+     * 领取优惠卷
+     * @param voucherId 优惠卷id
+     * @return
+     */
+    @PutMapping("/receive")
+    public R<VoucherVO> receive(@RequestParam("voucherId") @Parameter(description = "优惠卷id") Long voucherId) {
+        return R.success("领取成功", voucherService.receive(voucherId));
+    }
+
+    /**
      * 删除优惠卷
      * @param id
      * @return

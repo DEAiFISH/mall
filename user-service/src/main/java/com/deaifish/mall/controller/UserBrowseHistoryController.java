@@ -38,6 +38,16 @@ public class UserBrowseHistoryController {
     }
 
     /**
+     * 查询用户浏览记录数量
+     * @param uId
+     * @return
+     */
+    @GetMapping("/count/{uId}")
+    public R<Long> count(@PathVariable(name = "uId") Long uId) {
+        return R.success("查询成功", userBrowseHistoryService.count(uId));
+    }
+
+    /**
      * 添加用户浏览记录
      * @param userBrowseHistoryDTO
      * @return

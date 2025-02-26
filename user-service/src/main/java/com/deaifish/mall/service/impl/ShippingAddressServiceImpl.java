@@ -38,7 +38,13 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
         List<ShippingAddressPO> list = jpaQueryFactory.selectFrom(SHIPPING_ADDRESS_PO).from(SHIPPING_ADDRESS_PO)
                 .where(SHIPPING_ADDRESS_PO.userId.eq(uId)).fetch();
 
-        return list.stream().map(po -> BeanUtil.copyProperties(po, ShippingAddressVO.class)).toList();
+        return list.stream().map(po -> BeanUtil.toBean(po, ShippingAddressVO.class)).toList();
+    }
+
+    @Override
+    public ShippingAddressVO get(Long saId) {
+        ShippingAddressPO po = jpaQueryFactory.selectFrom(SHIPPING_ADDRESS_PO).where(SHIPPING_ADDRESS_PO.addressId.eq(saId)).fetchOne();
+        return BeanUtil.toBean(po, ShippingAddressVO.class);
     }
 
     @Override
@@ -47,7 +53,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
         ShippingAddressPO po = BeanUtil.toBean(shippingAddressDTO, ShippingAddressPO.class);
         shippingAddressRepository.save(po);
         entityManager.refresh(po);
-        return BeanUtil.copyProperties(po, ShippingAddressVO.class);
+        return BeanUtil.toBean(po, ShippingAddressVO.class);
     }
 
     @Override
@@ -64,7 +70,7 @@ public class ShippingAddressServiceImpl implements ShippingAddressService {
                 .set(SHIPPING_ADDRESS_PO.phone, po.getPhone())
                 .where(SHIPPING_ADDRESS_PO.addressId.eq(po.getAddressId())).execute();
         po = jpaQueryFactory.selectFrom(SHIPPING_ADDRESS_PO).where(SHIPPING_ADDRESS_PO.addressId.eq(po.getAddressId())).fetchOne();
-        return BeanUtil.copyProperties(po, ShippingAddressVO.class);
+        return BeanUtil.toBean(po, ShippingAddressVO.class);
     }
 
     @Override

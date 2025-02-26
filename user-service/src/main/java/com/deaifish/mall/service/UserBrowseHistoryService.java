@@ -20,6 +20,13 @@ public interface UserBrowseHistoryService {
     List<UserBrowseHistoryVO> list(Long uId);
 
     /**
+     * 浏览记录数量
+     * @param uId
+     * @return
+     */
+    Long count(Long uId);
+
+    /**
      * 添加浏览记录
      * @param userBrowseHistoryDTO
      */
@@ -30,4 +37,5 @@ public interface UserBrowseHistoryService {
      * @param ids
      */
     Boolean delete(List<Long> ids);
+
 }

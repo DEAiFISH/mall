@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,15 +36,31 @@ public class UserBrowseHistoryServiceImpl implements UserBrowseHistoryService {
     @Override
     public List<UserBrowseHistoryVO> list(Long uId) {
         List<UserBrowseHistoryPO> pos = jpaQueryFactory.select(USER_BROWSE_HISTORY_PO).from(USER_BROWSE_HISTORY_PO)
-                .where(USER_BROWSE_HISTORY_PO.userId.eq(uId)).fetch();
+                .where(USER_BROWSE_HISTORY_PO.userId.eq(uId))
+                .orderBy(USER_BROWSE_HISTORY_PO.createTime.desc()).fetch();
         return pos.stream().map(po -> BeanUtil.toBean(po, UserBrowseHistoryVO.class))
                 .toList();
     }
 
     @Override
+    public Long count(Long uId) {
+        return jpaQueryFactory.select(USER_BROWSE_HISTORY_PO.count()).from(USER_BROWSE_HISTORY_PO).where(USER_BROWSE_HISTORY_PO.userId.eq(uId))
+                .fetchOne();
+    }
+
+    @Override
     @Transactional
     public UserBrowseHistoryVO add(UserBrowseHistoryDTO userBrowseHistoryDTO) {
-        UserBrowseHistoryPO po = BeanUtil.toBean(userBrowseHistoryDTO, UserBrowseHistoryPO.class);
+        // 先查询是否存在，存在则更新时间，不存在则新增
+        UserBrowseHistoryPO po = jpaQueryFactory.select(USER_BROWSE_HISTORY_PO).from(USER_BROWSE_HISTORY_PO)
+                .where(USER_BROWSE_HISTORY_PO.userId.eq(userBrowseHistoryDTO.getUserId())
+                        .and(USER_BROWSE_HISTORY_PO.productId.eq(userBrowseHistoryDTO.getProductId())))
+                .fetchOne();
+
+        if(po ==  null){
+            po = BeanUtil.toBean(userBrowseHistoryDTO, UserBrowseHistoryPO.class);
+        }
+
         userBrowseHistoryRepository.save(po);
         entityManager.refresh(po);
         return BeanUtil.toBean(po, UserBrowseHistoryVO.class);

@@ -2,6 +2,7 @@ package com.deaifish.mall.handler;
 
 import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.util.JWTUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,8 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @description 自定义登出成功处理器
@@ -29,5 +32,12 @@ public class MyLogoutSuccessHandler implements LogoutSuccessHandler {
         if (StrUtil.isNotBlank(token)) {
             jwtUtil.deleteTokenFromRedis(token);
         }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("msg", "退出成功");
+        result.put("code", 200);
+        response.setContentType("application/json;charset=UTF-8");
+        String s = new ObjectMapper().writeValueAsString(result);
+        response.getWriter().write(s);
     }
 }

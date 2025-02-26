@@ -34,8 +34,17 @@ public interface VoucherService {
     VoucherVO update(VoucherDTO voucherDTO);
 
     /**
+     * 领取优惠卷
+     * @param voucherId
+     * @return
+     */
+    VoucherVO receive(Long voucherId);
+
+    /**
      * 删除优惠卷
      * @param id
      */
     void delete(Long id);
+
+
 }

@@ -10,6 +10,8 @@ import com.deaifish.mall.api.SearchServiceApi;
 import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.mall.api.UserServiceApi;
+import com.deaifish.mall.mall.pojo.dto.UserBrowseHistoryDTO;
+import com.deaifish.mall.mall.pojo.vo.UserBrowseHistoryVO;
 import com.deaifish.mall.mall.pojo.vo.UserInterestVO;
 import com.deaifish.mall.pojo.bo.CBProfileBO;
 import com.deaifish.mall.pojo.bo.Item;
@@ -77,6 +79,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductVO detail(Long productId) {
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
+
+        // 添加浏览历史记录，异步执行
+        Long userId = AuthUserContext.get().getUserId();
+        CompletableFuture.runAsync(() -> userServiceApi.historyAdd(
+                UserBrowseHistoryDTO.builder()
+                        .userId(userId)
+                        .productId(productId)
+                        .picture(po.getCoverPicture())
+                        .productName(po.getName())
+                        .build()
+        ));
 
         return productPo2Vo(po, ProductVO.class);
     }

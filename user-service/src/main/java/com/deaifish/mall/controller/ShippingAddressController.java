@@ -38,6 +38,16 @@ public class ShippingAddressController {
     }
 
     /**
+     * 查询单个收货地址
+     * @param saId 收货地址id
+     * @return
+     */
+    @GetMapping("/get/{saId}")
+    public R<ShippingAddressVO> get(@PathVariable("saId") @Parameter(description = "收货地址id") Long saId) {
+        return R.success("查询成功", shippingAddressService.get(saId));
+    }
+
+    /**
      * 添加收货地址
      *
      * @param shippingAddressDTO
