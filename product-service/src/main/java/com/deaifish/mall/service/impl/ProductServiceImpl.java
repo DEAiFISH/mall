@@ -15,6 +15,7 @@ import com.deaifish.mall.mall.pojo.vo.UserBrowseHistoryVO;
 import com.deaifish.mall.mall.pojo.vo.UserInterestVO;
 import com.deaifish.mall.pojo.bo.CBProfileBO;
 import com.deaifish.mall.pojo.bo.Item;
+import com.deaifish.mall.pojo.bo.JwtUser;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.dto.ProductESDTO;
 import com.deaifish.mall.pojo.po.*;
@@ -80,16 +81,23 @@ public class ProductServiceImpl implements ProductService {
     public ProductVO detail(Long productId) {
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
 
+        if(po == null) {
+            throw new MallException("商品不存在");
+        }
+
         // 添加浏览历史记录，异步执行
-        Long userId = AuthUserContext.get().getUserId();
-        CompletableFuture.runAsync(() -> userServiceApi.historyAdd(
-                UserBrowseHistoryDTO.builder()
-                        .userId(userId)
-                        .productId(productId)
-                        .picture(po.getCoverPicture())
-                        .productName(po.getName())
-                        .build()
-        ));
+        JwtUser user = AuthUserContext.get();
+        if(user != null) {
+            Long userId = user.getUserId();
+            CompletableFuture.runAsync(() -> userServiceApi.historyAdd(
+                    UserBrowseHistoryDTO.builder()
+                            .userId(userId)
+                            .productId(productId)
+                            .picture(po.getCoverPicture())
+                            .productName(po.getName())
+                            .build()
+            ));
+        }
 
         return productPo2Vo(po, ProductVO.class);
     }

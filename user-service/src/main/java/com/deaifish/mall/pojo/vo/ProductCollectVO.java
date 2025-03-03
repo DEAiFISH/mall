@@ -42,5 +42,5 @@ public class ProductCollectVO {
      * 商品图片路径
      */
     @Schema(description = "商品图片路径")
-    private String picture;
+    private String coverPicture;
 }

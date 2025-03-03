@@ -1,12 +1,17 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.api.ProductServiceApi;
+import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.pojo.po.ProductCollectPO;
+import com.deaifish.mall.pojo.po.ProductPO;
 import com.deaifish.mall.pojo.po.QProductCollectPO;
 import com.deaifish.mall.pojo.po.QProductPO;
 import com.deaifish.mall.pojo.vo.ProductCollectVO;
+import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductCollectRepository;
 import com.deaifish.mall.service.ProductCollectService;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
 import jakarta.persistence.EntityManager;
@@ -15,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.deaifish.mall.pojo.po.QProductPO.productPO;
 
 /**
  * @description TODO
@@ -27,9 +34,10 @@ import java.util.List;
 public class ProductCollectServiceImpl implements ProductCollectService {
     private final ProductCollectRepository productCollectRepository;
     private final JPAQueryFactory jpaQueryFactory;
+    private final ProductServiceApi productServiceApi;
 
     private static final QProductCollectPO PRODUCT_COLLECT_PO = QProductCollectPO.productCollectPO;
-    private static final QProductPO PRODUCT_PO = QProductPO.productPO;
+    private static final QProductPO PRODUCT_PO = productPO;
 
 
     @Override
@@ -52,8 +60,16 @@ public class ProductCollectServiceImpl implements ProductCollectService {
     @Override
     @Transactional
     public Boolean collect(Long uId, Long pId) {
-        String coverPicture = jpaQueryFactory.select(PRODUCT_PO.coverPicture).from(PRODUCT_PO).where(PRODUCT_PO.productId.eq(pId)).fetchOne();
-        ProductCollectPO po = ProductCollectPO.builder().productId(pId).userId(uId).picture(coverPicture).build();
+
+        if(isExist(uId, pId)) {
+            throw new MallException("已经收藏过了");
+        }
+
+        ProductVO productVO = productServiceApi.getProductById(pId).getData();
+        if(productVO == null) {
+            throw  new MallException("商品不存在");
+        }
+        ProductCollectPO po = ProductCollectPO.builder().productId(pId).userId(uId).productName(productVO.getName()).coverPicture(productVO.getCoverPicture()).build();
         productCollectRepository.save(po);
         return true;
     }
@@ -63,5 +79,9 @@ public class ProductCollectServiceImpl implements ProductCollectService {
     public Boolean cancelCollect(Long uId, Long pId) {
         jpaQueryFactory.delete(PRODUCT_COLLECT_PO).where(PRODUCT_COLLECT_PO.userId.eq(uId).and(PRODUCT_COLLECT_PO.productId.eq(pId))).execute();
         return true;
+    }
+
+    private Boolean isExist(Long uId, Long pId) {
+        return jpaQueryFactory.selectFrom(PRODUCT_COLLECT_PO).where(PRODUCT_COLLECT_PO.userId.eq(uId).and(PRODUCT_COLLECT_PO.productId.eq(pId))).fetchOne() != null;
     }
 }

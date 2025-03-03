@@ -59,6 +59,6 @@ public class ProductCollectPO extends BasePO implements Serializable {
     /**
      * 商品图片路径
      */
-    @Column(name = "picture", columnDefinition = "VARCHAR(256) NOT NULL COMMENT '商品图片路径'")
-    private String picture;
+    @Column(name = "cover_picture", columnDefinition = "VARCHAR(256) NOT NULL COMMENT '商品图片路径'")
+    private String coverPicture;
 }

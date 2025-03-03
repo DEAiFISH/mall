@@ -50,5 +50,5 @@ public class ProductCollectDTO {
     @Schema(description = "商品图片路径")
     @NotBlank(message = "商品图片路径不能为空")
     @Length(max = 255, message = "商品图片路径长度不能超过{max}")
-    private String picture;
+    private String coverPicture;
 }
