@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>gateway</artifactId>
+    <description>网关模块</description>
     <packaging>jar</packaging>
 
     <properties>

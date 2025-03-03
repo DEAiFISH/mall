@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>search-service</artifactId>
+    <description>搜索模块</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
