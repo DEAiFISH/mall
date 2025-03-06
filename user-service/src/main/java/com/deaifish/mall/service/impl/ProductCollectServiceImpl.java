@@ -7,10 +7,13 @@ import com.deaifish.mall.pojo.po.ProductCollectPO;
 import com.deaifish.mall.pojo.po.ProductPO;
 import com.deaifish.mall.pojo.po.QProductCollectPO;
 import com.deaifish.mall.pojo.po.QProductPO;
+import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.ProductCollectVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.ProductCollectRepository;
+import com.deaifish.mall.service.LabelService;
 import com.deaifish.mall.service.ProductCollectService;
+import com.deaifish.mall.service.UserService;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.annotation.Resource;
@@ -19,7 +22,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static com.deaifish.mall.pojo.po.QProductPO.productPO;
 
@@ -35,6 +40,7 @@ public class ProductCollectServiceImpl implements ProductCollectService {
     private final ProductCollectRepository productCollectRepository;
     private final JPAQueryFactory jpaQueryFactory;
     private final ProductServiceApi productServiceApi;
+    private final LabelService labelService;
 
     private static final QProductCollectPO PRODUCT_COLLECT_PO = QProductCollectPO.productCollectPO;
     private static final QProductPO PRODUCT_PO = productPO;
@@ -71,6 +77,15 @@ public class ProductCollectServiceImpl implements ProductCollectService {
         }
         ProductCollectPO po = ProductCollectPO.builder().productId(pId).userId(uId).productName(productVO.getName()).coverPicture(productVO.getCoverPicture()).build();
         productCollectRepository.save(po);
+
+        // 更新兴趣度
+        CompletableFuture.runAsync(() -> {
+            List<Integer> ids = productServiceApi.listByProductId(pId).getData().stream().map(LabelVO::getLabelId).toList();
+            ArrayList<Integer> list = new ArrayList<>(ids);
+            list.addAll(ids);
+            labelService.interestUpdate(list, uId);
+        });
+
         return true;
     }
 

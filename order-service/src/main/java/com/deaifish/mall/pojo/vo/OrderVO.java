@@ -157,4 +157,11 @@ public class OrderVO {
      */
     @Schema(description = "关闭原因（1-超时未支付 2-用户主动取消 3-商家取消）")
     private String cancelReason;
+
+    /**
+     * 创建时间
+     */
+    @Schema(description = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 }

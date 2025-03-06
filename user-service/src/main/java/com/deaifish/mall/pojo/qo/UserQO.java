@@ -1,7 +1,11 @@
 package com.deaifish.mall.pojo.qo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 /**
  * @description TODO
@@ -34,4 +38,18 @@ public class UserQO {
      */
     @Schema(description = "手机号")
     private String phone;
+
+    /**
+     * 注册日期
+     */
+    @Schema(description = "注册日期")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createTimeFrom;
+
+    /**
+     * 注册日期
+     */
+    @Schema(description = "注册日期")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date createTimeTo;
 }

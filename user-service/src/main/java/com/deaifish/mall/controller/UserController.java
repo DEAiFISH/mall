@@ -108,7 +108,8 @@ public class UserController {
      */
     @GetMapping("/get/exists/{wxId}")
     public R<Boolean> exists(@PathVariable(name = "wxId") @Parameter(description = "微信id") String wxId) {
-        return R.success("微信号已存在", userService.existsById(wxId));
+        Boolean flag = userService.existsById(wxId);
+        return R.success(flag ? "微信号已存在" : "微信号不存在", flag);
     }
 
     /**

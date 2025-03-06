@@ -48,6 +48,25 @@ public class UserBrowseHistoryController {
     }
 
     /**
+     * 查询所总浏览记录数量
+     * @return
+     */
+    @GetMapping("/all/count")
+    public R<Long> allCount() {
+        return R.success("查询成功", userBrowseHistoryService.allCount());
+    }
+
+    /**
+     *  查询年浏览量
+     * @param year
+     * @return
+     */
+    @GetMapping("/list/year/{year}")
+    public R<List<Long>> listYear(@PathVariable(name = "year") String year) {
+        return R.success("查询成功", userBrowseHistoryService.listYear(year));
+    }
+
+    /**
      * 添加用户浏览记录
      * @param userBrowseHistoryDTO
      * @return

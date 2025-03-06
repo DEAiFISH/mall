@@ -111,4 +111,10 @@ public class OrderQO {
      */
     @Schema(description = "关闭原因（1-超时未支付 2-用户主动取消 3-商家取消）")
     private Byte cancelReason;
+
+    /**
+     * 是否删除（2：永久删除，1：已删除，0：未删除）
+     */
+    @Schema(description = "是否删除（2：永久删除，1：已删除，0：未删除）")
+    private Byte isDelete;
 }

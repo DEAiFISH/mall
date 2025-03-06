@@ -13,8 +13,15 @@ import java.util.List;
 public interface HomepageService {
 
     /**
+     * 获取用户总数
+     * @return
+     */
+    Long userCount();
+
+    /**
      * 获取每个月用户注册数据
      * @return
      */
-    List<Point<String,Long>> registerNumber();
+    Point<String,Long> registerNumber();
+
 }

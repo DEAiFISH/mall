@@ -27,7 +27,7 @@ import java.util.List;
 @Validated
 public class ProductLabelController {
     @Resource
-    private ProductLabelService productService;
+    private ProductLabelService productLabelService;
 
     /**
      * 根据标签id查询商品列表
@@ -36,7 +36,7 @@ public class ProductLabelController {
      */
     @GetMapping("/list/label/{lId}")
     public R<List<ProductBriefVO>> listByLabelId(@PathVariable("lId") @Parameter(description = "标签id") Integer lId) {
-        return R.success("查询成功", productService.listByLabelId(lId));
+        return R.success("查询成功", productLabelService.listByLabelId(lId));
     }
 
     /**
@@ -46,7 +46,7 @@ public class ProductLabelController {
      */
     @GetMapping("/list/product/{pId}")
     public R<List<LabelVO>> listByProductId(@PathVariable("pId") @Parameter(description = "商品id") Long pId) {
-        return R.success("查询成功", productService.listByProductId(pId));
+        return R.success("查询成功", productLabelService.listByProductId(pId));
     }
 
     /**
@@ -56,7 +56,7 @@ public class ProductLabelController {
      */
     @PostMapping("/add")
     public R<ProductLabelVO> add(@RequestBody @Validated ProductLabelDTO productLabelDTO) {
-        return R.success("添加成功", productService.add(productLabelDTO));
+        return R.success("添加成功", productLabelService.add(productLabelDTO));
     }
 
     /**
@@ -66,7 +66,7 @@ public class ProductLabelController {
      */
     @PutMapping("/update")
     public R<ProductLabelVO> update(@RequestBody @Validated(UpdateGroup.class) ProductLabelDTO productLabelDTO) {
-        return R.success("修改成功", productService.update(productLabelDTO));
+        return R.success("修改成功", productLabelService.update(productLabelDTO));
     }
 
     /**
@@ -78,7 +78,7 @@ public class ProductLabelController {
     @DeleteMapping("/delete/{pId}/{lId}")
     public R<Boolean> delete(@PathVariable("pId") @Parameter(description = "商品id") Long pId,
                              @PathVariable("lId") @Parameter(description = "标签id") Integer lId) {
-        productService.delete(pId, lId);
+        productLabelService.delete(pId, lId);
         return R.success("删除成功", true);
     }
 }

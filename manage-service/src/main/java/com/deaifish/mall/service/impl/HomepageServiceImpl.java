@@ -31,8 +31,14 @@ public class HomepageServiceImpl implements HomepageService {
     private final EntityManager entityManager;
 
     private static final QUserPO USER_PO = QUserPO.userPO;
+
     @Override
-    public List<Point<String,Long>> registerNumber() {
+    public Long userCount() {
+        return jpaQueryFactory.select(USER_PO.userId.count()).from(USER_PO).fetchOne();
+    }
+
+    @Override
+    public Point<String,Long> registerNumber() {
 
         StringTemplate template = Expressions.stringTemplate("DATE_FORMAT({0}, {1})", USER_PO.createTime, "%Y-%m");
         List<Tuple> list = jpaQueryFactory.select(template.as("x"), USER_PO.userId.count().as("y"))
@@ -49,6 +55,6 @@ public class HomepageServiceImpl implements HomepageService {
             y.add(tuple.get(1,Long.class));
         });
 
-        return List.of(new Point<>(x,y));
+        return new Point<>(x,y);
     }
 }

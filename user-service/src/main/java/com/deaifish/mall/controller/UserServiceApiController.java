@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.ldap.PagedResultsControl;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -50,5 +51,16 @@ public class UserServiceApiController {
     @PostMapping("/history/add")
     public R<UserBrowseHistoryVO> historyAdd(@RequestBody @Validated(ADDGroup.class) UserBrowseHistoryDTO userBrowseHistoryDTO) {
         return R.success("添加成功", userBrowseHistoryService.add(userBrowseHistoryDTO));
+    }
+
+    /**
+     * 更新用户兴趣度
+     * @param ids
+     * @return
+     */
+    @PostMapping("/interest/update")
+    public R<Boolean> interestUpdate(@RequestBody @Valid List<Integer> ids, @RequestParam("uId") @Parameter(description = "用户id") Long userID) {
+        labelService.interestUpdate(ids, userID);
+        return R.success("修改成功", true);
     }
 }

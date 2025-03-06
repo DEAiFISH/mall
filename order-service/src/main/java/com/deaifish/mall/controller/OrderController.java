@@ -163,7 +163,7 @@ public class OrderController {
      * @param orderId
      * @return
      */
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public R<Boolean> delete(@PathVariable("id") @Parameter(description = "订单id") Long orderId) {
         orderService.delete(orderId);
         return R.success("删除成功", true);

@@ -27,14 +27,21 @@ public class HomepageController {
     @Resource
     private HomepageService homepageService;
 
-    // 首页商品推荐
+    /**
+     * 获取用户总数
+     * @return
+     */
+    @GetMapping("/user/count")
+    public R<Long> userCount() {
+        return R.success("查询成功 ",homepageService.userCount());
+    }
 
     /**
      * 获取每个月用户注册数据
      * @return
      */
     @GetMapping("/user/register/number")
-    public R<List<Point<String,Long>>> registerNumber() {
+    public R<Point<String,Long>> registerNumber() {
         return R.success("获取成功",homepageService.registerNumber());
     }
 

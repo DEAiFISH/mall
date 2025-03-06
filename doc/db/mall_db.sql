@@ -272,6 +272,7 @@ CREATE TABLE `role`  (
 -- Records of role
 -- ----------------------------
 INSERT INTO `role` VALUES (1, '2024-12-10 11:08:19', '2025-01-13 14:42:50', '管理员', 'ADMIN', 1);
+INSERT INTO `role` VALUES (2, '2024-12-10 11:08:19', '2025-01-13 14:42:50', '用户', 'CUSTOMER', 1);
 
 -- ----------------------------
 -- Table structure for role_permission

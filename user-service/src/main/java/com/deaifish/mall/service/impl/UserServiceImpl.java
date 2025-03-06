@@ -26,9 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @description TODO
@@ -207,6 +205,16 @@ public class UserServiceImpl implements UserService {
         }
         if (StrUtil.isNotBlank(qo.getPhone())) {
             param.add(USER_PO.phone.like("%" + qo.getPhone() + "%"));
+        }
+        if(qo.getCreateTimeFrom() != null && qo.getCreateTimeTo() != null) {
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(qo.getCreateTimeTo());
+            // 把日期往后增加一天,整数  往后推,负数往前移动
+            calendar.add(Calendar.DATE, 1);
+            // 这个时间就是日期往后推一天的结果
+            Date date = calendar.getTime();
+
+            param.add(USER_PO.createTime.between(qo.getCreateTimeFrom(),date));
         }
         return param.toArray(new Predicate[0]);
     }

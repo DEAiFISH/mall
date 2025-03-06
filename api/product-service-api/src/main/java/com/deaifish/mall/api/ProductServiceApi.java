@@ -1,6 +1,7 @@
 package com.deaifish.mall.api;
 
 import com.deaifish.mall.fallback.ProductServiceFallBack;
+import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.response.R;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * @description 产品服务接口
@@ -36,4 +39,11 @@ public interface ProductServiceApi {
     public R<Boolean> reduceStock(@RequestParam("num") @NotNull(message = "数量不能为空") Integer num,
                                   @RequestParam("pId") @NotNull(message = "商品id不能为空") Long pId) ;
 
+    /**
+     * 根据商品id查询标签列表
+     * @param pId
+     * @return
+     */
+    @GetMapping("/list/product/{pId}")
+    public R<List<LabelVO>> listByProductId(@PathVariable("pId") Long pId);
 }

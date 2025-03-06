@@ -6,12 +6,10 @@ import com.deaifish.mall.mall.pojo.dto.UserBrowseHistoryDTO;
 import com.deaifish.mall.mall.pojo.vo.UserBrowseHistoryVO;
 import com.deaifish.mall.mall.pojo.vo.UserInterestVO;
 import com.deaifish.mall.response.R;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,4 +37,13 @@ public interface UserServiceApi {
      */
     @PostMapping("/history/add")
     public R<UserBrowseHistoryVO> historyAdd(@RequestBody UserBrowseHistoryDTO userBrowseHistoryDTO);
+
+    /**
+     * 更新用户兴趣度
+     * @param ids  标签id集合
+     * @param userID    用户id
+     * @return
+     */
+    @PostMapping("/interest/update")
+    public R<Boolean> interestUpdate(@RequestBody @Valid List<Integer> ids, @RequestParam("uId") Long userID);
 }

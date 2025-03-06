@@ -28,4 +28,9 @@ public class UserServiceFallBack implements UserServiceApi {
     public R<UserBrowseHistoryVO> historyAdd(UserBrowseHistoryDTO userBrowseHistoryDTO) {
         return R.fail(ResponseEnum.DATA_ERROR,null);
     }
+
+    @Override
+    public R<Boolean> interestUpdate(List<Integer> ids, Long userID) {
+        return R.fail(ResponseEnum.DATA_ERROR,false);
+    }
 }

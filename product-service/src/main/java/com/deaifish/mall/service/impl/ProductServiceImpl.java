@@ -1,7 +1,6 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.lang.hash.Hash;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.deaifish.mall.AuthUserContext;
@@ -11,7 +10,6 @@ import com.deaifish.mall.config.PathProperties;
 import com.deaifish.mall.exception.MallException;
 import com.deaifish.mall.mall.api.UserServiceApi;
 import com.deaifish.mall.mall.pojo.dto.UserBrowseHistoryDTO;
-import com.deaifish.mall.mall.pojo.vo.UserBrowseHistoryVO;
 import com.deaifish.mall.mall.pojo.vo.UserInterestVO;
 import com.deaifish.mall.pojo.bo.CBProfileBO;
 import com.deaifish.mall.pojo.bo.Item;
@@ -31,6 +29,7 @@ import com.deaifish.mall.service.StockService;
 import com.deaifish.mall.util.CBUtil;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.swagger.models.auth.In;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
     private static final QStockPO STOCK_PO = QStockPO.stockPO;
 
     @Override
-    public List<ProductBriefVO> list( ProductQO qo) {
+    public List<ProductBriefVO> list(ProductQO qo) {
         List<ProductPO> pos = jpaQueryFactory.selectFrom(PRODUCT_PO)
                 .where(createParam(qo)).fetch();
 
@@ -81,14 +80,15 @@ public class ProductServiceImpl implements ProductService {
     public ProductVO detail(Long productId) {
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
 
-        if(po == null) {
+        if (po == null) {
             throw new MallException("商品不存在");
         }
 
-        // 添加浏览历史记录，异步执行
         JwtUser user = AuthUserContext.get();
-        if(user != null) {
+        if (user != null) {
             Long userId = user.getUserId();
+
+            // 添加浏览历史记录，异步执行
             CompletableFuture.runAsync(() -> userServiceApi.historyAdd(
                     UserBrowseHistoryDTO.builder()
                             .userId(userId)
@@ -97,6 +97,15 @@ public class ProductServiceImpl implements ProductService {
                             .productName(po.getName())
                             .build()
             ));
+
+            // 更新用户兴趣标签，异步执行
+            CompletableFuture.runAsync(() -> {
+                List<Integer> labelList = new ArrayList<>();
+                productLabelService.listByProductId(po.getProductId()).forEach(labelVO -> {
+                    labelList.add(labelVO.getLabelId());
+                });
+                userServiceApi.interestUpdate(labelList, userId);
+            });
         }
 
         return productPo2Vo(po, ProductVO.class);
@@ -127,13 +136,13 @@ public class ProductServiceImpl implements ProductService {
         Long userId = AuthUserContext.get().getUserId();
         List<UserInterestVO> data = userServiceApi.interestList(userId).getData();
         Map<String, Long> userProfileFeatures = new HashMap<>();
-        if(data != null) {
+        if (data != null) {
             data.forEach((vo -> {
                 userProfileFeatures.put(vo.getLabel(), vo.getValue());
             }));
         }
 
-        CBProfileBO<ProductPO> cbProfileBO = new CBProfileBO<>(userProfileFeatures, items,beanMap);
+        CBProfileBO<ProductPO> cbProfileBO = new CBProfileBO<>(userProfileFeatures, items, beanMap);
 
         CBUtil<ProductPO> cbUtil = new CBUtil<>();
         List<ProductPO> pos = cbUtil.recommend(cbProfileBO, 20);
@@ -199,7 +208,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductVO sale(Long productId, Integer sale) {
         ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).fetchOne();
-        if(po == null) {
+        if (po == null) {
             throw new MallException("商品不存在");
         }
         jpaQueryFactory.update(PRODUCT_PO)
@@ -281,14 +290,17 @@ public class ProductServiceImpl implements ProductService {
         if (StrUtil.isNotBlank(qo.getName())) {
             predicates.add(PRODUCT_PO.name.like("%" + qo.getName() + "%"));
         }
-        if(qo.getPriceUP() != null && qo.getPriceDown() != null) {
+        if (qo.getPriceUP() != null && qo.getPriceDown() != null) {
             predicates.add(PRODUCT_PO.price.between(qo.getPriceDown(), qo.getPriceUP()));
         }
-        if(qo.getPreferentialPriceUP() != null && qo.getPreferentialPriceDown() != null) {
+        if (qo.getPreferentialPriceUP() != null && qo.getPreferentialPriceDown() != null) {
             predicates.add(PRODUCT_PO.preferentialPrice.between(qo.getPreferentialPriceDown(), qo.getPreferentialPriceUP()));
         }
-        if(qo.getSaleUP() != null && qo.getSaleDown() != null) {
+        if (qo.getSaleUP() != null && qo.getSaleDown() != null) {
             predicates.add(PRODUCT_PO.sale.between(qo.getSaleDown(), qo.getSaleUP()));
+        }
+        if (qo.getClassifyId() != null) {
+            predicates.add(PRODUCT_PO.classifyId.eq(qo.getClassifyId()));
         }
         return predicates.toArray(new Predicate[0]);
     }

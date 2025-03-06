@@ -70,4 +70,10 @@ public class ProductQO implements Serializable {
      */
     @Schema(description = "销量下限")
     private Integer saleDown;
+
+    /**
+     * 商品分类ID
+     */
+    @Schema(description = "商品分类ID")
+    private Integer classifyId;
 }

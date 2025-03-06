@@ -55,44 +55,6 @@ public class OrderServiceImpl implements OrderService {
         return orderPo2Vo(param);
     }
 
-    private Predicate[] createParam(OrderQO qo) {
-        List<Predicate> predicates = new ArrayList<>();
-
-        if (qo.getUserId() != null) {
-            predicates.add(ORDER_PO.userId.eq(qo.getUserId()));
-        }
-        if (qo.getMoneyMax() != null && qo.getMoneyMin() != null) {
-            predicates.add(ORDER_PO.money.between(qo.getMoneyMin(), qo.getMoneyMax()));
-        }
-        if (qo.getPaymentMethod() != null) {
-            predicates.add(ORDER_PO.paymentMethod.eq(qo.getPaymentMethod()));
-        }
-        if (qo.getStatus() != null) {
-            predicates.add(ORDER_PO.status.eq(qo.getStatus()));
-        }
-        if (qo.getPayTimeFrom() != null && qo.getPayTimeTo() != null) {
-            predicates.add(ORDER_PO.payTime.between(qo.getPayTimeFrom(), qo.getPayTimeTo()));
-        }
-        if (qo.getShipTimeFrom() != null && qo.getShipTimeTo() != null) {
-            predicates.add(ORDER_PO.shipTime.between(qo.getShipTimeFrom(), qo.getShipTimeTo()));
-        }
-        if (qo.getFinishTimeFrom() != null && qo.getFinishTimeTo() != null) {
-            predicates.add(ORDER_PO.finishTime.between(qo.getFinishTimeFrom(), qo.getFinishTimeTo()));
-        }
-        if (qo.getCancelTimeFrom() != null && qo.getCancelTimeTo() != null) {
-            predicates.add(ORDER_PO.cancelTime.between(qo.getCancelTimeFrom(), qo.getCancelTimeTo()));
-        }
-        if (qo.getIsPay() != null) {
-            predicates.add(ORDER_PO.isPay.eq(qo.getIsPay()));
-        }
-        if (qo.getCancelReason() != null) {
-            predicates.add(ORDER_PO.cancelReason.eq(qo.getCancelReason()));
-        }
-
-        return predicates.toArray(new Predicate[0]);
-    }
-
-
     @Override
     public OrderVO getByOrderId(Long orderId) {
         BooleanExpression whereParam = ORDER_PO.orderId.eq(orderId);
@@ -133,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
         if (po == null) {
             throw new MallException("订单已超时，请重新下单");
         }
-        if(po.getStatus() != OrderStatus.WAIT_PAY.getCode()){
+        if (po.getStatus() != OrderStatus.WAIT_PAY.getCode()) {
             throw new MallException("订单状态不正确，无法支付");
         }
         po.setPaymentMethod(paymentMethod);
@@ -158,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
         if (po == null) {
             throw new MallException("订单不存在");
         }
-        if(po.getStatus() != OrderStatus.WAIT_SEND.getCode()){
+        if (po.getStatus() != OrderStatus.WAIT_SEND.getCode()) {
             throw new MallException("订单状态不正确，无法发货");
         }
 
@@ -180,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
         if (po == null) {
             throw new MallException("订单不存在");
         }
-        if(po.getStatus() != OrderStatus.WAIT_RECEIVE.getCode()){
+        if (po.getStatus() != OrderStatus.WAIT_RECEIVE.getCode()) {
             throw new MallException("订单状态不正确，无法收货");
         }
 
@@ -199,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
         if (po == null) {
             throw new MallException("订单不存在");
         }
-        if(po.getStatus() != OrderStatus.WAIT_EVALUATE.getCode()){
+        if (po.getStatus() != OrderStatus.WAIT_EVALUATE.getCode()) {
             throw new MallException("订单状态不正确，无法完成订单操作");
         }
 
@@ -228,7 +190,7 @@ public class OrderServiceImpl implements OrderService {
         if (orderPO == null) {
             throw new MallException("订单不存在");
         }
-        productServiceApi.reduceStock(Math.negateExact(orderPO.getAmount()),orderPO.getProductId());
+        productServiceApi.reduceStock(Math.negateExact(orderPO.getAmount()), orderPO.getProductId());
         return getByOrderId(orderId);
     }
 
@@ -297,7 +259,7 @@ public class OrderServiceImpl implements OrderService {
             throw new MallException("订单异常，请稍后再试");
         }
         orderRedisTemplate.delete(orderProperties.getRedisOrderKey() + po.getOrderId());
-        jpaQueryFactory.delete(ORDER_PO).where(ORDER_PO.orderId.eq(orderId)).execute();
+        jpaQueryFactory.update(ORDER_PO).set(ORDER_PO.isDelete, (byte) 1).where(ORDER_PO.orderId.eq(orderId)).execute();
     }
 
     /**
@@ -331,11 +293,50 @@ public class OrderServiceImpl implements OrderService {
             }
 
             vo.setStatus(OrderStatus.getDescByCode(po.getStatus()));
-            if(po.getCancelReason() != null){
+            if (po.getCancelReason() != null) {
                 vo.setCancelReason(OrderCancelReason.getDescByCode(po.getCancelReason()));
             }
             return vo;
 
         }).toList();
+    }
+
+    private Predicate[] createParam(OrderQO qo) {
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (qo.getUserId() != null) {
+            predicates.add(ORDER_PO.userId.eq(qo.getUserId()));
+        }
+        if (qo.getMoneyMax() != null && qo.getMoneyMin() != null) {
+            predicates.add(ORDER_PO.money.between(qo.getMoneyMin(), qo.getMoneyMax()));
+        }
+        if (qo.getPaymentMethod() != null) {
+            predicates.add(ORDER_PO.paymentMethod.eq(qo.getPaymentMethod()));
+        }
+        if (qo.getStatus() != null) {
+            predicates.add(ORDER_PO.status.eq(qo.getStatus()));
+        }
+        if (qo.getPayTimeFrom() != null && qo.getPayTimeTo() != null) {
+            predicates.add(ORDER_PO.payTime.between(qo.getPayTimeFrom(), qo.getPayTimeTo()));
+        }
+        if (qo.getShipTimeFrom() != null && qo.getShipTimeTo() != null) {
+            predicates.add(ORDER_PO.shipTime.between(qo.getShipTimeFrom(), qo.getShipTimeTo()));
+        }
+        if (qo.getFinishTimeFrom() != null && qo.getFinishTimeTo() != null) {
+            predicates.add(ORDER_PO.finishTime.between(qo.getFinishTimeFrom(), qo.getFinishTimeTo()));
+        }
+        if (qo.getCancelTimeFrom() != null && qo.getCancelTimeTo() != null) {
+            predicates.add(ORDER_PO.cancelTime.between(qo.getCancelTimeFrom(), qo.getCancelTimeTo()));
+        }
+        if (qo.getIsPay() != null) {
+            predicates.add(ORDER_PO.isPay.eq(qo.getIsPay()));
+        }
+        if (qo.getCancelReason() != null) {
+            predicates.add(ORDER_PO.cancelReason.eq(qo.getCancelReason()));
+        }
+        if (qo.getIsDelete() != null) {
+            predicates.add(ORDER_PO.isDelete.eq(qo.getIsDelete()));
+        }
+        return predicates.toArray(new Predicate[0]);
     }
 }

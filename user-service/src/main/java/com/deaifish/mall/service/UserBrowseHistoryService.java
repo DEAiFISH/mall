@@ -27,6 +27,19 @@ public interface UserBrowseHistoryService {
     Long count(Long uId);
 
     /**
+     * 查询总浏览量
+     * @return
+     */
+    Long allCount();
+
+    /**
+     * 查询年浏览量
+     * @param year  年份，格式为"yyyy"
+     * @return
+     */
+    List<Long> listYear(String year);
+
+    /**
      * 添加浏览记录
      * @param userBrowseHistoryDTO
      */
