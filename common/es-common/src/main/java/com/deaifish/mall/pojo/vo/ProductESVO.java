@@ -94,10 +94,4 @@ public class ProductESVO implements Serializable {
      */
     @Schema(description = "封面图路径")
     private String coverPicture;
-
-    /**
-     * 标签
-     */
-    @Schema(description = "标签")
-    private String label;
 }

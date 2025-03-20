@@ -115,12 +115,4 @@ public class ProductESDTO implements Serializable {
     @NotBlank(message = "封面图路径不能为空")
     @Length(max = 256, message = "封面图路径长度不能超过{max}个字符")
     private String coverPicture;
-
-    /**
-     * 标签
-     */
-    @Schema(description = "标签")
-    @NotBlank(message = "标签")
-    @Length(max = 256, message = "标签不能超过{max}个字符")
-    private String label;
 }

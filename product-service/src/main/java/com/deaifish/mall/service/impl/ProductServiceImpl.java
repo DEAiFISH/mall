@@ -268,11 +268,6 @@ public class ProductServiceImpl implements ProductService {
             ProductVO vo = productPo2Vo(po, ProductVO.class);
             ProductESDTO esdto = BeanUtil.toBean(vo, ProductESDTO.class);
             List<LabelVO> labelVOS = productLabelService.listByProductId(vo.getProductId());
-            StringBuilder sb = new StringBuilder();
-            for (LabelVO labelVO : labelVOS) {
-                sb.append(labelVO.getName()).append(",");
-            }
-            esdto.setLabel(sb.toString());
             return esdto;
         }).toList();
 

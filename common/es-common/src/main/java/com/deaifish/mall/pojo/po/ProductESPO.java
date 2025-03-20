@@ -104,10 +104,4 @@ public class ProductESPO implements Serializable {
      */
     @IndexField(value = "cover_picture")
     private String coverPicture;
-
-    /**
-     * 标签
-     */
-    @IndexField(value = "tags", fieldType = FieldType.TEXT, analyzer = "ik_max_word")
-    private String label;
 }

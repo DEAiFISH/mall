@@ -49,10 +49,4 @@ public class ProductESQO implements Serializable {
      */
     @Schema(description = "简述")
     private String briefDescription;
-
-    /**
-     * 标签
-     */
-    @Schema(description = "标签")
-    private String label;
 }
