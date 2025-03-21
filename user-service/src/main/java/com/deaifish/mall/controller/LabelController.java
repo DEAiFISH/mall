@@ -73,8 +73,10 @@ public class LabelController {
      * @return
      */
     @PostMapping("/interest/update")
-    public R<Boolean> interestUpdate(@RequestBody @Valid List<Integer> ids, @RequestParam("uId") @Parameter(description = "用户id") Long userID) {
-        labelService.interestUpdate(ids, userID);
+    public R<Boolean> interestUpdate(@RequestBody @Valid List<Integer> ids,
+                                     @RequestParam("uId") @Parameter(description = "用户id") Long userID,
+                                     @RequestParam("number") @Parameter(description = "次数") Integer number) {
+        labelService.interestUpdate(ids, userID, number);
         return R.success("修改成功", true);
     }
 

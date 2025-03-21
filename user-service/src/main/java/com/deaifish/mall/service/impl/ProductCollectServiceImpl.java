@@ -81,9 +81,8 @@ public class ProductCollectServiceImpl implements ProductCollectService {
         // 更新兴趣度
         CompletableFuture.runAsync(() -> {
             List<Integer> ids = productServiceApi.listByProductId(pId).getData().stream().map(LabelVO::getLabelId).toList();
-            ArrayList<Integer> list = new ArrayList<>(ids);
-            list.addAll(ids);
-            labelService.interestUpdate(list, uId);
+
+            labelService.interestUpdate(ids, uId,2);
         });
 
         return true;

@@ -30,7 +30,7 @@ public class UserServiceFallBack implements UserServiceApi {
     }
 
     @Override
-    public R<Boolean> interestUpdate(List<Integer> ids, Long userID) {
-        return R.fail(ResponseEnum.DATA_ERROR,false);
+    public R<Boolean> interestUpdate(List<Integer> ids, Long userID, Integer number) {
+        return R.fail(ResponseEnum.DATA_ERROR,null);
     }
 }

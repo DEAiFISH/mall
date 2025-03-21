@@ -38,7 +38,7 @@ public interface LabelService {
      * 更新用户兴趣度
      * @param ids
      */
-    void interestUpdate(List<Integer> ids, Long userID);
+    void interestUpdate(List<Integer> ids, Long userID, Integer number);
 
     /**
      * 查询用户兴趣度

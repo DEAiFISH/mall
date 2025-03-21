@@ -40,10 +40,11 @@ public interface UserServiceApi {
 
     /**
      * 更新用户兴趣度
-     * @param ids  标签id集合
-     * @param userID    用户id
+     * @param ids
      * @return
      */
     @PostMapping("/interest/update")
-    public R<Boolean> interestUpdate(@RequestBody @Valid List<Integer> ids, @RequestParam("uId") Long userID);
+    public R<Boolean> interestUpdate(@RequestBody @Valid List<Integer> ids,
+                                     @RequestParam("uId") Long userID,
+                                     @RequestParam("number") Integer number);
 }

@@ -54,7 +54,7 @@ public class UserLabelPO extends BasePO implements Serializable {
     @Column(name = "interest", columnDefinition = "BIGINT NOT NULL COMMENT '兴趣度'")
     private Long interest;
 
-    public void addInterest(Long weight) {
-        this.interest += weight;
+    public void addInterest(Long weight,Integer number) {
+        this.interest = interest + weight * number;
     }
 }

@@ -149,6 +149,16 @@ public class OrderController {
     }
 
     /**
+     * 恢复订单信息
+     * @param orderId
+     * @return
+     */
+    @PutMapping("/update/recover/{id}")
+    public R<OrderVO> recover(@PathVariable("id") @Parameter(description = "订单id") Long orderId) {
+        return R.success("恢复成功", orderService.recover(orderId));
+    }
+
+    /**
      * 添加订单信息
      * @param orderDTO
      * @return

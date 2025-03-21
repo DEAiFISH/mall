@@ -104,6 +104,13 @@ public interface OrderService {
     OrderVO updateAddress(Long orderId, Long addressId);
 
     /**
+     * 恢复订单
+     * @param orderId
+     * @return
+     */
+    OrderVO recover(Long orderId);
+
+    /**
      * 添加订单
      * @param orderDTO
      * @return

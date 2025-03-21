@@ -1,14 +1,18 @@
 package com.deaifish.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.deaifish.mall.AuthUserContext;
 import com.deaifish.mall.api.ProductServiceApi;
 import com.deaifish.mall.config.OrderProperties;
 import com.deaifish.mall.exception.MallException;
+import com.deaifish.mall.mall.api.UserServiceApi;
+import com.deaifish.mall.pojo.bo.JwtUser;
 import com.deaifish.mall.pojo.contanst.OrderCancelReason;
 import com.deaifish.mall.pojo.contanst.OrderStatus;
 import com.deaifish.mall.pojo.dto.OrderDTO;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.qo.OrderQO;
+import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.OrderVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.repository.OrderRepository;
@@ -26,6 +30,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductServiceApi productServiceApi;
     private final RedisTemplate<String, OrderPO> orderRedisTemplate;
     private final OrderProperties orderProperties;
+    private final UserServiceApi userServiceApi;
 
     private static final QOrderPO ORDER_PO = QOrderPO.orderPO;
     private static final QUserPO USER_PO = QUserPO.userPO;
@@ -220,6 +226,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    public OrderVO recover(Long orderId) {
+        OrderPO po = jpaQueryFactory.selectFrom(ORDER_PO).where(ORDER_PO.orderId.eq(orderId)).fetchOne();
+        if (po == null) {
+            throw new MallException("订单不存在");
+        }
+        jpaQueryFactory.update(ORDER_PO).set(ORDER_PO.isDelete, (byte) 0).where(ORDER_PO.orderId.eq(orderId)).execute();
+
+        return getByOrderId(orderId);
+    }
+
+    @Override
+    @Transactional
     public OrderVO add(OrderDTO orderDTO) {
         OrderPO po = BeanUtil.toBean(orderDTO, OrderPO.class);
 
@@ -244,6 +262,20 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(po);
         entityManager.refresh(po);
         orderRedisTemplate.opsForValue().set(orderProperties.getRedisOrderKey() + po.getOrderId(), po, orderProperties.getRedisOrderTimeout(), TimeUnit.MINUTES);
+
+        JwtUser user = AuthUserContext.get();
+        if (user != null) {
+            Long userId = user.getUserId();
+            // 更新用户兴趣标签，异步执行
+            CompletableFuture.runAsync(() -> {
+                List<Integer> labelList = new ArrayList<>();
+                List<LabelVO> labelVOList = productServiceApi.listByProductId(po.getProductId()).getData();
+                labelVOList.forEach(labelVO -> {
+                    labelList.add(labelVO.getLabelId());
+                });
+                userServiceApi.interestUpdate(labelList, userId, 1);
+            });
+        }
         return getByOrderId(po.getOrderId());
     }
 

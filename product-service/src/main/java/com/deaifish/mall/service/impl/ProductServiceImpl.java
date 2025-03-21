@@ -104,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
                 productLabelService.listByProductId(po.getProductId()).forEach(labelVO -> {
                     labelList.add(labelVO.getLabelId());
                 });
-                userServiceApi.interestUpdate(labelList, userId);
+                userServiceApi.interestUpdate(labelList, userId,1);
             });
         }
 

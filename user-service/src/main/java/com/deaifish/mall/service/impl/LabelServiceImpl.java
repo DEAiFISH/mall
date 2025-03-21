@@ -83,14 +83,14 @@ public class LabelServiceImpl implements LabelService {
 
     @Override
     @Transactional
-    public void interestUpdate(List<Integer> ids, Long userID) {
+    public void interestUpdate(List<Integer> ids, Long userID, Integer number) {
         List<UserLabelPO> list = ids.stream().map(id -> {
             UserLabelPO userLabelPO = jpaQueryFactory.select(USER_LABEL_PO).from(USER_LABEL_PO).where(USER_LABEL_PO.labelId.eq(id).and(USER_LABEL_PO.userId.eq(userID))).fetchOne();
             Long weight = jpaQueryFactory.select(LABEL_PO.weights).from(LABEL_PO).where(LABEL_PO.labelId.eq(id)).fetchOne();
             if (userLabelPO == null) {
                 userLabelPO = UserLabelPO.builder().userId(userID).labelId(id).interest(weight).build();
             } else {
-                userLabelPO.addInterest(weight);
+                userLabelPO.addInterest(weight,number);
             }
             return userLabelPO;
         }).toList();
