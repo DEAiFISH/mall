@@ -12,6 +12,7 @@ import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -119,4 +120,12 @@ public class ProductPO extends BasePO implements Serializable {
     @Column(name = "details_picture", columnDefinition = "VARCHAR(1024) NOT NULL COMMENT '详细图路径'")
     @Convert(converter = StringListConverter.class)
     private List<String> detailsPicture;
+
+    public void addSale(Integer num){
+        BigDecimal numBd = new BigDecimal(num);
+        BigDecimal sale = new BigDecimal(this.sale);
+        sale = sale.add(numBd);
+
+        this.sale = sale.intValue();
+    }
 }

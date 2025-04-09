@@ -33,8 +33,18 @@ public class StockController {
      * @return
      */
     @GetMapping("/list")
-    public R<List<StockVO>> createStock(){
+    public R<List<StockVO>> list(){
         return R.success("查询成功", stockService.listStock());
+    }
+
+    /**
+     * 查询库存
+     * @param pid 商品id
+     * @return
+     */
+    @GetMapping("/get/{pid}")
+    public R<StockVO> get(@PathVariable("pid") @Parameter(description = "商品id") Long pid){
+        return R.success("查询成功",stockService.getStockByProductId(pid));
     }
 
     /**

@@ -16,6 +16,7 @@ import com.deaifish.mall.pojo.bo.Item;
 import com.deaifish.mall.pojo.bo.JwtUser;
 import com.deaifish.mall.pojo.dto.ProductDTO;
 import com.deaifish.mall.pojo.dto.ProductESDTO;
+import com.deaifish.mall.pojo.dto.SaleDTO;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.qo.ProductQO;
 import com.deaifish.mall.pojo.vo.LabelVO;
@@ -238,6 +239,19 @@ public class ProductServiceImpl implements ProductService {
         jpaQueryFactory.delete(PRODUCT_PO).where(PRODUCT_PO.productId.eq(productId)).execute();
 
         searchServiceApi.deleteProductById(productId);
+    }
+
+    @Override
+    public void addSale(SaleDTO saleDTO) {
+        ProductPO po = jpaQueryFactory.selectFrom(PRODUCT_PO).where(PRODUCT_PO.productId.eq(saleDTO.getPid())).fetchOne();
+        if(po == null){
+            throw new MallException("商品不存在");
+        }
+        po.addSale(saleDTO.getNum());
+
+        jpaQueryFactory.update(PRODUCT_PO)
+                .set(PRODUCT_PO.sale,po.getSale())
+                .where(PRODUCT_PO.productId.eq(po.getProductId()));
     }
 
     private <T> T productPo2Vo(ProductPO source, Class<T> clazz) {

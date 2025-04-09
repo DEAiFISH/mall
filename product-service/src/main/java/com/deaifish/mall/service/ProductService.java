@@ -1,6 +1,7 @@
 package com.deaifish.mall.service;
 
 import com.deaifish.mall.pojo.dto.ProductDTO;
+import com.deaifish.mall.pojo.dto.SaleDTO;
 import com.deaifish.mall.pojo.qo.ProductQO;
 import com.deaifish.mall.pojo.vo.ProductBriefVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
@@ -70,4 +71,9 @@ public interface ProductService {
     void delete(Long productId);
 
 
+    /**
+     * 增加销量
+     * @param saleDTO
+     */
+    void addSale(SaleDTO saleDTO);
 }

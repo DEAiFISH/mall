@@ -1,15 +1,13 @@
 package com.deaifish.mall.api;
 
 import com.deaifish.mall.fallback.ProductServiceFallBack;
+import com.deaifish.mall.pojo.dto.SaleDTO;
 import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.response.R;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,4 +44,12 @@ public interface ProductServiceApi {
      */
     @GetMapping("/list/product/{pId}")
     public R<List<LabelVO>> listByProductId(@PathVariable("pId") Long pId);
+
+    /**
+     * 增加销量
+     * @param saleDTO
+     * @return
+     */
+    @PutMapping("/sale/add")
+    public R<Boolean> addSale(@RequestBody SaleDTO saleDTO);
 }

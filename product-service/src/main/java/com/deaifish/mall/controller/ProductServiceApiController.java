@@ -1,5 +1,6 @@
 package com.deaifish.mall.controller;
 
+import com.deaifish.mall.pojo.dto.SaleDTO;
 import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.response.R;
@@ -62,5 +63,16 @@ public class ProductServiceApiController {
     @GetMapping("/list/product/{pId}")
     public R<List<LabelVO>> listByProductId(@PathVariable("pId") @Parameter(description = "商品id") Long pId) {
         return R.success("查询成功", productLabelService.listByProductId(pId));
+    }
+
+    /**
+     * 增加销量
+     * @param saleDTO
+     * @return
+     */
+    @PutMapping("/sale/add")
+    public R<Boolean> addSale(@RequestBody SaleDTO saleDTO){
+        productService.addSale(saleDTO);
+        return R.success("增加成功",true);
     }
 }

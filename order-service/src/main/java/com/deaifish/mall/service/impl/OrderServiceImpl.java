@@ -10,6 +10,7 @@ import com.deaifish.mall.pojo.bo.JwtUser;
 import com.deaifish.mall.pojo.contanst.OrderCancelReason;
 import com.deaifish.mall.pojo.contanst.OrderStatus;
 import com.deaifish.mall.pojo.dto.OrderDTO;
+import com.deaifish.mall.pojo.dto.SaleDTO;
 import com.deaifish.mall.pojo.po.*;
 import com.deaifish.mall.pojo.qo.OrderQO;
 import com.deaifish.mall.pojo.vo.LabelVO;
@@ -276,6 +277,12 @@ public class OrderServiceImpl implements OrderService {
                 userServiceApi.interestUpdate(labelList, userId, 1);
             });
         }
+
+        // 增加销量
+        CompletableFuture.runAsync(() -> {
+            SaleDTO dto = new SaleDTO(po.getProductId(), po.getAmount());
+            productServiceApi.addSale(dto);
+        });
         return getByOrderId(po.getOrderId());
     }
 

@@ -1,6 +1,7 @@
 package com.deaifish.mall.fallback;
 
 import com.deaifish.mall.api.ProductServiceApi;
+import com.deaifish.mall.pojo.dto.SaleDTO;
 import com.deaifish.mall.pojo.vo.LabelVO;
 import com.deaifish.mall.pojo.vo.ProductVO;
 import com.deaifish.mall.response.R;
@@ -31,5 +32,10 @@ public class ProductServiceFallBack implements ProductServiceApi {
     @Override
     public R<List<LabelVO>> listByProductId(Long pId) {
         return R.fail(ResponseEnum.DATA_ERROR, null);
+    }
+
+    @Override
+    public R<Boolean> addSale(SaleDTO saleDTO) {
+        return R.fail(ResponseEnum.DATA_ERROR, false);
     }
 }
